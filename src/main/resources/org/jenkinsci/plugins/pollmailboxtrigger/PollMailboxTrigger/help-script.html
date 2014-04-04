@@ -1,0 +1,40 @@
+<div>
+    The <i>Email Properties</i>, allows you to configure the plugin, using standard key=value property
+    notation.<br/>
+    <b>N.B.</b> I've used gmail connection details for all example values.
+
+    <h3>Plugin Configuration</h3>
+    You'll need to supply all the following properties:
+<pre>
+
+host=imap.gmail.com
+username=&lt;your_email&gt;@gmail.com
+password=&lt;your_password&gt;    - (google account > security > app passwords - warning: not encrypted)
+storeName=imaps
+folder=inbox
+</pre>
+
+    <h3>Filter Configuration</h3>
+    The following <i>optional</i> properties allow you to filter which unread emails are read (on the server side):
+    <pre>
+
+subjectContains=jenkins     - (emails containing 'jenkins' case insensitive in the subject)
+receivedXMinutesAgo=60      - (emails received in the last hour)
+    </pre>
+    <h3>Java Imap(/s) Configuration</h3>
+    You can also include <a href="https://javamail.java.net/nonav/docs/api/com/sun/mail/imap/package-summary.html"
+                            target="_blank">java imap properties</a>:
+    <pre>
+
+mail.imap.host=imap.gmail.com
+mail.imap.port=993
+... etc ...
+        </pre>
+    <h3>Debugging</h3>
+    Don't even try to connect to an Exchange server, without setting these:
+    <pre>
+
+mail.debug=true
+mail.debug.auth=true
+    </pre>
+</div>

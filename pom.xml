@@ -1,0 +1,77 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>1.424</version>
+    </parent>
+
+    <artifactId>poll-mailbox-trigger</artifactId>
+    <packaging>hpi</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <!--<url>http://wiki.jenkins-ci.org/display/JENKINS/MessageTrigger+Plugin</url>-->
+
+    <licenses>
+        <license>
+            <name>MIT license</name>
+            <comments>All source code is under the MIT license.</comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>nickg</id>
+            <name>Nicholas Grealy</name>
+            <email>nickgrealy@gmail.com</email>
+            <timezone>+10</timezone>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <xtrigger.lib.version>0.25</xtrigger.lib.version>
+    </properties>
+
+    <!--<scm>-->
+    <!--<connection>scm:git:git://github.com/jenkinsci/poll-mailbox-trigger-plugin.git</connection>-->
+    <!--<developerConnection>scm:git:git@github.com:jenkinsci/spoll-mailbox-trigger-plugin.git</developerConnection>-->
+    <!--</scm>-->
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jenkins-ci.lib</groupId>
+            <artifactId>xtrigger-lib</artifactId>
+            <version>${xtrigger.lib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.5</version>
+        </dependency>
+        <!-- Other Plugins -->
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>scripttrigger</artifactId>
+            <version>0.31</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>http://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo.jenkins-ci.org</id>
+            <url>http://repo.jenkins-ci.org/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
