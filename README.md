@@ -69,7 +69,8 @@ The following optional properties allow you to filter which unread emails are re
 
 ### Java Imap(/s) Configuration
 
-You can also include java imap properties:
+You can also include <a href="https://javamail.java.net/nonav/docs/api/com/sun/mail/imap/package-summary.html"
+                                                 target="_blank">java imap properties</a>:
 
     mail.imap.host=imap.gmail.com
     mail.imap.port=993
