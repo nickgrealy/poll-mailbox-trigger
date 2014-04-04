@@ -3,6 +3,7 @@ package org.jenkinsci.plugins.pllmailboxtrigger.mail;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.CustomProperties;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.Logger;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailReader;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.mail.Flags;
@@ -17,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 public class MailReaderTest {
 
     @Test
+    @Ignore
     public void testRetrieveMail() throws Throwable {
         CustomProperties cp = new CustomProperties();
         cp.put("mail.imaps.host", "imap.gmail.com");
