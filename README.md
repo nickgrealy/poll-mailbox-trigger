@@ -9,8 +9,8 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
 1. [Quick Overview](#overview)
 1. [Configuration](#configuration)
-1. [Changelog](#Changelog)
-1. [Backlog](#Backlog)
+1. [Changelog](#changelog)
+1. [Backlog](#backlog)
 1. [License](LICENSE)
 
 ---
