@@ -9,7 +9,9 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
 1. [Quick Overview](#overview)
 1. [Configuration](#configuration)
-1. [TODO](#todo)
+1. [Changelog](#Changelog)
+1. [Backlog](#Backlog)
+1. [License](LICENSE)
 
 ---
 
@@ -69,8 +71,7 @@ The following optional properties allow you to filter which unread emails are re
 
 ### Java Imap(/s) Configuration
 
-You can also include <a href="https://javamail.java.net/nonav/docs/api/com/sun/mail/imap/package-summary.html"
-                                                 target="_blank">java imap properties</a>:
+You can also include [java imap properties](https://javamail.java.net/nonav/docs/api/com/sun/mail/imap/package-summary.html):
 
     mail.imap.host=imap.gmail.com
     mail.imap.port=993
@@ -85,19 +86,50 @@ Don't even try to connect to an Exchange server, without setting these:
 
 ---
 
-## <a name="todo"></a>TODO
-1. get this plugin published under jenkinsci!
-1. Test using variable replacement!
+## <a name="changelog"></a>ChangeLog
+
+### 0.2
 1. Add email properties (e.g. to, from, cc, bcc, subject, body) as job parameters
-1. Add option to filter emails by other fields (e.g. "from")
-1. Test build options - node label, concurrent builds
-1. interpret email body as build parameters (see mailto links)
+
+The following build parameters, are now injected into the job (taken from the email trigger):
+
+    pmt_content=--001a11c1370a85d90904f64302f5\nContent-Type: text/plain; charset=UTF-8 etc...
+    pmt_headers=MIME-Version=1.0, Received=by 10.140.24.231 with HTTP; Fri, 4 Apr 2014 20:12:52 -0700 (PDT), etc...
+    pmt_folder=inbox
+    pmt_flags=,
+    pmt_replyTo=someone@gmail.com
+    pmt_recipients=someone@gmail.com
+    pmt_subject=jenkins_rocks
+    pmt_sentDate=2014-04-05T14:12Z
+    pmt_messageNumber=28917
+    pmt_contentType=multipart/ALTERNATIVE; boundary=111111
+    pmt_from=someone@gmail.com
+    pmt_receivedDate=2014-04-05T14:12Z
+
+---
+
+## <a name="backlog"></a>Backlog
+1. get this plugin published under jenkinsci!
+1. interpret email body directly as build parameters (see mailto links)
 1. Encrypt credentials
+
+
+### To Document
+1. Give config examples for connecting to Gmail, MS Exchange, etc?
+
+### To Test
+1. Test using variable replacement!
+1. Test build options - node label, concurrent builds
+1. Jenkins support - try and support as far back/forwards as possible
+1. Java Support - test with Java 1.5
+
+### Optional
+1. Internationalise all fields (i18n)
+1. Add option to filter emails by other fields (e.g. "from")
 1. Have default System Config > overridden by individual Build config
 1. Add examples for using mailtos (e.g. in failed build job emails)
 1. Add service, which sends an email with mailtos for triggering all available jobs
 1. Download email attachments - attach as link to job's build parameters?
-1. Give config examples for connecting to Gmail, MS Exchange, etc?
-1. Jenkins support - try and support as far back/forwards as possible
+
 
 This is just my list, please feel free to email me with any suggestions you might have! (Until I setup bug tracking)

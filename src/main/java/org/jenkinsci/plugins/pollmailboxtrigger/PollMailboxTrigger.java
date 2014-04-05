@@ -6,9 +6,9 @@ import hudson.Util;
 import hudson.console.AnnotatedLargeText;
 import hudson.model.*;
 import org.apache.commons.jelly.XMLOutput;
-import org.jenkinsci.lib.envinject.EnvInjectException;
-import org.jenkinsci.lib.envinject.service.EnvVarsResolver;
+import org.jenkinsci.lib.xtrigger.XTriggerCause;
 import org.jenkinsci.lib.xtrigger.XTriggerDescriptor;
+import org.jenkinsci.lib.xtrigger.XTriggerException;
 import org.jenkinsci.lib.xtrigger.XTriggerLog;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.CustomProperties;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.Logger;
@@ -20,13 +20,14 @@ import org.jenkinsci.plugins.scripttrigger.ScriptTriggerException;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import javax.mail.Flags;
+import javax.mail.Message;
 import javax.mail.search.SearchTerm;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailReader.MessagesWrapper;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils.MessagesWrapper;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.SearchTermHelpers.*;
 
 /**
@@ -77,24 +78,33 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) throws ScriptTriggerException {
-        return checkIfModifiedWithScriptsEvaluation(executingNode, log);
+        checkForEmails(executingNode, log);
+        return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
 
-    private boolean checkIfModifiedWithScriptsEvaluation(Node executingNode, XTriggerLog log) throws ScriptTriggerException {
-
-        EnvVarsResolver envVarsResolver = new EnvVarsResolver();
-        Map<String, String> envVars;
-        try {
-            envVars = envVarsResolver.getPollingEnvVars((AbstractProject) job, executingNode);
-        } catch (EnvInjectException e) {
-            throw new ScriptTriggerException(e);
+    private void startJob(XTriggerLog log, Map<String, String> envVars) throws XTriggerException {
+        log.info("Changes found. Scheduling a build.");
+        AbstractProject project = (AbstractProject) job;
+        List<Action> actions = new ArrayList<Action>();
+        actions.addAll(Arrays.asList(getScheduledXTriggerActions(null, log)));
+        List<ParameterValue> buildParams = new ArrayList<ParameterValue>();
+        for (String key : envVars.keySet()) {
+            String value = envVars.get(key);
+            if (value != null) {
+                buildParams.add(new StringParameterValue(key, value));
+            }
         }
-        //int exitCode = executor.executeScriptPathAndGetExitCode(executingNode, scriptFilePath, envVars);
+        actions.add(new ParametersAction(buildParams));
+        project.scheduleBuild(0, new NewEmailCause(getName(), getCause(), true), actions.toArray(new Action[actions.size()]));
+    }
+
+    private void checkForEmails(Node node, XTriggerLog log) throws ScriptTriggerException {
 
         if (script != null && !script.isEmpty()) {
+            MailReader mailbox = null;
             try {
-                CustomProperties p = new CustomProperties(script);
                 // check required properties exist
+                CustomProperties p = new CustomProperties(script);
                 String[] requiredProps = {"host", "storeName", "username", "password", "folder"};
                 boolean allRequired = true;
                 for (String prop : requiredProps) {
@@ -103,13 +113,13 @@ public class PollMailboxTrigger extends AbstractTrigger {
                         allRequired = false;
                     }
                     if (!allRequired) {
-                        return false;
+                        return;
                     }
                 }
-                // connect to mailbox
 
+                // connect to mailbox
                 log.info("Connecting to the mailbox...");
-                MailReader mailbox = new MailReader(new Logger.XTriggerLoggerWrapper(log),
+                mailbox = new MailReader(new Logger.XTriggerLoggerWrapper(log),
                         p.get("host"),
                         p.get("storeName"),
                         p.get("username"),
@@ -117,6 +127,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
                         p.getProperties()
                 ).connect();
                 log.info("Connected to the mailbox. Searching for messages where:");
+
                 // search for messages
                 List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
                 String subjectContains = "subjectContains", recvXMinutesAgo = "receivedXMinutesAgo";
@@ -133,21 +144,25 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 }
                 log.info("...");
                 MessagesWrapper messages = mailbox.folder(p.get("folder")).search(searchTerms);
-                // if matches found, trigger the build
-                log.info("Found matching email(s) : " + messages.getMessages().size());
-                boolean hasMessages = !messages.getMessages().isEmpty();
-                if (hasMessages) {
-                    messages.markAsRead(messages.getMessages().get(0)); // only mark one (of many?) messages as read
+                List<Message> messageList = messages.getMessages();
+                log.info("Found matching email(s) : " + messageList.size());
+                String prefix = "pollmailboxtrigger_";
+
+                // for each message, trigger a new job, then mark the message as read.
+                for (Message message : messageList) {
+                    Map<String, String> envVars = messages.getMessageProperties(message, "pmt_");
+                    startJob(log, envVars);
+                    messages.markAsRead(message);
                 }
-                mailbox.close();
-                return hasMessages;
             } catch (Throwable e) {
                 log.error(e.getLocalizedMessage());
-                return false;
+            } finally {
+                // close up after everthing is done.
+                if (mailbox != null) {
+                    mailbox.close();
+                }
             }
         }
-
-        return false;
     }
 
     @Extension
@@ -167,6 +182,16 @@ public class PollMailboxTrigger extends AbstractTrigger {
         @Override
         public String getHelpFile() {
             return "/plugin/poll-mailbox-trigger/help-PollMailboxTrigger.html";
+        }
+    }
+
+    /**
+     * Because the XTriggerCause constructors are protected. (Why?)
+     */
+    class NewEmailCause extends XTriggerCause {
+
+        protected NewEmailCause(String triggerName, String causeFrom, boolean logEnabled) {
+            super(triggerName, causeFrom, logEnabled);
         }
     }
 
