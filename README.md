@@ -7,7 +7,7 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
 ## Table of contents
 
-1. [Quick Overview](#overview)
+1. [Overview](#overview)
 1. [Configuration](#configuration)
 1. [Changelog](#changelog)
 1. [Backlog](#backlog)
@@ -15,7 +15,7 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
 ---
 
-## <a name="overview"></a>Quick Overview
+## Overview
 
 The _poll-mailbox-trigger_ allows a build to poll an email inbox using the imap protocol.
 When an unread email is found matching the configured criteria, it:
@@ -42,12 +42,12 @@ Email is:
 
 Also, some side notes:
 
-1. I haven't met a Jenkins interface for mobile devies that I like.
+1. I haven't met a Jenkins interface for mobile devices that I like.
 1. Email To SMS Gateways exist, for those that don't have Email on their mobile phones.
 
 ---
 
-## <a name="configuration"></a>Configuration
+## Configuration
 
 The Email Properties, allows you to configure the plugin, using standard key=value property notation.
 __N.B.__ I've used gmail connection details for all example values.
@@ -58,16 +58,19 @@ You'll need to supply all the following properties:
 
     host=imap.gmail.com
     username=<your_email>@gmail.com
-    password=<your_password>    - (google account > security > app passwords - warning: not encrypted)
+    password=<your_password>
     storeName=imaps
     folder=inbox
+
+For google passwords, go to "Google account > security > app passwords".
+__Warning:__ passwords are not currently encrypted.
 
 ### Filter Configuration
 
 The following optional properties allow you to filter which unread emails are read (on the server side):
 
-    subjectContains=jenkins     - (emails containing 'jenkins' case insensitive in the subject)
-    receivedXMinutesAgo=60      - (emails received in the last hour)
+    subjectContains=jenkins
+    receivedXMinutesAgo=60
 
 ### Java Imap(/s) Configuration
 
@@ -86,7 +89,7 @@ Don't even try to connect to an Exchange server, without setting these:
 
 ---
 
-## <a name="changelog"></a>ChangeLog
+## ChangeLog
 
 ### 0.2
 1. Add email properties (e.g. to, from, cc, bcc, subject, body) as job parameters
@@ -108,10 +111,12 @@ The following build parameters, are now injected into the job (taken from the em
 
 ---
 
-## <a name="backlog"></a>Backlog
+## Backlog
 1. get this plugin published under jenkinsci!
 1. interpret email body directly as build parameters (see mailto links)
 1. Encrypt credentials
+1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.
+1. Add config as build parameters?
 
 
 ### To Document
