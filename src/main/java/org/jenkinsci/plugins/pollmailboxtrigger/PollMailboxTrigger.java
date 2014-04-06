@@ -31,7 +31,7 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils.Mes
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.SearchTermHelpers.*;
 
 /**
- * @author nickgrealy@gmail.com
+ * @author Nick Grealy
  */
 @SuppressWarnings("unused")
 public class PollMailboxTrigger extends AbstractTrigger {

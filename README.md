@@ -8,6 +8,7 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 ## Table of contents
 
 1. [Overview](#overview)
+1. [Screenshot](#screenshot)
 1. [Configuration](#configuration)
 1. [Changelog](#changelog)
 1. [Backlog](#backlog)
@@ -44,6 +45,14 @@ Also, some side notes:
 
 1. I haven't met a Jenkins interface for mobile devices that I like.
 1. Email To SMS Gateways exist, for those that don't have Email on their mobile phones.
+
+---
+
+## Screenshot
+
+_Screenshot - Version 0.2_
+
+![Version 0.2](screenshot-0.2.png "Version 0.2")
 
 ---
 

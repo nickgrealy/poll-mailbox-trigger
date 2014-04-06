@@ -13,7 +13,7 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils.Fol
 /**
  * Allows us to read mail using the imap protocol.
  *
- * @author nickgrealy@gmail.com
+ * @author Nick Grealy
  */
 @SuppressWarnings("unused")
 public class MailReader extends HasLogger {

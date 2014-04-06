@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Quick and dirty Properties implementation. (But with shorthand get/put methods).
  *
- * @author nickgrealy@gmail.com
+ * @author Nick Grealy
  */
 @SuppressWarnings("unused")
 public class CustomProperties {

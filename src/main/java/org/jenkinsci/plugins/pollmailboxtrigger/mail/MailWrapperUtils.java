@@ -15,7 +15,7 @@ import java.util.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.SearchTermHelpers.*;
 
 /**
- * @author nickgrealy@gmail.com
+ * @author Nick Grealy
  */
 @SuppressWarnings("unused")
 public abstract class MailWrapperUtils {

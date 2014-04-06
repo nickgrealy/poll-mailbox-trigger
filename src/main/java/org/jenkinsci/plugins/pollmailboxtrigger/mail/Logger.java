@@ -11,7 +11,7 @@ import java.io.PrintStream;
  * <p/>
  * Question: is there a better/generic way of doing this?
  *
- * @author nickgrealy@gmail.com
+ * @author Nick Grealy
  */
 @SuppressWarnings("unused")
 public abstract class Logger {
@@ -59,6 +59,10 @@ public abstract class Logger {
             this.logger = logger;
         }
 
+        /**
+         * @param b
+         * @throws IOException
+         */
         @Override
         public void write(byte[] b) throws IOException {
             logger.info(new String(b));

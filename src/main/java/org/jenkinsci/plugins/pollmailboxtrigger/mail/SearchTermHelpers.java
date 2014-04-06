@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * A slightly nicer way of building search terms.
  *
- * @author nickgrealy@gmail.com
+ * @author Nick Grealy
  */
 public class SearchTermHelpers {
 

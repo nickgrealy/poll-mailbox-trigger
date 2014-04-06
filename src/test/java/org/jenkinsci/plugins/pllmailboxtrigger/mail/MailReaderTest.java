@@ -17,7 +17,7 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.mail.SearchTermHelpers.*;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @author nickgrealy@gmail.com
+ * @author Nick Grealy
  */
 public class MailReaderTest {
 
