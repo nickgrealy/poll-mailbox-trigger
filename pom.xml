@@ -9,7 +9,7 @@
 
     <artifactId>poll-mailbox-trigger</artifactId>
     <packaging>hpi</packaging>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
     <url>https://github.com/jenkinsci/poll-mailbox-trigger-plugin</url>
 
     <licenses>
