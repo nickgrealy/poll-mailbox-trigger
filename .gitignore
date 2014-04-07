@@ -2,4 +2,7 @@
 target/
 work/
 *.iml
+pom.xml.releaseBackup
+pom.xml~
+release.properties
 

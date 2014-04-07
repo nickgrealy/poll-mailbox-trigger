@@ -10,8 +10,7 @@
     <artifactId>poll-mailbox-trigger</artifactId>
     <packaging>hpi</packaging>
     <version>0.3-SNAPSHOT</version>
-    <!--<url>http://wiki.jenkins-ci.org/display/JENKINS/MessageTrigger+Plugin</url>-->
-    <url>https://github.com/nickgrealy/poll-mailbox-trigger</url>
+    <url>https://github.com/jenkinsci/poll-mailbox-trigger-plugin</url>
 
     <licenses>
         <license>
@@ -37,8 +36,8 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/nickgrealy/poll-mailbox-trigger.git</connection>
-        <developerConnection>scm:git:git@github.com:nickgrealy/poll-mailbox-trigger.git</developerConnection>
+        <connection>scm:git:git://github.com/jenkinsci/poll-mailbox-trigger-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/poll-mailbox-trigger-plugin.git</developerConnection>
     </scm>
 
     <dependencies>
