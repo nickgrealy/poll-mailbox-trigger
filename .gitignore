@@ -5,4 +5,6 @@ work/
 pom.xml.releaseBackup
 pom.xml~
 release.properties
+pom.xml.next
+pom.xml.tag
 
