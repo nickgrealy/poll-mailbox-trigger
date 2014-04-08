@@ -100,6 +100,9 @@ Don't even try to connect to an Exchange server, without setting these:
 
 ## ChangeLog
 
+### 0.4
+1. get this plugin published under jenkinsci!
+
 ### 0.2
 1. Add email properties (e.g. to, from, cc, bcc, subject, body) as job parameters
 
@@ -121,7 +124,6 @@ The following build parameters, are now injected into the job (taken from the em
 ---
 
 ## Backlog
-1. get this plugin published under jenkinsci!
 1. interpret email body directly as build parameters (see mailto links)
 1. Encrypt credentials
 1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.
