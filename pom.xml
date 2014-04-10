@@ -86,5 +86,18 @@
             <url>http://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
+    
+    <!-- Explicitly set parent pom's missing version --> 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.cloudbees</groupId>
+                    <artifactId>maven-license-plugin</artifactId>
+                    <version>1.7</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
