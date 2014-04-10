@@ -35,6 +35,7 @@
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
         <xtrigger.lib.version>0.25</xtrigger.lib.version>
+        <github.global.server>github</github.global.server>
     </properties>
 
     <scm>
