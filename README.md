@@ -100,6 +100,9 @@ Don't even try to connect to an Exchange server, without setting these:
 
 ## ChangeLog
 
+### 0.5
+1. Added a "Test Connection" button
+
 ### 0.4
 1. get this plugin published under jenkinsci!
 
@@ -124,6 +127,7 @@ The following build parameters, are now injected into the job (taken from the em
 ---
 
 ## Backlog
+1. Change package dependencies, so that there is no dependency on ScriptTrigger (for cloudbees support)
 1. interpret email body directly as build parameters (see mailto links)
 1. Encrypt credentials
 1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.

@@ -7,4 +7,4 @@ pom.xml~
 release.properties
 pom.xml.next
 pom.xml.tag
-
+*.orig

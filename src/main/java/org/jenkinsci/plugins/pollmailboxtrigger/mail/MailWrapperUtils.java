@@ -8,6 +8,8 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.search.SearchTerm;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,6 +28,13 @@ public abstract class MailWrapperUtils {
     public abstract static class Stringify {
 
         public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+
+        public static String toString(Throwable t) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            return sw.toString();
+        }
 
         public static String toString(String message) {
             return message;

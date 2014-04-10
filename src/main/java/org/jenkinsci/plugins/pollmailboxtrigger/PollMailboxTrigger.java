@@ -5,6 +5,8 @@ import hudson.Extension;
 import hudson.Util;
 import hudson.console.AnnotatedLargeText;
 import hudson.model.*;
+import hudson.util.FormValidation;
+import hudson.util.StreamTaskListener;
 import org.apache.commons.jelly.XMLOutput;
 import org.jenkinsci.lib.xtrigger.XTriggerCause;
 import org.jenkinsci.lib.xtrigger.XTriggerDescriptor;
@@ -13,11 +15,13 @@ import org.jenkinsci.lib.xtrigger.XTriggerLog;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.CustomProperties;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.Logger;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailReader;
+import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils;
 import org.jenkinsci.plugins.scripttrigger.AbstractTrigger;
 import org.jenkinsci.plugins.scripttrigger.LabelRestrictionClass;
 import org.jenkinsci.plugins.scripttrigger.ScriptTriggerAction;
 import org.jenkinsci.plugins.scripttrigger.ScriptTriggerException;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.QueryParameter;
 
 import javax.mail.Flags;
 import javax.mail.Message;
@@ -36,13 +40,96 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.mail.SearchTermHelpers.*;
 @SuppressWarnings("unused")
 public class PollMailboxTrigger extends AbstractTrigger {
 
-
     private String script;
 
     @DataBoundConstructor
     public PollMailboxTrigger(String cronTabSpec, LabelRestrictionClass labelRestriction, boolean enableConcurrentBuild, String script) throws ANTLRException {
         super(cronTabSpec, labelRestriction != null, (labelRestriction == null) ? null : labelRestriction.getTriggerLabel(), enableConcurrentBuild);
         this.script = Util.fixEmpty(script);
+    }
+
+    protected static FormValidation checkForEmails(String script, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) throws ScriptTriggerException {
+
+        if (script != null && !script.isEmpty()) {
+            MailReader mailbox = null;
+            StringBuilder testConnectionProgress = new StringBuilder();
+            try {
+                // check required properties exist
+                CustomProperties p = new CustomProperties(script);
+                String[] requiredProps = {"host", "storeName", "username", "password", "folder"};
+                List<String> errors = new ArrayList<String>();
+                boolean allRequired = true;
+                for (String prop : requiredProps) {
+                    if (!p.has(prop)) {
+                        String err = String.format("Email property '%s' is required!", prop);
+                        log.error(err);
+                        errors.add(err);
+                        allRequired = false;
+                    }
+                }
+                if (!allRequired) {
+                    return FormValidation.error("Error : " + MailWrapperUtils.Stringify.toString(errors));
+                }
+
+                // connect to mailbox
+                log.info("Connecting to the mailbox...");
+                mailbox = new MailReader(new Logger.XTriggerLoggerWrapper(log),
+                        p.get("host"),
+                        p.get("storeName"),
+                        p.get("username"),
+                        p.get("password"),
+                        p.getProperties()
+                ).connect();
+                final String connected = "Connected to mailbox. ";
+                log.info(connected + "Searching for messages where:");
+                testConnectionProgress.append(connected);
+
+                // search for messages
+                List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
+                String subjectContains = "subjectContains", recvXMinutesAgo = "receivedXMinutesAgo";
+                searchTerms.add(not(flag(Flags.Flag.SEEN)));    // unread
+                log.info("- [flag is unread]");
+                if (p.has(subjectContains)) {                    // containing subject
+                    searchTerms.add(subject(p.get(subjectContains)));
+                    log.info("- [subject contains " + p.get(subjectContains) + "]");
+                }
+                if (p.has(recvXMinutesAgo)) {                         // received since X minutes ago
+                    Date date = relativeDate(Calendar.MINUTE, Integer.parseInt(p.get(recvXMinutesAgo)) * -1);
+                    searchTerms.add(receivedSince(date));
+                    log.info("- [received date is greater than " + date + "]");
+                }
+                log.info("...");
+                final MailWrapperUtils.FolderWrapper folder = mailbox.folder(p.get("folder"));
+                testConnectionProgress.append("Opened folder. ");
+                MessagesWrapper messages = folder.search(searchTerms);
+                testConnectionProgress.append("Searched. ");
+                List<Message> messageList = messages.getMessages();
+                final String success = String.format("Found matching email(s) : %s. ", messageList.size());
+                log.info(success);
+                testConnectionProgress.append(success);
+
+                // for each message, trigger a new job, then mark the message as read.
+                if (testConnection) {
+                    return FormValidation.ok(testConnectionProgress.toString() + "Success.");
+                } else {
+                    for (Message message : messageList) {
+                        Map<String, String> envVars = messages.getMessageProperties(message, "pmt_");
+                        pmt.startJob(log, envVars);
+                        messages.markAsRead(message);
+                    }
+                }
+            } catch (Throwable e) {
+                // TODO: get stacktrace?
+                log.error(e.getLocalizedMessage());
+                return FormValidation.error(testConnectionProgress.toString() + "Error : " + MailWrapperUtils.Stringify.toString(e));
+            } finally {
+                // close up after everthing is done.
+                if (mailbox != null) {
+                    mailbox.close();
+                }
+            }
+        }
+        return FormValidation.ok("Success");
     }
 
     @SuppressWarnings("unused")
@@ -78,7 +165,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) throws ScriptTriggerException {
-        checkForEmails(executingNode, log);
+        checkForEmails(script, log, false, this); // use executingNode, ???
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
 
@@ -98,73 +185,6 @@ public class PollMailboxTrigger extends AbstractTrigger {
         project.scheduleBuild(0, new NewEmailCause(getName(), getCause(), true), actions.toArray(new Action[actions.size()]));
     }
 
-    private void checkForEmails(Node node, XTriggerLog log) throws ScriptTriggerException {
-
-        if (script != null && !script.isEmpty()) {
-            MailReader mailbox = null;
-            try {
-                // check required properties exist
-                CustomProperties p = new CustomProperties(script);
-                String[] requiredProps = {"host", "storeName", "username", "password", "folder"};
-                boolean allRequired = true;
-                for (String prop : requiredProps) {
-                    if (!p.has(prop)) {
-                        log.error(String.format("Email property '%s' is required!", prop));
-                        allRequired = false;
-                    }
-                    if (!allRequired) {
-                        return;
-                    }
-                }
-
-                // connect to mailbox
-                log.info("Connecting to the mailbox...");
-                mailbox = new MailReader(new Logger.XTriggerLoggerWrapper(log),
-                        p.get("host"),
-                        p.get("storeName"),
-                        p.get("username"),
-                        p.get("password"),
-                        p.getProperties()
-                ).connect();
-                log.info("Connected to the mailbox. Searching for messages where:");
-
-                // search for messages
-                List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
-                String subjectContains = "subjectContains", recvXMinutesAgo = "receivedXMinutesAgo";
-                searchTerms.add(not(flag(Flags.Flag.SEEN)));    // unread
-                log.info("- [flag is unread]");
-                if (p.has(subjectContains)) {                    // containing subject
-                    searchTerms.add(subject(p.get(subjectContains)));
-                    log.info("- [subject contains " + p.get(subjectContains) + "]");
-                }
-                if (p.has(recvXMinutesAgo)) {                         // received since X minutes ago
-                    Date date = relativeDate(Calendar.MINUTE, Integer.parseInt(p.get(recvXMinutesAgo)) * -1);
-                    searchTerms.add(receivedSince(date));
-                    log.info("- [received date is greater than " + date + "]");
-                }
-                log.info("...");
-                MessagesWrapper messages = mailbox.folder(p.get("folder")).search(searchTerms);
-                List<Message> messageList = messages.getMessages();
-                log.info("Found matching email(s) : " + messageList.size());
-                String prefix = "pollmailboxtrigger_";
-
-                // for each message, trigger a new job, then mark the message as read.
-                for (Message message : messageList) {
-                    Map<String, String> envVars = messages.getMessageProperties(message, "pmt_");
-                    startJob(log, envVars);
-                    messages.markAsRead(message);
-                }
-            } catch (Throwable e) {
-                log.error(e.getLocalizedMessage());
-            } finally {
-                // close up after everthing is done.
-                if (mailbox != null) {
-                    mailbox.close();
-                }
-            }
-        }
-    }
-
     @Extension
     @SuppressWarnings("unused")
     public static class ScriptTriggerDescriptor extends XTriggerDescriptor {
@@ -182,6 +202,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
         @Override
         public String getHelpFile() {
             return "/plugin/poll-mailbox-trigger/help-PollMailboxTrigger.html";
+        }
+
+        public FormValidation doTestConnection(@QueryParameter("script") final String script) {
+            try {
+                return checkForEmails(script, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null);
+            } catch (Throwable t) {
+                return FormValidation.error("Error : " + MailWrapperUtils.Stringify.toString(t));
+            }
         }
     }
 

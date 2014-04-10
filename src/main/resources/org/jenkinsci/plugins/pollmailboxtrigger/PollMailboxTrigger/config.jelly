@@ -6,6 +6,10 @@
                     default="host=imap.gmail.com&#10;storeName=imaps&#10;username=&lt;your_email&gt;@gmail.com&#10;password=&lt;your_password&gt;&#10;folder=inbox&#10;subjectContains=jenkins&#10;receivedXMinutesAgo=60&#10;mail.imap.host=imap.gmail.com&#10;mail.imap.port=993"/>
     </f:entry>
 
+    <f:validateButton
+       title="${%Test Connection}" progress="${%Testing...}"
+       method="testConnection" with="script" />
+
     <f:entry field="enableConcurrentBuild" title="${%Enable Concurrent Build}">
         <f:checkbox name="enableConcurrentBuild" checked="${instance.enableConcurrentBuild}"/>
     </f:entry>
