@@ -100,7 +100,7 @@ Don't even try to connect to an Exchange server, without setting these:
 
 ## ChangeLog
 
-### 0.5
+### 0.6
 1. Added a "Test Connection" button
 
 ### 0.4
