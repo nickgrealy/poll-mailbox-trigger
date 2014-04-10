@@ -16,6 +16,7 @@
         <license>
             <name>MIT license</name>
             <comments>All source code is under the MIT license.</comments>
+            <url>https://github.com/jenkinsci/poll-mailbox-trigger-plugin/blob/master/LICENSE</url>
         </license>
     </licenses>
 
@@ -41,7 +42,12 @@
         <url>https://github.com/jenkinsci/poll-mailbox-trigger-plugin</url>
     </scm>
 
-  <distributionManagement>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://issues.jenkins-ci.org/secure/ViewSubscriptions.jspa?filterId=12850</url>
+    </issueManagement>
+
+    <distributionManagement>
     <repository>
       <id>maven.jenkins-ci.org</id>
       <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
@@ -49,11 +55,11 @@
   </distributionManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jenkins-ci.lib</groupId>
-            <artifactId>xtrigger-lib</artifactId>
-            <version>${xtrigger.lib.version}</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.jenkins-ci.lib</groupId>-->
+        <!--<artifactId>xtrigger-lib</artifactId>-->
+        <!--<version>${xtrigger.lib.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
