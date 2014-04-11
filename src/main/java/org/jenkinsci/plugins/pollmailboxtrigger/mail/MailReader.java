@@ -1,10 +1,6 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail;
 
-import com.sun.mail.imap.IMAPFolder;
-
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Store;
+import javax.mail.*;
 import java.util.Properties;
 
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.Logger.HasLogger;
@@ -20,7 +16,7 @@ public class MailReader extends HasLogger {
 
     private String host, storeName, username, password;
     private Properties properties;
-    private IMAPFolder currentFolder;
+    private Folder currentFolder;
     private Store store;
 
     public MailReader(Logger logger, String host, String storeName, String username, String password, Properties properties) {
@@ -33,7 +29,8 @@ public class MailReader extends HasLogger {
     }
 
     public MailReader connect() throws MessagingException {
-        Session session = Session.getDefaultInstance(properties, null);
+        ExchangeAuthenticator authenticator = new ExchangeAuthenticator(username, password);
+        Session session = Session.getDefaultInstance(properties, null);//authenticator);
         if ("true".equals(properties.get("mail.debug"))
                 || "true".equals(properties.get("mail.debug.auth"))) {
             logger.info("[Poll Mailbox Trigger] - Enabling debug output.");
@@ -51,8 +48,20 @@ public class MailReader extends HasLogger {
         if (store == null) {
             throw new RuntimeException("Session is not connected!");
         }
-        currentFolder = (IMAPFolder) store.getFolder(folderName);
+        currentFolder = store.getFolder(folderName);
         return new FolderWrapper(logger, currentFolder);
+    }
+
+    public MailReader listFolders() throws MessagingException {
+//        Folder[] folders = store.getPersonalNamespaces();
+        System.out.println("FolderImpl:" + store.getDefaultFolder().getClass());
+        javax.mail.Folder[] folders = store.getDefaultFolder().list();//.list("*");
+        for (javax.mail.Folder folder : folders) {
+//            if ((folder.getType() & javax.mail.Folder.HOLDS_MESSAGES) != 0) {
+            System.out.println(folder.getFullName() + ": " + folder.getMessageCount());
+//            }
+        }
+        return this;
     }
 
     public void close() {
@@ -70,5 +79,21 @@ public class MailReader extends HasLogger {
                 e.printStackTrace();
             }
         }
+    }
+}
+
+class ExchangeAuthenticator extends Authenticator {
+
+    String username;
+    String password;
+
+    public ExchangeAuthenticator(String username, String password) {
+        super();
+        this.username = username;
+        this.password = password;
+    }
+
+    public PasswordAuthentication getPasswordAuthentication() {
+        return new PasswordAuthentication(username, password);
     }
 }

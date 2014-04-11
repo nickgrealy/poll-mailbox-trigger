@@ -19,12 +19,12 @@ public abstract class Logger {
     public static final Logger DEFAULT = new Logger() {
         @Override
         public void info(String message) {
-            System.out.println(message);
+            System.out.print(message);
         }
 
         @Override
         public void error(String message) {
-            System.err.println(message);
+            System.err.print(message);
         }
     };
 

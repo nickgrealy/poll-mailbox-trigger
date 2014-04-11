@@ -1,7 +1,5 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail;
 
-import com.sun.mail.imap.IMAPFolder;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMultipart;
@@ -119,9 +117,9 @@ public abstract class MailWrapperUtils {
     public static class MessagesWrapper extends Logger.HasLogger {
 
         private List<Message> messages;
-        private IMAPFolder folder;
+        private Folder folder;
 
-        public MessagesWrapper(Logger logger, List<Message> messages, IMAPFolder folder) {
+        public MessagesWrapper(Logger logger, List<Message> messages, Folder folder) {
             super(logger);
             this.messages = messages;
             this.folder = folder;
@@ -131,7 +129,7 @@ public abstract class MailWrapperUtils {
             return messages;
         }
 
-        public IMAPFolder getFolder() {
+        public Folder getFolder() {
             return folder;
         }
 
@@ -204,14 +202,14 @@ public abstract class MailWrapperUtils {
 
         public static final SearchTerm UNREAD_FLAG = not(flag(Flags.Flag.SEEN));
 
-        private IMAPFolder folder;
+        private Folder folder;
 
-        public FolderWrapper(Logger logger, IMAPFolder folder) {
+        public FolderWrapper(Logger logger, Folder folder) {
             super(logger);
             this.folder = folder;
         }
 
-        public IMAPFolder getFolder() {
+        public Folder getFolder() {
             return folder;
         }
 
