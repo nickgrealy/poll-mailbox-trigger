@@ -42,16 +42,19 @@ public abstract class MailWrapperUtils {
             return toString(Arrays.asList(array));
         }
 
-        public static String toString(List<Object> list) {
+        public static String toString(List<? extends Object> list, String delimiter) {
+            if (delimiter == null){
+                delimiter = ", ";
+            }
             StringBuilder sb = new StringBuilder();
-            for (Iterator<Object> iterator = list.iterator(); iterator.hasNext(); ) {
+            for (Iterator<? extends Object> iterator = list.iterator(); iterator.hasNext(); ) {
                 try {
                     sb.append(toString(iterator.next()));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 if (iterator.hasNext()) {
-                    sb.append(", ");
+                    sb.append(delimiter);
                 }
             }
             return sb.toString();
@@ -145,26 +148,26 @@ public abstract class MailWrapperUtils {
             return this;
         }
 
-        public MessagesWrapper markAsRead() throws IOException, MessagingException {
-            if (folder.isOpen()) {
+        public MessagesWrapper markAsRead(Message... messagez) throws IOException, MessagingException {
+            return markAsRead(Arrays.asList(messagez));
+        }
+
+        public MessagesWrapper markAsRead(List<Message> messagez) throws IOException, MessagingException {
+            if (folder.isOpen() && folder.getMode() != Folder.READ_WRITE){
                 folder.close(true);
             }
-            folder.open(Folder.READ_WRITE);
-            for (Message message : messages) {
+            if (!folder.isOpen()) {
+                folder.open(Folder.READ_WRITE);
+            }
+            for (Message message : messagez) {
                 message.setFlag(Flags.Flag.SEEN, true);
             }
-            logger.info("Marked email(s) as read : " + messages.size());
+            logger.info("Marked email(s) as read : " + messagez.size());
             return this;
         }
 
-        public MessagesWrapper markAsRead(Message message) throws IOException, MessagingException {
-            if (folder.isOpen()) {
-                folder.close(true);
-            }
-            folder.open(Folder.READ_WRITE);
-            message.setFlag(Flags.Flag.SEEN, true);
-            logger.info("Marked email(s) as read : 1");
-            return this;
+        public MessagesWrapper markAsRead() throws IOException, MessagingException {
+            return markAsRead(messages);
         }
 
         public Map<String, String> getMessageProperties(Message message) throws IOException, MessagingException {

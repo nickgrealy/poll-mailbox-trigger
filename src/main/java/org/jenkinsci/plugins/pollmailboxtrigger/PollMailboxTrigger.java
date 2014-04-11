@@ -24,6 +24,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
 import javax.mail.Flags;
+import javax.mail.FolderNotFoundException;
 import javax.mail.Message;
 import javax.mail.search.SearchTerm;
 import java.io.File;
@@ -52,11 +53,11 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
         if (script != null && !script.isEmpty()) {
             MailReader mailbox = null;
-            StringBuilder testConnectionProgress = new StringBuilder();
+            List<String> testing = new ArrayList<String>();
             try {
                 // check required properties exist
                 CustomProperties p = new CustomProperties(script);
-                String[] requiredProps = {"host", "storeName", "username", "password", "folder"};
+                String[] requiredProps = {"host", "storeName", "username", "password"};
                 List<String> errors = new ArrayList<String>();
                 boolean allRequired = true;
                 for (String prop : requiredProps) {
@@ -82,48 +83,72 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 ).connect();
                 final String connected = "Connected to mailbox. ";
                 log.info(connected + "Searching for messages where:");
-                testConnectionProgress.append(connected);
+                testing.add(connected);
 
                 // search for messages
                 List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
                 String subjectContains = "subjectContains", recvXMinutesAgo = "receivedXMinutesAgo";
-                searchTerms.add(not(flag(Flags.Flag.SEEN)));    // unread
+                // unread
+                searchTerms.add(not(flag(Flags.Flag.SEEN)));
                 log.info("- [flag is unread]");
-                if (p.has(subjectContains)) {                    // containing subject
+                // containing subject
+                if (p.has(subjectContains)) {
                     searchTerms.add(subject(p.get(subjectContains)));
                     log.info("- [subject contains " + p.get(subjectContains) + "]");
                 }
-                if (p.has(recvXMinutesAgo)) {                         // received since X minutes ago
+                // received since X minutes ago
+                if (p.has(recvXMinutesAgo)) {
                     Date date = relativeDate(Calendar.MINUTE, Integer.parseInt(p.get(recvXMinutesAgo)) * -1);
                     searchTerms.add(receivedSince(date));
                     log.info("- [received date is greater than " + date + "]");
                 }
                 log.info("...");
-                final MailWrapperUtils.FolderWrapper folder = mailbox.folder(p.get("folder"));
-                testConnectionProgress.append("Opened folder. ");
-                MessagesWrapper messages = folder.search(searchTerms);
-                testConnectionProgress.append("Searched. ");
-                List<Message> messageList = messages.getMessages();
-                final String success = String.format("Found matching email(s) : %s. ", messageList.size());
-                log.info(success);
-                testConnectionProgress.append(success);
-
-                // for each message, trigger a new job, then mark the message as read.
-                if (testConnection) {
-                    return FormValidation.ok(testConnectionProgress.toString() + "Success.");
-                } else {
-                    for (Message message : messageList) {
-                        Map<String, String> envVars = messages.getMessageProperties(message, "pmt_");
-                        pmt.startJob(log, envVars);
-                        messages.markAsRead(message);
+                if (p.has("folder")){
+                    try {
+                        // look for mail...
+                        final MailWrapperUtils.FolderWrapper folder = mailbox.folder(p.get("folder"));
+                        testing.add("Searching folder...");
+                        MessagesWrapper messages = folder.search(searchTerms);
+                        List<Message> messageList = messages.getMessages();
+                        final String foundEmails = String.format("Found matching email(s) : %s. ", messageList.size());
+                        log.info(foundEmails);
+                        testing.add(foundEmails);
+                        if (!testConnection){
+                            // trigger jobs...
+                            for (Message message : messageList) {
+                                Map<String, String> envVars = messages.getMessageProperties(message, "pmt_");
+                                pmt.startJob(log, envVars);
+                                messages.markAsRead(message);
+                            }
+                        }
+                    } catch (FolderNotFoundException e){
+                        // list any folders we can find...
+                        testing.add("Please set the 'folder=XXX' parameter to one of the following values: ");
+                        final String folders = MailWrapperUtils.Stringify.toString(mailbox.getFolders());
+                        testing.add("Folders: " + folders);
+                        throw e;
                     }
+                } else {
+                    // list any folders we can find...
+                    testing.add("Please set the 'folder=XXX' parameter to one of the following values: ");
+                    final String folders = MailWrapperUtils.Stringify.toString(mailbox.getFolders());
+                    testing.add("Folders: " + folders);
+                    log.info(folders);
+                    return FormValidation.error(MailWrapperUtils.Stringify.toString(testing, "\n"));
+                }
+                // return success
+                if (testConnection) {
+                    testing.add("Result: Success!");
+                    return FormValidation.ok(MailWrapperUtils.Stringify.toString(testing, "\n"));
                 }
             } catch (Throwable e) {
-                // TODO: get stacktrace?
-                log.error(e.getLocalizedMessage());
-                return FormValidation.error(testConnectionProgress.toString() + "Error : " + MailWrapperUtils.Stringify.toString(e));
+                // return error
+                final String error = MailWrapperUtils.Stringify.toString(e);
+                log.error(error);
+                testing.add("Error : " + error);
+                return FormValidation.error(MailWrapperUtils.Stringify.toString(testing, "\n"));
             } finally {
-                // close up after everthing is done.
+                // cleanup connections
                 if (mailbox != null) {
                     mailbox.close();
                 }

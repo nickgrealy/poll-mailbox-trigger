@@ -1,6 +1,10 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail;
 
+import com.sun.mail.imap.IMAPFolder;
+
 import javax.mail.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.Logger.HasLogger;
@@ -15,7 +19,7 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils.Fol
 public class MailReader extends HasLogger {
 
     private String host, storeName, username, password;
-    private Properties properties;
+    private CustomProperties properties;
     private Folder currentFolder;
     private Store store;
 
@@ -25,22 +29,28 @@ public class MailReader extends HasLogger {
         this.storeName = storeName;
         this.username = username;
         this.password = password;
-        this.properties = properties;
+        this.properties = new CustomProperties(properties);
+        initDefaults();
+    }
+
+    public void initDefaults(){
+        if (!properties.has("mail."+storeName+".host")){
+            properties.put("mail."+storeName+".host", host);
+        }
+        if (!properties.has("mail."+storeName+".port")){
+            properties.put("mail."+storeName+".port", storeName.toLowerCase().endsWith("s") ? "993" : "143");
+        }
+        properties.put("mail.debug", "true");
+        properties.put("mail.debug.auth", "true");
     }
 
     public MailReader connect() throws MessagingException {
         ExchangeAuthenticator authenticator = new ExchangeAuthenticator(username, password);
-        Session session = Session.getDefaultInstance(properties, null);//authenticator);
-        if ("true".equals(properties.get("mail.debug"))
-                || "true".equals(properties.get("mail.debug.auth"))) {
-            logger.info("[Poll Mailbox Trigger] - Enabling debug output.");
-            session.setDebugOut(logger.getPrintStream());
-        } else {
-            logger.info("[Poll Mailbox Trigger] - Disabling debug output.");
-        }
+        Session session = Session.getDefaultInstance(properties.getProperties(), null);//authenticator);
+        session.setDebugOut(logger.getPrintStream());
         store = session.getStore(storeName);
         store.connect(host, username, password);
-        logger.info("Mail Store Connected!");
+        logger.info("[Poll Mailbox Trigger] - Connected!");
         return this;
     }
 
@@ -52,16 +62,15 @@ public class MailReader extends HasLogger {
         return new FolderWrapper(logger, currentFolder);
     }
 
-    public MailReader listFolders() throws MessagingException {
-//        Folder[] folders = store.getPersonalNamespaces();
-        System.out.println("FolderImpl:" + store.getDefaultFolder().getClass());
-        javax.mail.Folder[] folders = store.getDefaultFolder().list();//.list("*");
+    public List<String> getFolders() throws MessagingException {
+        javax.mail.Folder[] folders = store.getDefaultFolder().list("*");
+        List<String> folderNames = new ArrayList<String>();
         for (javax.mail.Folder folder : folders) {
-//            if ((folder.getType() & javax.mail.Folder.HOLDS_MESSAGES) != 0) {
-            System.out.println(folder.getFullName() + ": " + folder.getMessageCount());
-//            }
+            if ((folder.getType() & javax.mail.Folder.HOLDS_MESSAGES) != 0) {
+                folderNames.add(folder.getFullName());
+            }
         }
-        return this;
+        return folderNames;
     }
 
     public void close() {
