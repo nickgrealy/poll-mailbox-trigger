@@ -12,6 +12,8 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 1. [Configuration](#configuration)
 1. [Changelog](#changelog)
 1. [Backlog](#backlog)
+1. [Wiki](https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin)
+1. [Source Code](https://github.com/jenkinsci/poll-mailbox-trigger-plugin)
 1. [License](LICENSE)
 
 ---
