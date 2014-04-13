@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -39,7 +40,8 @@
 
     <scm>
         <connection>scm:git:ssh://github.com/jenkinsci/poll-mailbox-trigger-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/poll-mailbox-trigger-plugin.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/poll-mailbox-trigger-plugin.git
+        </developerConnection>
         <url>https://github.com/jenkinsci/poll-mailbox-trigger-plugin</url>
     </scm>
 
@@ -49,28 +51,22 @@
     </issueManagement>
 
     <distributionManagement>
-    <repository>
-      <id>maven.jenkins-ci.org</id>
-      <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
-    </repository>
-  </distributionManagement>
+        <repository>
+            <id>maven.jenkins-ci.org</id>
+            <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
-        <!--<dependency>-->
-        <!--<groupId>org.jenkins-ci.lib</groupId>-->
-        <!--<artifactId>xtrigger-lib</artifactId>-->
-        <!--<version>${xtrigger.lib.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.jenkins-ci.lib</groupId>
+            <artifactId>xtrigger-lib</artifactId>
+            <version>${xtrigger.lib.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.5.1</version>
-        </dependency>
-        <!-- Other Plugins -->
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>scripttrigger</artifactId>
-            <version>0.31</version>
         </dependency>
     </dependencies>
 
@@ -87,8 +83,8 @@
             <url>http://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
-    
-    <!-- Explicitly set parent pom's missing version --> 
+
+    <!-- Explicitly set parent pom's missing version -->
     <build>
         <pluginManagement>
             <plugins>

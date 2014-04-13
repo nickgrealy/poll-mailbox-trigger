@@ -18,8 +18,8 @@ import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailReader;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils;
 import org.jenkinsci.plugins.scripttrigger.AbstractTrigger;
 import org.jenkinsci.plugins.scripttrigger.LabelRestrictionClass;
-import org.jenkinsci.plugins.scripttrigger.ScriptTriggerAction;
-import org.jenkinsci.plugins.scripttrigger.ScriptTriggerException;
+//import org.jenkinsci.plugins.scripttrigger.ScriptTriggerAction;
+//import org.jenkinsci.plugins.scripttrigger.ScriptTriggerException;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
@@ -49,7 +49,25 @@ public class PollMailboxTrigger extends AbstractTrigger {
         this.script = Util.fixEmpty(script);
     }
 
-    protected static FormValidation checkForEmails(String script, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) throws ScriptTriggerException {
+    protected static void initialiseDefaults(CustomProperties p){
+        if (!p.has(Properties.storeName)){ p.put("storeName", "imaps"); }
+        String storeName = p.get("storeName");
+        if (!p.has("mail."+storeName+".host") && p.has("host")){
+            p.put("mail."+storeName+".host", p.get("host"));
+        }
+        if (!p.has("mail."+storeName+".port")){
+            p.put("mail."+storeName+".port", storeName.toLowerCase().endsWith("s") ? "993" : "143");
+        }
+        p.put("mail.debug", "true");
+        p.put("mail.debug.auth", "true");
+        // TODO: default more options, if they're not explicitly already set.
+    }
+
+    public enum Properties {
+        storeName, host, username, password
+    }
+
+    protected static FormValidation checkForEmails(String script, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) {
 
         if (script != null && !script.isEmpty()) {
             MailReader mailbox = null;
@@ -57,6 +75,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
             try {
                 // check required properties exist
                 CustomProperties p = new CustomProperties(script);
+                initialiseDefaults(p);
                 String[] requiredProps = {"host", "storeName", "username", "password"};
                 List<String> errors = new ArrayList<String>();
                 boolean allRequired = true;
@@ -164,7 +183,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @Override
     public Collection<? extends Action> getProjectActions() {
-        ScriptTriggerAction action = new InternalScriptTriggerAction(getDescriptor().getDisplayName());
+        Action action = new InternalScriptTriggerAction(getDescriptor().getDisplayName());
         return Collections.singleton(action);
     }
 
@@ -189,7 +208,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     }
 
     @Override
-    protected boolean checkIfModified(Node executingNode, XTriggerLog log) throws ScriptTriggerException {
+    protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
         checkForEmails(script, log, false, this); // use executingNode, ???
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
@@ -248,7 +267,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         }
     }
 
-    public final class InternalScriptTriggerAction extends ScriptTriggerAction {
+    public final class InternalScriptTriggerAction implements Action {
 
         private transient String actionTitle;
 

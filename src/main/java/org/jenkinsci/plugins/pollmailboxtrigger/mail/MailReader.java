@@ -30,18 +30,6 @@ public class MailReader extends HasLogger {
         this.username = username;
         this.password = password;
         this.properties = new CustomProperties(properties);
-        initDefaults();
-    }
-
-    public void initDefaults(){
-        if (!properties.has("mail."+storeName+".host")){
-            properties.put("mail."+storeName+".host", host);
-        }
-        if (!properties.has("mail."+storeName+".port")){
-            properties.put("mail."+storeName+".port", storeName.toLowerCase().endsWith("s") ? "993" : "143");
-        }
-        properties.put("mail.debug", "true");
-        properties.put("mail.debug.auth", "true");
     }
 
     public MailReader connect() throws MessagingException {

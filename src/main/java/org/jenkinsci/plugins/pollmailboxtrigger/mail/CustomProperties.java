@@ -43,6 +43,18 @@ public class CustomProperties {
         return delegate.containsKey(o);
     }
 
+    public boolean has(Enum o) {
+        return has(o.name());
+    }
+
+    public String get(Enum o) {
+        return get(o.name());
+    }
+
+    public String put(Enum s, String s2) {
+        return put(s.name(), s2);
+    }
+
     /* delegate methods */
 
     public int size() {
