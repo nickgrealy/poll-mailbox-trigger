@@ -68,7 +68,7 @@ You'll need to supply all the following properties:
     username=<your_email>
     password=<your_password>
 
-Below are some [sample configurations](#Sample_Configurations) for commonly web based email services:
+Below are some [sample configurations](#sample_configurations) for commonly web based email services:
 
 You can override the following properties (default values shown):
 
@@ -92,7 +92,7 @@ You can include [java imap properties](https://javamail.java.net/nonav/docs/api/
     mail.imap.port=993
     ... etc ...
 
-#### Sample_Configurations
+### Sample_Configurations
 
 #### GMAIL
 For google passwords, go to "Google account > security > app passwords".
