@@ -118,8 +118,11 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
 
 ## ChangeLog
 
-### 0.7-SNAPSHOT
+### 0.9-SNAPSHOT
 1. Change package dependencies, so that there is no dependency on ScriptTrigger (for future cloudbees support?)
+1. Implemented (soft) encrypted passwords (if you want secure encoding consider using SSH keys!)
+
+### 0.8
 1. Added default properties (to minimise configuration)
 1. Documented and tested (successfully) configurations for the common web based email services.
 
@@ -151,7 +154,6 @@ The following build parameters, are now injected into the job (taken from the em
 
 ## Backlog
 1. interpret email body directly as build parameters (see mailto links)
-1. Encrypt credentials
 1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.
 1. Add config as build parameters?
 
