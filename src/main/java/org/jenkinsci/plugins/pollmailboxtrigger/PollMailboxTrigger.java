@@ -18,8 +18,7 @@ import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailReader;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils;
 import org.jenkinsci.plugins.scripttrigger.AbstractTrigger;
 import org.jenkinsci.plugins.scripttrigger.LabelRestrictionClass;
-//import org.jenkinsci.plugins.scripttrigger.ScriptTriggerAction;
-//import org.jenkinsci.plugins.scripttrigger.ScriptTriggerException;
+import org.jenkinsci.plugins.scripttrigger.ScriptTriggerAction;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
@@ -32,6 +31,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 
+import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.*;
+import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.storeName;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils.MessagesWrapper;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.SearchTermHelpers.*;
 
@@ -50,21 +51,21 @@ public class PollMailboxTrigger extends AbstractTrigger {
     }
 
     protected static void initialiseDefaults(CustomProperties p){
-        if (!p.has(Properties.storeName)){ p.put("storeName", "imaps"); }
-        String storeName = p.get("storeName");
-        if (!p.has("mail."+storeName+".host") && p.has("host")){
-            p.put("mail."+storeName+".host", p.get("host"));
-        }
-        if (!p.has("mail."+storeName+".port")){
-            p.put("mail."+storeName+".port", storeName.toLowerCase().endsWith("s") ? "993" : "143");
-        }
-        p.put("mail.debug", "true");
-        p.put("mail.debug.auth", "true");
-        // TODO: default more options, if they're not explicitly already set.
+        // setup default values
+        p.putIfBlank(storeName, "imaps");
+        p.putIfBlank(folder, "INBOX");
+        p.putIfBlank(subjectContains, "jenkins >");
+        p.putIfBlank(receivedXMinutesAgo, Integer.toString(60 * 24)); // 60mins * 24hrs = 1 day
+        String cnfHost = p.get(host);
+        String cnfStoreName = p.get(storeName);
+        p.putIfBlank("mail."+cnfStoreName+".host", cnfHost);
+        p.putIfBlank("mail."+cnfStoreName+".port", cnfStoreName.toLowerCase().endsWith("s") ? "993" : "143");
+        p.putIfBlank("mail.debug", "true");
+        p.putIfBlank("mail.debug.auth", "true");
     }
 
     public enum Properties {
-        storeName, host, username, password
+        storeName, host, username, password, folder, subjectContains, receivedXMinutesAgo
     }
 
     protected static FormValidation checkForEmails(String script, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) {
@@ -76,10 +77,10 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 // check required properties exist
                 CustomProperties p = new CustomProperties(script);
                 initialiseDefaults(p);
-                String[] requiredProps = {"host", "storeName", "username", "password"};
+                Enum[] requiredProps = {host, storeName, username, password};
                 List<String> errors = new ArrayList<String>();
                 boolean allRequired = true;
-                for (String prop : requiredProps) {
+                for (Enum prop : requiredProps) {
                     if (!p.has(prop)) {
                         String err = String.format("Email property '%s' is required!", prop);
                         log.error(err);
@@ -94,10 +95,10 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 // connect to mailbox
                 log.info("Connecting to the mailbox...");
                 mailbox = new MailReader(new Logger.XTriggerLoggerWrapper(log),
-                        p.get("host"),
-                        p.get("storeName"),
-                        p.get("username"),
-                        p.get("password"),
+                        p.get(host),
+                        p.get(storeName),
+                        p.get(username),
+                        p.get(password),
                         p.getProperties()
                 ).connect();
                 final String connected = "Connected to mailbox. ";
@@ -106,7 +107,6 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
                 // search for messages
                 List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
-                String subjectContains = "subjectContains", recvXMinutesAgo = "receivedXMinutesAgo";
                 // unread
                 searchTerms.add(not(flag(Flags.Flag.SEEN)));
                 log.info("- [flag is unread]");
@@ -116,56 +116,50 @@ public class PollMailboxTrigger extends AbstractTrigger {
                     log.info("- [subject contains " + p.get(subjectContains) + "]");
                 }
                 // received since X minutes ago
-                if (p.has(recvXMinutesAgo)) {
-                    Date date = relativeDate(Calendar.MINUTE, Integer.parseInt(p.get(recvXMinutesAgo)) * -1);
+                if (p.has(receivedXMinutesAgo)) {
+                    Date date = relativeDate(Calendar.MINUTE, Integer.parseInt(p.get(receivedXMinutesAgo)) * -1);
                     searchTerms.add(receivedSince(date));
                     log.info("- [received date is greater than " + date + "]");
                 }
                 log.info("...");
-                if (p.has("folder")){
-                    try {
-                        // look for mail...
-                        final MailWrapperUtils.FolderWrapper folder = mailbox.folder(p.get("folder"));
-                        testing.add("Searching folder...");
-                        MessagesWrapper messages = folder.search(searchTerms);
-                        List<Message> messageList = messages.getMessages();
-                        final String foundEmails = String.format("Found matching email(s) : %s. ", messageList.size());
-                        log.info(foundEmails);
-                        testing.add(foundEmails);
-                        if (!testConnection){
-                            // trigger jobs...
-                            for (Message message : messageList) {
-                                Map<String, String> envVars = messages.getMessageProperties(message, "pmt_");
-                                pmt.startJob(log, envVars);
-                                messages.markAsRead(message);
-                            }
-                        }
-                    } catch (FolderNotFoundException e){
-                        // list any folders we can find...
-                        testing.add("Please set the 'folder=XXX' parameter to one of the following values: ");
-                        final String folders = MailWrapperUtils.Stringify.toString(mailbox.getFolders());
-                        testing.add("Folders: " + folders);
-                        throw e;
-                    }
+                if (!p.has(folder)) {
+                    throw new FolderNotFoundException();
                 } else {
-                    // list any folders we can find...
-                    testing.add("Please set the 'folder=XXX' parameter to one of the following values: ");
-                    final String folders = MailWrapperUtils.Stringify.toString(mailbox.getFolders());
-                    testing.add("Folders: " + folders);
-                    log.info(folders);
-                    return FormValidation.error(MailWrapperUtils.Stringify.toString(testing, "\n"));
+                    // look for mail...
+                    final MailWrapperUtils.FolderWrapper mbFolder = mailbox.folder(p.get(folder));
+                    testing.add("Searching folder...");
+                    MessagesWrapper messages = mbFolder.search(searchTerms);
+                    List<Message> messageList = messages.getMessages();
+                    final String foundEmails = String.format("Found matching email(s) : %s. ", messageList.size());
+                    log.info(foundEmails);
+                    testing.add(foundEmails);
+                    if (!testConnection) {
+                        // trigger jobs...
+                        for (Message message : messageList) {
+                            Map<String, String> envVars = messages.getMessageProperties(message, "pmt_");
+                            pmt.startJob(log, envVars);
+                            messages.markAsRead(message);
+                        }
+                    }
                 }
                 // return success
                 if (testConnection) {
                     testing.add("Result: Success!");
                     return FormValidation.ok(MailWrapperUtils.Stringify.toString(testing, "\n"));
                 }
-            } catch (Throwable e) {
-                // return error
-                final String error = MailWrapperUtils.Stringify.toString(e);
-                log.error(error);
-                testing.add("Error : " + error);
-                return FormValidation.error(MailWrapperUtils.Stringify.toString(testing, "\n"));
+            } catch (FolderNotFoundException e){
+                // list any folders we can find...
+                try {
+                    testing.add("Please set the 'folder=XXX' parameter to one of the following values: ");
+                    final String folders = MailWrapperUtils.Stringify.toString(mailbox.getFolders());
+                    testing.add("Folders: " + folders);
+                    log.info(folders);
+                    return FormValidation.error(MailWrapperUtils.Stringify.toString(testing, "\n"));
+                } catch (Throwable t){
+                    return handleError(log, testing, t);
+                }
+            } catch (Throwable t) {
+                return handleError(log, testing, t);
             } finally {
                 // cleanup connections
                 if (mailbox != null) {
@@ -176,6 +170,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return FormValidation.ok("Success");
     }
 
+    private static FormValidation handleError(XTriggerLog log, List<String> testing, Throwable t) {
+        // return error
+        final String error = MailWrapperUtils.Stringify.toString(t);
+        log.error(error);
+        testing.add("Error : " + error);
+        return FormValidation.error(MailWrapperUtils.Stringify.toString(testing, "\n"));
+    }
+
     @SuppressWarnings("unused")
     public String getScript() {
         return script;
@@ -183,7 +185,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @Override
     public Collection<? extends Action> getProjectActions() {
-        Action action = new InternalScriptTriggerAction(getDescriptor().getDisplayName());
+        ScriptTriggerAction action = new InternalScriptTriggerAction(getDescriptor().getDisplayName());
         return Collections.singleton(action);
     }
 
@@ -267,7 +269,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         }
     }
 
-    public final class InternalScriptTriggerAction implements Action {
+    public final class InternalScriptTriggerAction extends ScriptTriggerAction {
 
         private transient String actionTitle;
 

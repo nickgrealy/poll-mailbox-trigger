@@ -59,19 +59,22 @@ _Screenshot - Version 0.2_
 ## Configuration
 
 The Email Properties, allows you to configure the plugin, using standard key=value property notation.
-__N.B.__ I've used gmail connection details for all example values.
 
 ### Plugin Configuration
 
 You'll need to supply all the following properties:
 
-    host=imap.gmail.com
-    username=<your_email>@gmail.com
+    host=<your_host>
+    username=<your_email>
     password=<your_password>
+
+Below are some [sample configurations](#Sample_Configurations) for commonly web based email services:
+
+You can override the following properties (default values shown):
+
     storeName=imaps
     folder=inbox
 
-For google passwords, go to "Google account > security > app passwords".
 __Warning:__ passwords are not currently encrypted.
 
 ### Filter Configuration
@@ -81,24 +84,44 @@ The following optional properties allow you to filter which unread emails are re
     subjectContains=jenkins
     receivedXMinutesAgo=60
 
-### Java Imap(/s) Configuration
+### Java Configuration
 
-You can also include [java imap properties](https://javamail.java.net/nonav/docs/api/com/sun/mail/imap/package-summary.html):
+You can include [java imap properties](https://javamail.java.net/nonav/docs/api/com/sun/mail/imap/package-summary.html):
 
     mail.imap.host=imap.gmail.com
     mail.imap.port=993
     ... etc ...
 
-### Debugging
+#### Sample_Configurations
 
-Don't even try to connect to an Exchange server, without setting these:
+#### GMAIL
+For google passwords, go to "Google account > security > app passwords".
 
-    mail.debug=true
-    mail.debug.auth=true
+    host=imap.gmail.com
+    username=<your_email>@gmail.com
+    password=<your_application_password>
+
+#### ZIMBRA
+    host=<your_mail_server>
+    username=<your_email>
+    password=<your_password>
+
+#### HOTMAIL
+For hotmail passwords, go to "Account Settings > Security Info > Create a new app password".
+
+    host=imap-mail.outlook.com
+    username=<your_email>@hotmail.com
+    password=<your_application_password>
+
 
 ---
 
 ## ChangeLog
+
+### 0.7-SNAPSHOT
+1. Change package dependencies, so that there is no dependency on ScriptTrigger (for future cloudbees support?)
+1. Added default properties (to minimise configuration)
+1. Documented and tested (successfully) configurations for the common web based email services.
 
 ### 0.5
 1. Added a "Test Connection" button
@@ -127,7 +150,6 @@ The following build parameters, are now injected into the job (taken from the em
 ---
 
 ## Backlog
-1. Change package dependencies, so that there is no dependency on ScriptTrigger (for cloudbees support)
 1. interpret email body directly as build parameters (see mailto links)
 1. Encrypt credentials
 1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.
@@ -135,9 +157,10 @@ The following build parameters, are now injected into the job (taken from the em
 
 
 ### To Document
-1. Give config examples for connecting to Gmail, MS Exchange, etc?
+1. Test and Document config examples for connecting to MS Exchange
 
 ### To Test
+1. Write UnitTests!!! (preferably using groovy+selenium+webdriver+junit+bdd(easyb/cucumber))
 1. Test using variable replacement!
 1. Test build options - node label, concurrent builds
 1. Jenkins support - try and support as far back/forwards as possible

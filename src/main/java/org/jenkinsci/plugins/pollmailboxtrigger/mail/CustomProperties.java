@@ -55,6 +55,22 @@ public class CustomProperties {
         return put(s.name(), s2);
     }
 
+    public String remove(Enum o) {
+        return remove(o.name());
+    }
+
+    public String putIfBlank(Enum s, String s2) {
+        return putIfBlank(s.name(), s2);
+    }
+
+    public String putIfBlank(String s, String s2) {
+        if (!has(s) || get(s) == null || "".equals(get(s))){
+            return put(s, s2);
+        }
+        return null;
+    }
+
+
     /* delegate methods */
 
     public int size() {

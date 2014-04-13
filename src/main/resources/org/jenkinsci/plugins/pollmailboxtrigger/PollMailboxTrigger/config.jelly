@@ -4,7 +4,7 @@
     <f:entry field="script" title="${%Email Properties}">
         <f:textarea name="script"
                     value="${instance.script}"
-                    default="host=imap.gmail.com&#10;storeName=imaps&#10;username=&lt;your_email&gt;@gmail.com&#10;password=&lt;your_password&gt;&#10;folder=inbox&#10;subjectContains=jenkins&#10;receivedXMinutesAgo=60"/>
+                    default="host=imap.gmail.com&#10;username=&lt;your_email&gt;@gmail.com&#10;password=&lt;your_password&gt;"/>
     </f:entry>
 
     <f:validateButton
