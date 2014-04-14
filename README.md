@@ -8,8 +8,12 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 ## Table of contents
 
 1. [Overview](#overview)
-1. [Screenshot](#screenshot)
+1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
+1. [Troubleshooting](#troubleshooting)
+
+__Additional:__
+
 1. [Changelog](#changelog)
 1. [Backlog](#backlog)
 1. [Wiki](https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin)
@@ -50,7 +54,7 @@ Also, some side notes:
 
 ---
 
-## Screenshot
+## Screenshots
 
 _Screenshot - Version 0.2_
 
@@ -60,41 +64,36 @@ _Screenshot - Version 0.2_
 
 ## Configuration
 
-The Email Properties, allows you to configure the plugin, using standard key=value property notation.
+The <i>Host</i> field, allows you to enter the DNS name/hostname/IP Address of the server, hosting the email account service.
 
-### Plugin Configuration
+The <i>Username</i> field, allows you to enter the username required to connect to this email account.
 
-You'll need to supply all the following properties:
+The <i>Password</i> field, allows you to enter the password (<b>N.B.</b> or application password) required to connect to this email account.
 
-    host=<your_host>
-    username=<your_email>
-    password=<your_password>
+The _Advanced Email Properties_ field, allows you to configure the plugin, using standard key=value property notation.
 
-Below are some [sample configurations](#sample_configurations) for commonly web based email services:
+You can override the following default property values:
 
-You can override the following properties (default values shown):
-
+    # Connection configuration
     storeName=imaps
-    folder=inbox
 
-__Warning:__ passwords are not currently encrypted.
+    # Search configuration
+    folder=INBOX
+    subjectContains=jenkins >
+    receivedXMinutesAgo=1440
 
-### Filter Configuration
+    # JavaMail configuration
+    mail.debug=true
+    mail.debug.auth=true
+    mail.imaps.host=<above_host>
+    mail.imaps.port=993
 
-The following optional properties allow you to filter which unread emails are read (on the server side):
+You can also add [java imap properties](https://javamail.java.net/nonav/docs/api/com/sun/mail/imap/package-summary.html),
+to further configure the connection.
 
-    subjectContains=jenkins
-    receivedXMinutesAgo=60
+### Sample Configurations
 
-### Java Configuration
-
-You can include [java imap properties](https://javamail.java.net/nonav/docs/api/com/sun/mail/imap/package-summary.html):
-
-    mail.imap.host=imap.gmail.com
-    mail.imap.port=993
-    ... etc ...
-
-### Sample_Configurations
+Below are some sample configurations for common web based email services:
 
 #### GMAIL
 For google passwords, go to "Google account > security > app passwords".
@@ -103,11 +102,6 @@ For google passwords, go to "Google account > security > app passwords".
     username=<your_email>@gmail.com
     password=<your_application_password>
 
-#### ZIMBRA
-    host=<your_mail_server>
-    username=<your_email>
-    password=<your_password>
-
 #### HOTMAIL
 For hotmail passwords, go to "Account Settings > Security Info > Create a new app password".
 
@@ -115,14 +109,49 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
     username=<your_email>@hotmail.com
     password=<your_application_password>
 
+#### ZIMBRA
+    host=<your_mail_server>
+    username=<your_email>
+    password=<your_password>
+
+#### MS Exchange Servers (2003, 2007, 2010, 2013)
+    I haven't yet attempted this, if you've managed to successfully setup a connection, please contact me, and I'll
+    update this section.
+
+---
+
+## Troubleshooting
+
+###1. Error: javax.mail.AuthenticationFailedException: AUTHENTICATE failed.
+__Solution:__ Check the credentials you're using are correct.
+
+###2. Error: javax.mail.MessagingException: com.ibm.jsse2.util.j: PKIX path building failed: java.security.cert.CertPathBuilderException: PKIXCertPathBuilderImpl could not build a valid CertPath.; ...
+__Solution:__ To ignore certificate verification errors, you can use the following config property:
+
+    mail.imaps.ssl.trust=*
+
+__Warning:__ it's not advisable to ignore certificate verification errors (unless perhaps in a test environment): this defeats the point of using SSL/TLS. Instead, if you know you trust that server certificate, import it in your trust store, and specify the location of the trust store using:
+
+    javax.net.ssl.trustStrore=/path/to/cacerts.jks
+
+###3. Error : javax.mail.MessagingException: Connection timed out: connect;
+__Solution:__ Check the Jenkins server can access the email server and port, by running the command (from the Jenkins server):
+
+    telnet <your_host> <your_port_143_or_993>
+
+If you get a message similar to the following, then there is no way to create a direct connection to the mail server - probably
+the network is down, or the connection has been blocked by a firewall. If so, please check your network settings with
+your network administrator. You may need to specify SOCKS proxy details, in the <i>Advanced Email Properties</i>.
+
+    Connecting To imap.gmail.com...Could not open connection to the host, on port 993: Connect failed
 
 ---
 
 ## ChangeLog
 
-### 0.9-SNAPSHOT
-1. Change package dependencies, so that there is no dependency on ScriptTrigger (for future cloudbees support?)
-1. Implemented (soft) encrypted passwords (if you want secure encoding consider using SSH keys!)
+### 0.9
+1. Change package dependencies, so that there is no dependency on ScriptTrigger (for future cloudbees support)
+1. Implemented encrypted passwords (test connections using SSH keys)
 
 ### 0.8
 1. Added default properties (to minimise configuration)
@@ -155,10 +184,11 @@ The following build parameters, are now injected into the job (taken from the em
 ---
 
 ## Backlog
-1. interpret email body directly as build parameters (see mailto links)
 1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.
+1. test email connections using SSH keys
+1. update screenshots
+1. interpret email body directly as build parameters (see mailto links)
 1. Add config as build parameters?
-
 
 ### To Document
 1. Test and Document config examples for connecting to MS Exchange
@@ -177,6 +207,3 @@ The following build parameters, are now injected into the job (taken from the em
 1. Add examples for using mailtos (e.g. in failed build job emails)
 1. Add service, which sends an email with mailtos for triggering all available jobs
 1. Download email attachments - attach as link to job's build parameters?
-
-
-This is just my list, please feel free to email me with any suggestions you might have! (Until I setup bug tracking)
