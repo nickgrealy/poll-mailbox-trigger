@@ -10,7 +10,7 @@
 
     <artifactId>poll-mailbox-trigger</artifactId>
     <packaging>hpi</packaging>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.10-SNAPSHOT</version>
     <!-- http://updates.jenkins-ci.org/experimental/update-center.json -->
     <url>http://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin</url>
 
@@ -95,6 +95,20 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.2</version>
+                <!-- Fixes issue: http://jira.codehaus.org/browse/MRELEASE-830 / 812 -->
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.scm</groupId>
+                        <artifactId>maven-scm-provider-gitexe</artifactId>
+                        <version>1.8.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
