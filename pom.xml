@@ -58,23 +58,16 @@
     </distributionManagement>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>org.jenkins-ci.lib</groupId>-->
-            <!--<artifactId>xtrigger-lib</artifactId>-->
-            <!--<version>${xtrigger.lib.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.jenkins-ci.lib</groupId>
+            <artifactId>xtrigger-lib</artifactId>
+            <version>${xtrigger.lib.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>1.5.1</version>
         </dependency>
-        <!-- Other Plugins -->
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>scripttrigger</artifactId>
-            <version>0.31</version>
-        </dependency>
-
     </dependencies>
 
     <repositories>

@@ -42,12 +42,20 @@ public abstract class MailWrapperUtils {
             return toString(Arrays.asList(array));
         }
 
-        public static String toString(List<? extends Object> list, String delimiter) {
-            if (delimiter == null){
+        public static String toString(List list, String delimiter) {
+            return toString(list.iterator(), delimiter);
+        }
+
+        public static String toString(Set list, String delimiter) {
+            return toString(list.iterator(), delimiter);
+        }
+
+        public static String toString(Iterator iterator, String delimiter) {
+            if (delimiter == null) {
                 delimiter = ", ";
             }
             StringBuilder sb = new StringBuilder();
-            for (Iterator<? extends Object> iterator = list.iterator(); iterator.hasNext(); ) {
+            while (iterator.hasNext()) {
                 try {
                     sb.append(toString(iterator.next()));
                 } catch (Exception e) {
@@ -102,6 +110,13 @@ public abstract class MailWrapperUtils {
             return new String(baos.toByteArray());
         }
 
+        public static String toString(Map content) {
+            return toString(content.entrySet());
+        }
+
+        public static String toString(Map.Entry content) {
+            return content.getKey() + "=" + content.getValue();
+        }
 
         public static String toString(Object content) {
             if (content instanceof MimeMultipart) {
@@ -153,7 +168,7 @@ public abstract class MailWrapperUtils {
         }
 
         public MessagesWrapper markAsRead(List<Message> messagez) throws IOException, MessagingException {
-            if (folder.isOpen() && folder.getMode() != Folder.READ_WRITE){
+            if (folder.isOpen() && folder.getMode() != Folder.READ_WRITE) {
                 folder.close(true);
             }
             if (!folder.isOpen()) {

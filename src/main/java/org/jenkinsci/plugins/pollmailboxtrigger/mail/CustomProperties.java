@@ -21,9 +21,15 @@ public class CustomProperties {
         putAll(properties1);
     }
 
-    public CustomProperties(String properties) throws IOException {
+    public CustomProperties(String properties) {
         Properties p = new Properties();
-        p.load(new StringReader(properties));
+        try {
+            if (properties != null && !"".equals(properties)) {
+                p.load(new StringReader(properties));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         putAll(p);
     }
 
@@ -35,7 +41,11 @@ public class CustomProperties {
 
     public Properties getProperties() {
         Properties p = new Properties();
-        p.putAll(delegate);
+        for (Map.Entry entry : delegate.entrySet()) {
+            if (entry != null && entry.getKey() != null && entry.getValue() != null) {
+                p.put(entry.getKey(), entry.getValue());
+            }
+        }
         return p;
     }
 
@@ -64,13 +74,15 @@ public class CustomProperties {
     }
 
     public String putIfBlank(String s, String s2) {
-        if (!has(s) || get(s) == null || "".equals(get(s))){
+        if (!has(s) || get(s) == null || "".equals(get(s))) {
             return put(s, s2);
         }
         return null;
     }
 
-
+    public String toString() {
+        return MailWrapperUtils.Stringify.toString(delegate);
+    }
     /* delegate methods */
 
     public int size() {

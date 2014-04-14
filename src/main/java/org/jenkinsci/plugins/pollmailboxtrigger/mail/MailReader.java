@@ -1,11 +1,8 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail;
 
-import com.sun.mail.imap.IMAPFolder;
-
 import javax.mail.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.Logger.HasLogger;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils.FolderWrapper;
@@ -23,13 +20,13 @@ public class MailReader extends HasLogger {
     private Folder currentFolder;
     private Store store;
 
-    public MailReader(Logger logger, String host, String storeName, String username, String password, Properties properties) {
+    public MailReader(Logger logger, String host, String storeName, String username, String password, CustomProperties properties) {
         super(logger);
         this.host = host;
         this.storeName = storeName;
         this.username = username;
         this.password = password;
-        this.properties = new CustomProperties(properties);
+        this.properties = properties;
     }
 
     public MailReader connect() throws MessagingException {
