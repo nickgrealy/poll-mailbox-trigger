@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.subjectContains;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.SearchTermHelpers.*;
 
 /**
@@ -185,13 +186,10 @@ public abstract class MailWrapperUtils {
             return markAsRead(messages);
         }
 
-        public Map<String, String> getMessageProperties(Message message) throws IOException, MessagingException {
-            return getMessageProperties(message, "");
-        }
-
-        public Map<String, String> getMessageProperties(Message message, String prefix) throws MessagingException, IOException {
+        public Map<String, String> getMessageProperties(Message message, String prefix, CustomProperties p) throws MessagingException, IOException {
             Map<String, String> envVars = new HashMap<String, String>();
-            envVars.put(prefix + "subject", Stringify.toString(message.getSubject()));
+            String msgSubject = Stringify.toString(message.getSubject());
+            envVars.put(prefix + "subject", msgSubject);
             envVars.put(prefix + "from", Stringify.toString(message.getFrom()));
             envVars.put(prefix + "replyTo", Stringify.toString(message.getReplyTo()));
             envVars.put(prefix + "flags", Stringify.toString(message.getFlags()));
@@ -200,10 +198,64 @@ public abstract class MailWrapperUtils {
             envVars.put(prefix + "receivedDate", Stringify.toString(message.getReceivedDate()));
             envVars.put(prefix + "sentDate", Stringify.toString(message.getSentDate()));
             envVars.put(prefix + "headers", Stringify.toString(message.getAllHeaders()));
-            envVars.put(prefix + "content", Stringify.toString(message.getContent()));
+            envVars.put(prefix + "content", getText(message));
             envVars.put(prefix + "contentType", Stringify.toString(message.getContentType()));
             envVars.put(prefix + "recipients", Stringify.toString(message.getAllRecipients()));
+            if (p.has(subjectContains)) {
+                String subject = p.get(subjectContains);
+                int idx = msgSubject.indexOf(subject);
+                int beginIndex = idx + subject.length();
+                if (idx > 0 && beginIndex < msgSubject.length()){
+                    envVars.put(prefix + "jobTrigger", msgSubject.substring(beginIndex));
+                }
+            }
             return envVars;
+        }
+
+        private boolean textIsHtml = false;
+
+        /**
+         * Return the primary text content of the message.
+         *
+         * @href http://www.oracle.com/technetwork/java/javamail/faq/index.html#mainbody
+         */
+        private String getText(Part p) throws
+                MessagingException, IOException {
+            if (p.isMimeType("text/*")) {
+                String s = (String)p.getContent();
+                textIsHtml = p.isMimeType("text/html");
+                return s;
+            }
+
+            if (p.isMimeType("multipart/alternative")) {
+                // prefer html text over plain text
+                Multipart mp = (Multipart)p.getContent();
+                String text = null;
+                for (int i = 0; i < mp.getCount(); i++) {
+                    Part bp = mp.getBodyPart(i);
+                    if (bp.isMimeType("text/plain")) {
+                        if (text == null)
+                            text = getText(bp);
+                        continue;
+                    } else if (bp.isMimeType("text/html")) {
+                        String s = getText(bp);
+                        if (s != null)
+                            return s;
+                    } else {
+                        return getText(bp);
+                    }
+                }
+                return text;
+            } else if (p.isMimeType("multipart/*")) {
+                Multipart mp = (Multipart)p.getContent();
+                for (int i = 0; i < mp.getCount(); i++) {
+                    String s = getText(mp.getBodyPart(i));
+                    if (s != null)
+                        return s;
+                }
+            }
+
+            return null;
         }
 
         public void close() throws MessagingException {

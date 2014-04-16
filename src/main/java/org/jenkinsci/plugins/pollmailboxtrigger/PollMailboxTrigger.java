@@ -175,8 +175,8 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 if (!testConnection) {
                     // trigger jobs...
                     for (Message message : messageList) {
-                        Map<String, String> envVars = messages.getMessageProperties(message, "pmt_");
-                        pmt.startJob(log, envVars);
+                        Map<String, String> buildParams = messages.getMessageProperties(message, "pmt_", p);
+                        pmt.startJob(log, buildParams);
                         messages.markAsRead(message);
                     }
                 }
@@ -254,6 +254,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
         AbstractProject project = (AbstractProject) job;
         List<Action> actions = new ArrayList<Action>();
         actions.addAll(Arrays.asList(getScheduledXTriggerActions(null, log)));
+        actions.add(new ParametersAction(convertToBuildParams(envVars)));
+        project.scheduleBuild(0, new NewEmailCause(getName(), getCause(), true), actions.toArray(new Action[actions.size()]));
+    }
+
+    /**
+     * Converts a Map of String values, to Build Parameters.
+     */
+    private List<ParameterValue> convertToBuildParams(Map<String, String> envVars) {
         List<ParameterValue> buildParams = new ArrayList<ParameterValue>();
         for (String key : envVars.keySet()) {
             String value = envVars.get(key);
@@ -261,8 +269,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 buildParams.add(new StringParameterValue(key, value));
             }
         }
-        actions.add(new ParametersAction(buildParams));
-        project.scheduleBuild(0, new NewEmailCause(getName(), getCause(), true), actions.toArray(new Action[actions.size()]));
+        return buildParams;
     }
 
     @Extension
