@@ -1,11 +1,17 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail;
 
-import javax.mail.*;
+import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.CustomProperties;
+import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Logger;
+
+import javax.mail.Folder;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Store;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.Logger.HasLogger;
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils.FolderWrapper;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Logger.HasLogger;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils.FolderWrapper;
 
 /**
  * Allows us to read mail using the imap protocol.
@@ -15,12 +21,18 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.mail.MailWrapperUtils.Fol
 @SuppressWarnings("unused")
 public class MailReader extends HasLogger {
 
-    private String host, storeName, username, password;
-    private CustomProperties properties;
+    private String host, storeName = "imaps", username, password;
+    private CustomProperties properties = new CustomProperties();
     private Folder currentFolder;
     private Store store;
 
-    public MailReader(Logger logger, String host, String storeName, String username, String password, CustomProperties properties) {
+    public MailReader(String host, String username, String password)
+            throws MessagingException {
+        this(host, username, password, "imaps", Logger.DEFAULT, new CustomProperties());
+    }
+
+    public MailReader(String host, String username, String password, String storeName, Logger logger, CustomProperties properties)
+            throws MessagingException {
         super(logger);
         this.host = host;
         this.storeName = storeName;
@@ -30,8 +42,7 @@ public class MailReader extends HasLogger {
     }
 
     public MailReader connect() throws MessagingException {
-        ExchangeAuthenticator authenticator = new ExchangeAuthenticator(username, password);
-        Session session = Session.getDefaultInstance(properties.getProperties(), null);//authenticator);
+        Session session = Session.getDefaultInstance(properties.getProperties(), null);
         session.setDebugOut(logger.getPrintStream());
         store = session.getStore(storeName);
         store.connect(host, username, password);
@@ -73,21 +84,5 @@ public class MailReader extends HasLogger {
                 e.printStackTrace();
             }
         }
-    }
-}
-
-class ExchangeAuthenticator extends Authenticator {
-
-    String username;
-    String password;
-
-    public ExchangeAuthenticator(String username, String password) {
-        super();
-        this.username = username;
-        this.password = password;
-    }
-
-    public PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(username, password);
     }
 }

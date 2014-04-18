@@ -23,16 +23,14 @@
                 />
         </f:entry>
 
-        <f:validateButton
-           title="${%Test Connection}" progress="${%Testing...}"
-           method="testConnection" with="host,username,password,script" />
-
     </f:block>
 
     <f:advanced>
 
         <f:entry field="script" title="${%Advanced Email Properties}">
-            <f:textarea value="${instance.script}"/>
+            <f:textarea
+                name="script"
+                value="${instance.script}"/>
         </f:entry>
 
         <f:entry title="${%Schedule}" help="/descriptor/hudson.triggers.TimerTrigger/help/spec">
@@ -67,5 +65,9 @@
         </f:entry>
 
     </f:advanced>
+
+        <f:validateButton
+           title="${%Test Connection}" progress="${%Testing...}"
+           method="testConnection" with="host,username,password,script" />
 
 </j:jelly>

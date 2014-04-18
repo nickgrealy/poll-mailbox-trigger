@@ -149,6 +149,11 @@ your network administrator. You may need to specify SOCKS proxy details, in the 
 
 ## ChangeLog
 
+### 0.11
+1. interpret email body directly as build parameters (see mailto links)
+1. Test using variable replacement!
+1. Add config as build parameters
+
 ### 0.9
 1. Change package dependencies, so that there is no dependency on ScriptTrigger (for future cloudbees support)
 1. Implemented encrypted passwords (test connections using SSH keys)
@@ -184,18 +189,16 @@ The following build parameters, are now injected into the job (taken from the em
 ---
 
 ## Backlog
+1. Add examples for using mailtos (e.g. in failed build job emails)
 1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.
 1. test email connections using SSH keys
 1. update screenshots
-1. interpret email body directly as build parameters (see mailto links)
-1. Add config as build parameters?
 
 ### To Document
 1. Test and Document config examples for connecting to MS Exchange
 
 ### To Test
 1. Write UnitTests!!! (preferably using groovy+selenium+webdriver+junit+bdd(easyb/cucumber))
-1. Test using variable replacement!
 1. Test build options - node label, concurrent builds
 1. Jenkins support - try and support as far back/forwards as possible
 1. Java Support - test with Java 1.5
@@ -204,6 +207,5 @@ The following build parameters, are now injected into the job (taken from the em
 1. Internationalise all fields (i18n)
 1. Add option to filter emails by other fields (e.g. "from")
 1. Have default System Config > overridden by individual Build config
-1. Add examples for using mailtos (e.g. in failed build job emails)
 1. Add service, which sends an email with mailtos for triggering all available jobs
 1. Download email attachments - attach as link to job's build parameters?
