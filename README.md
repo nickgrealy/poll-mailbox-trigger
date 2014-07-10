@@ -18,6 +18,7 @@ __Additional:__
 1. [Backlog](#backlog)
 1. [Wiki](https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin)
 1. [Source Code](https://github.com/jenkinsci/poll-mailbox-trigger-plugin)
+1. [Issue Tracking](https://issues.jenkins-ci.org/secure/IssueNavigator.jspa?jqlQuery=component+%3D+%27poll-mailbox-trigger%27)
 1. [License](LICENSE)
 
 ---
@@ -51,6 +52,12 @@ Also, some side notes:
 
 1. I haven't met a Jenkins interface for mobile devices that I like.
 1. Email To SMS Gateways exist, for those that don't have Email on their mobile phones.
+1. Polling is not ideal
+
+Alternatives to polling?
+
+1. Utilising [Push-IMAP](http://en.wikipedia.org/wiki/Push-IMAP)
+1. Installing a sendmail/postfix server, forward emails to it, and write a perl script to process incoming emails.
 
 ---
 
@@ -145,9 +152,19 @@ your network administrator. You may need to specify SOCKS proxy details, in the 
 
     Connecting To imap.gmail.com...Could not open connection to the host, on port 993: Connect failed
 
+###3. Error : java.lang.NullPointerException at org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.initialiseDefaults(PollMailboxTrigger.java:98)
+__Solution:__ I'm not quite sure what the cause is! If you're able to reproduce the issue, please contact me with instructions.
+In the meantime, the error is caught and the following message is displayed.
+
+    Could not get Jenkins instance using Jenkins.getInstance() (returns null). This can happen if Jenkins has not been started, or was already shut down. Please see http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. If you believe this is an error, please raise an 'issue' under https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.
+
 ---
 
 ## ChangeLog
+
+### 0.12
+1. Changed deprecated code - Hudson.getInstance() to Jenkins.getInstance()
+1. Added exception handling, to provide a more informative error when Jenkins.getInstance() returns null.
 
 ### 0.11
 1. interpret email body directly as build parameters (see mailto links)
@@ -193,6 +210,7 @@ The following build parameters, are now injected into the job (taken from the em
 1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.
 1. test email connections using SSH keys
 1. update screenshots
+1. Implement Push-IMAP?
 
 ### To Document
 1. Test and Document config examples for connecting to MS Exchange

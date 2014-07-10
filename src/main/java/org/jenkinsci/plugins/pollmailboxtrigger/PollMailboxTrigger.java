@@ -7,9 +7,13 @@ import hudson.Util;
 import hudson.console.AnnotatedLargeText;
 import hudson.model.*;
 import hudson.slaves.EnvironmentVariablesNodeProperty;
+import hudson.slaves.NodeProperty;
+import hudson.slaves.NodePropertyDescriptor;
+import hudson.util.DescribableList;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
 import hudson.util.StreamTaskListener;
+import jenkins.model.Jenkins;
 import org.apache.commons.jelly.XMLOutput;
 import org.jenkinsci.lib.xtrigger.XTriggerCause;
 import org.jenkinsci.lib.xtrigger.XTriggerDescriptor;
@@ -61,41 +65,17 @@ public class PollMailboxTrigger extends AbstractTrigger {
         this.script = Util.fixEmpty(script);
     }
 
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Secret getPassword() {
-        return password;
-    }
-
-    public void setPassword(Secret password) {
-        this.password = password;
-    }
-
-    public String getScript() {
-        return script;
-    }
-
-    public void setScript(String script) {
-        this.script = script;
-    }
-
     protected static CustomProperties initialiseDefaults(String host, String username, Secret password, String script) {
         // expand environment vars
-        final EnvVars envVars = Hudson.getInstance().getGlobalNodeProperties().get(EnvironmentVariablesNodeProperty.class).getEnvVars();
+        Jenkins instance = Jenkins.getInstance();
+        if (instance == null) {
+            throw new RuntimeException("Could not get Jenkins instance using Jenkins.getInstance() (returns null). " +
+                    "This can happen if Jenkins has not been started, or was already shut down. " +
+                    "Please see http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. " +
+                    "If you believe this is an error, please raise an 'issue' under https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.");
+        }
+        DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = instance.getGlobalNodeProperties();
+        final EnvVars envVars = properties.get(EnvironmentVariablesNodeProperty.class).getEnvVars();
         host = Util.replaceMacro(host, envVars);
         username = Util.replaceMacro(username, envVars);
         password = Secret.fromString(Util.replaceMacro(password.getPlainText(), envVars));
@@ -117,10 +97,6 @@ public class PollMailboxTrigger extends AbstractTrigger {
         p.putIfBlank("mail.debug", "true");
         p.putIfBlank("mail.debug.auth", "true");
         return p;
-    }
-
-    public enum Properties {
-        storeName, host, username, password, folder, subjectContains, receivedXMinutesAgo
     }
 
     public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) {
@@ -233,6 +209,38 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return FormValidation.error(stringify(testing, "\n"));
     }
 
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Secret getPassword() {
+        return password;
+    }
+
+    public void setPassword(Secret password) {
+        this.password = password;
+    }
+
+    public String getScript() {
+        return script;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
+    }
+
     @Override
     public Collection<? extends Action> getProjectActions() {
         PollMailboxTriggerAction action = new InternalPollMailboxTriggerAction(getDescriptor().getDisplayName());
@@ -246,7 +254,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @Override
     public PollMailboxTriggerDescriptor getDescriptor() {
-        return (PollMailboxTriggerDescriptor) Hudson.getInstance().getDescriptorOrDie(getClass());
+        return (PollMailboxTriggerDescriptor) Jenkins.getInstance().getDescriptorOrDie(getClass());
     }
 
     @Override
@@ -258,7 +266,6 @@ public class PollMailboxTrigger extends AbstractTrigger {
     protected String getDefaultMessageCause() {
         return "An email matching the filter criteria was found.";
     }
-
 
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
@@ -289,6 +296,10 @@ public class PollMailboxTrigger extends AbstractTrigger {
             }
         }
         return buildParams;
+    }
+
+    public enum Properties {
+        storeName, host, username, password, folder, subjectContains, receivedXMinutesAgo
     }
 
     @Extension
