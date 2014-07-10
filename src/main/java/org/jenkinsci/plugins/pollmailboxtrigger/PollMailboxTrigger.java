@@ -7,9 +7,13 @@ import hudson.Util;
 import hudson.console.AnnotatedLargeText;
 import hudson.model.*;
 import hudson.slaves.EnvironmentVariablesNodeProperty;
+import hudson.slaves.NodeProperty;
+import hudson.slaves.NodePropertyDescriptor;
+import hudson.util.DescribableList;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
 import hudson.util.StreamTaskListener;
+import jenkins.model.Jenkins;
 import org.apache.commons.jelly.XMLOutput;
 import org.jenkinsci.lib.xtrigger.XTriggerCause;
 import org.jenkinsci.lib.xtrigger.XTriggerDescriptor;
@@ -95,7 +99,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     protected static CustomProperties initialiseDefaults(String host, String username, Secret password, String script) {
         // expand environment vars
-        final EnvVars envVars = Hudson.getInstance().getGlobalNodeProperties().get(EnvironmentVariablesNodeProperty.class).getEnvVars();
+        Jenkins instance = Jenkins.getInstance();
+        if (instance == null){
+            throw new RuntimeException("Could not get Jenkins instance using Jenkins.getInstance(). " +
+                    "This can happen if Jenkins has not been started, or was already shut down. " +
+                    "Please see <a href=\"http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance()\">here</a> for more details.");
+        }
+        DescribableList<NodeProperty<?>,NodePropertyDescriptor> properties = instance.getGlobalNodeProperties();
+        final EnvVars envVars = properties.get(EnvironmentVariablesNodeProperty.class).getEnvVars();
         host = Util.replaceMacro(host, envVars);
         username = Util.replaceMacro(username, envVars);
         password = Secret.fromString(Util.replaceMacro(password.getPlainText(), envVars));
