@@ -7,13 +7,9 @@ import hudson.Util;
 import hudson.console.AnnotatedLargeText;
 import hudson.model.*;
 import hudson.slaves.EnvironmentVariablesNodeProperty;
-import hudson.slaves.NodeProperty;
-import hudson.slaves.NodePropertyDescriptor;
-import hudson.util.DescribableList;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
 import hudson.util.StreamTaskListener;
-import jenkins.model.Jenkins;
 import org.apache.commons.jelly.XMLOutput;
 import org.jenkinsci.lib.xtrigger.XTriggerCause;
 import org.jenkinsci.lib.xtrigger.XTriggerDescriptor;
@@ -65,6 +61,38 @@ public class PollMailboxTrigger extends AbstractTrigger {
         this.script = Util.fixEmpty(script);
     }
 
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Secret getPassword() {
+        return password;
+    }
+
+    public void setPassword(Secret password) {
+        this.password = password;
+    }
+
+    public String getScript() {
+        return script;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
+    }
+
     protected static CustomProperties initialiseDefaults(String host, String username, Secret password, String script) {
         // expand environment vars
         Jenkins instance = Jenkins.getInstance();
@@ -97,6 +125,10 @@ public class PollMailboxTrigger extends AbstractTrigger {
         p.putIfBlank("mail.debug", "true");
         p.putIfBlank("mail.debug.auth", "true");
         return p;
+    }
+
+    public enum Properties {
+        storeName, host, username, password, folder, subjectContains, receivedXMinutesAgo
     }
 
     public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) {
@@ -209,38 +241,6 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return FormValidation.error(stringify(testing, "\n"));
     }
 
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Secret getPassword() {
-        return password;
-    }
-
-    public void setPassword(Secret password) {
-        this.password = password;
-    }
-
-    public String getScript() {
-        return script;
-    }
-
-    public void setScript(String script) {
-        this.script = script;
-    }
-
     @Override
     public Collection<? extends Action> getProjectActions() {
         PollMailboxTriggerAction action = new InternalPollMailboxTriggerAction(getDescriptor().getDisplayName());
@@ -254,7 +254,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @Override
     public PollMailboxTriggerDescriptor getDescriptor() {
-        return (PollMailboxTriggerDescriptor) Jenkins.getInstance().getDescriptorOrDie(getClass());
+        return (PollMailboxTriggerDescriptor) Hudson.getInstance().getDescriptorOrDie(getClass());
     }
 
     @Override
@@ -266,6 +266,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     protected String getDefaultMessageCause() {
         return "An email matching the filter criteria was found.";
     }
+
 
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
@@ -296,10 +297,6 @@ public class PollMailboxTrigger extends AbstractTrigger {
             }
         }
         return buildParams;
-    }
-
-    public enum Properties {
-        storeName, host, username, password, folder, subjectContains, receivedXMinutesAgo
     }
 
     @Extension
