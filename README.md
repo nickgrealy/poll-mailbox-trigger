@@ -63,9 +63,9 @@ Alternatives to polling?
 
 ## Screenshots
 
-_Screenshot - Version 0.2_
+_Screenshot - Version 0.12_
 
-![Version 0.2](screenshot-0.2.png "Version 0.2")
+![Version 0.12](screenshot-0.12.png "Version 0.12")
 
 ---
 
@@ -152,11 +152,15 @@ your network administrator. You may need to specify SOCKS proxy details, in the 
 
     Connecting To imap.gmail.com...Could not open connection to the host, on port 993: Connect failed
 
-###3. Error : java.lang.NullPointerException at org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.initialiseDefaults(PollMailboxTrigger.java:98)
+###4. Error : java.lang.NullPointerException at org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.initialiseDefaults(PollMailboxTrigger.java:98)
 __Solution:__ I'm not quite sure what the cause is! If you're able to reproduce the issue, please contact me with instructions.
 In the meantime, the error is caught and the following message is displayed.
 
-    Could not get Jenkins instance using Jenkins.getInstance() (returns null). This can happen if Jenkins has not been started, or was already shut down. Please see http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. If you believe this is an error, please raise an 'issue' under https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.
+    Could not get Jenkins instance using Jenkins.getInstance() (returns null). This can happen if Jenkins
+    has not been started, or was already shut down. Please see
+    http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. If you believe
+    this is an error, please raise an 'issue' under
+    https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.
 
 ---
 
