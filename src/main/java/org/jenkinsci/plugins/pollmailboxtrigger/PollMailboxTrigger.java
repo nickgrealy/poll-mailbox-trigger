@@ -74,14 +74,37 @@ public class PollMailboxTrigger extends AbstractTrigger {
                     "Please see http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. " +
                     "If you believe this is an error, please raise an 'issue' under https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.");
         }
+
+        // extracts global node properties from environment, add them to new empty local list
         DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = instance.getGlobalNodeProperties();
-        final EnvVars envVars = properties.get(EnvironmentVariablesNodeProperty.class).getEnvVars();
-        host = Util.replaceMacro(host, envVars);
-        username = Util.replaceMacro(username, envVars);
-        password = Secret.fromString(Util.replaceMacro(password.getPlainText(), envVars));
-        script = Util.replaceMacro(script, envVars);
-        // build properties
-        CustomProperties p = new CustomProperties(script);
+        EnvVars envVars = new EnvVars();
+		if (null != properties) {
+			final EnvironmentVariablesNodeProperty envClass = properties
+					.get(EnvironmentVariablesNodeProperty.class);
+			if (null != envClass) {
+				envVars.putAll(envClass.getEnvVars());
+			}
+		}
+		
+        // extracts specific node properties from environment, merge them with local copy of global list
+        DescribableList<NodeProperty<?>, NodePropertyDescriptor> propsNode = instance.getNodeProperties();
+		if (null != propsNode) {
+			final EnvironmentVariablesNodeProperty envClass = propsNode
+					.get(EnvironmentVariablesNodeProperty.class);
+			if (null != envClass) {
+				envVars.putAll(envClass.getEnvVars());
+			}
+		}
+		
+		// perform variable substitution
+		host = Util.replaceMacro(host, envVars);
+		username = Util.replaceMacro(username, envVars);
+		password = Secret.fromString(Util.replaceMacro(password.getPlainText(),
+				envVars));
+		script = Util.replaceMacro(script, envVars);
+
+		// build properties
+		CustomProperties p = new CustomProperties(script);
         p.put(Properties.host, host);
         p.put(Properties.username, username);
         p.put(Properties.password, password.getEncryptedValue());
