@@ -3,7 +3,7 @@ poll-mailbox-trigger
 
 A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
-![Built on CloudBees](http://cloudbees.prod.acquia-sites.com/sites/default/files/styles/large/public/Button-Powered-by-CB.png "Built on CloudBees")
+![Built on CloudBees](src/main/site/images/Button-Powered-by-CB.png "Built on CloudBees")
 
 ---
 
@@ -67,7 +67,7 @@ Alternatives to polling?
 
 _Screenshot - Version 0.12_
 
-![Version 0.12](screenshot-0.12.png "Version 0.12")
+![Version 0.12](src/main/site/images/screenshot-0.12.png "Version 0.12")
 
 ---
 
