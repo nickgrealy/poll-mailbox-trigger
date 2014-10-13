@@ -117,8 +117,8 @@ public class PollMailboxTrigger extends AbstractTrigger {
         String cnfStoreName = p.get(storeName);
         p.putIfBlank("mail." + cnfStoreName + ".host", cnfHost);
         p.putIfBlank("mail." + cnfStoreName + ".port", cnfStoreName.toLowerCase().endsWith("s") ? "993" : "143");
-        p.putIfBlank("mail.debug", "true");
-        p.putIfBlank("mail.debug.auth", "true");
+        p.putIfBlank("mail.debug", "false");
+        p.putIfBlank("mail.debug.auth", "false");
         return p;
     }
 
