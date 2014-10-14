@@ -12,6 +12,7 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 1. [Overview](#overview)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
+1. [Email_Conventions](#email_conventions)
 1. [Troubleshooting](#troubleshooting)
 
 __Additional:__
@@ -126,6 +127,41 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
 #### MS Exchange Servers (2003, 2007, 2010, 2013)
     I haven't yet attempted this, if you've managed to successfully setup a connection, please contact me, and I'll
     update this section.
+
+---
+
+## Email_Conventions
+
+As of version 0.14, you can pass job parameters to the new build, by simply putting key=value property notation into the content of your email.
+
+For example:
+
+    Hi Jenkins,
+
+    Please execute the job with these parameters:
+
+    aaa1=bbb
+    aaa2= This is a test.
+    aaa3= This is a test. - foo !
+    aaa4_aaa=bbb
+    aaa5 aaa=ccc
+    aaa6.aaa=ddd
+
+    --
+    Kind regards,
+
+    Nick
+
+Will inject the following job parameters into the new job instance:
+
+|Name    | Value                  |
+|--------|------------------------|
+|aaa1    | bbb                    |
+|aaa2    | This is a test.        |
+|aaa3    | This is a test. - foo !|
+|aaa4_aaa| bbb                    |
+|aaa5    | aaa=ccc                |
+|aaa6.aaa| ddd                    |
 
 ---
 
