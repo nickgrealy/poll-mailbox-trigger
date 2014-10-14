@@ -253,6 +253,11 @@ In the meantime, the error is caught and the following message is displayed.
 
 ## ChangeLog
 
+### 0.14
+1. Added ability to inject 'custom variables' as job parameters
+1. Added handling for multipart emails
+1. Improved handling of node properties (thanks [Charlie Stott](https://github.com/ecolyx)!)
+
 ### 0.12
 1. Changed deprecated code - Hudson.getInstance() to Jenkins.getInstance()
 1. Added exception handling, to provide a more informative error when Jenkins.getInstance() returns null.
