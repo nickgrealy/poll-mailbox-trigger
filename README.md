@@ -12,7 +12,7 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 1. [Overview](#overview)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
-1. [Email_Conventions](#email conventions)
+1. [Email Conventions](#email-conventions)
 1. [Troubleshooting](#troubleshooting)
 
 __Additional:__
@@ -140,18 +140,18 @@ The following build parameters, are injected into the job (sample values provide
 
 |Name             |Sample value                                                |
 |-----------------|------------------------------------------------------------|
-|pmt_content      |<the email's content>                                       |
+|pmt_content      |&lt;the email's content&gt;                                 |
 |pmt_contentType  |multipart/ALTERNATIVE; boundary=1234                        |
 |pmt_flags        |SEEN                                                        |
 |pmt_folder       |INBOX                                                       |
-|pmt_from         |Me <Sender@gmail.com>                                       |
+|pmt_from         |Me &lt;Sender@gmail.com&gt;                                 |
 |pmt_headers      |Delivered-To=Foobar@gmail.com etc                           |
 |pmt_messageNumber|14                                                          |
 |pmt_receivedDate |2014-10-14T12:19Z                                           |
 |pmt_recipients   |Foobar@gmail.com                                            |
-|pmt_replyTo      |Me <Sender@gmail.com>                                       |
+|pmt_replyTo      |Me &lt;Sender@gmail.com&gt;                                 |
 |pmt_sentDate     |2014-10-14T12:19Z                                           |
-|pmt_subject      |Jenkins > My Job                                            |
+|pmt_subject      |Jenkins &gt; My Job                                         |
 
 #### From the poll-mailbox-trigger configuration
 
@@ -165,7 +165,7 @@ The following build parameters, are injected into the job (sample values provide
 |pmt_username           |Foobar@gmail.com|
 |pmt_storeName          |imaps           |
 |pmt_receivedXMinutesAgo|1440            |
-|pmt_subjectContains    |Jenkins >       |
+|pmt_subjectContains    |Jenkins &gt;    |
 
 #### Calculated values (pmt_subject - pmt_subjectContains)
 
@@ -173,10 +173,14 @@ The following build parameters, are injected into the job (sample values provide
 |-----------------------|----------------|
 |pmt_jobTrigger         |My Job          |
 
+N.B. Please note, these variables are injected into the triggered build (only). No other actions (implied or assumed)
+are taken. (e.g. No jenkins node filtering is performed, unless you've configured the job to do so. No additional jobs
+are triggered, unless you've configured the job to do so. And so on.)
+
 ### Custom Job Parameters
 
 As of version 0.14, you can pass addition custom job parameters to the new build, by simply putting key=value property
-notation into the content of your email. Note: both `text/plain` and `text/html` content types are supported. Emails
+notation into the content of your email. N.B. both `text/plain` and `text/html` content types are supported. Emails
 with attachments have not yet been tested.
 
 For example:
