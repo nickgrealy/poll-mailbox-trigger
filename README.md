@@ -177,6 +177,19 @@ N.B. Please note, these variables are injected into the triggered build (only). 
 are taken. (e.g. No jenkins node filtering is performed, unless you've configured the job to do so. No additional jobs
 are triggered, unless you've configured the job to do so. And so on.)
 
+#### Helpful Tips
+
+##### Simple "Retry" email link on failed builds
+
+1. Setup a "Mail Trigger" job, which builds other jobs based on the "pmt_jobTrigger" value.
+1. Setup an editable Email notification on the target job, so that it emails you when a job has failed.
+1. Include the following html, in the editable Email job configuration.
+
+    <a href="mailto:<jenkins_poll_mailbox>@gmail.com?subject=Jenkins > $JOB_NAME">Retry $JOB_NAME</a><br/>
+
+That way, when the job fails, it will email you a nice link "Retry My Job". Clicking on it, opens a new email, which
+you can just send straight away (good for mobile phones).
+
 ### Custom Job Parameters
 
 As of version 0.14, you can pass addition custom job parameters to the new build, by simply putting key=value property
@@ -282,36 +295,20 @@ In the meantime, the error is caught and the following message is displayed.
 1. get this plugin published under jenkinsci!
 
 ### 0.2
-1. Add email properties (e.g. to, from, cc, bcc, subject, body) as job parameters
-
-The following build parameters, are now injected into the job (taken from the email trigger):
-
-    pmt_content=--001a11c1370a85d90904f6302f5\nContent-Type: text/plain; charset=UTF-8 etc...
-    pmt_headers=MIME-Version=1.0, Received=by 10.140.24.231 with HTTP; Fri, 4 Apr 2014 20:12:52 -0700 (PDT), etc...
-    pmt_folder=inbox
-    pmt_flags=,
-    pmt_replyTo=someone@gmail.com
-    pmt_recipients=someone@gmail.com
-    pmt_subject=jenkins_rocks
-    pmt_sentDate=2014-04-05T14:12Z
-    pmt_messageNumber=28917
-    pmt_contentType=multipart/ALTERNATIVE; boundary=111111
-    pmt_from=someone@gmail.com
-    pmt_receivedDate=2014-04-05T14:12Z
+1. Add email properties (e.g. to, from, cc, bcc, subject, body) as job parameters (pmt_*)
 
 ---
 
 ## Backlog
-1. Add examples for using mailtos (e.g. in failed build job emails)
-1. Setup a standard, whereby any Jenkins job is triggered, by the subject name.
+1. Add option to filter emails by other fields (e.g. "from")
 1. test email connections using SSH keys
-1. update screenshots
 1. Implement Push-IMAP?
 
 ### To Document
 1. Test and Document config examples for connecting to MS Exchange
 
 ### To Test
+1. Test emails with attachments
 1. Write UnitTests!!! (preferably using groovy+selenium+webdriver+junit+bdd(easyb/cucumber))
 1. Test build options - node label, concurrent builds
 1. Jenkins support - try and support as far back/forwards as possible
@@ -319,7 +316,6 @@ The following build parameters, are now injected into the job (taken from the em
 
 ### Optional
 1. Internationalise all fields (i18n)
-1. Add option to filter emails by other fields (e.g. "from")
-1. Have default System Config > overridden by individual Build config
+1. Have default System Config > overridden by individual Build config?
 1. Add service, which sends an email with mailtos for triggering all available jobs
 1. Download email attachments - attach as link to job's build parameters?
