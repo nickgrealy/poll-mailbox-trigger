@@ -185,7 +185,7 @@ are triggered, unless you've configured the job to do so. And so on.)
 1. Setup an editable Email notification on the target job, so that it emails you when a job has failed.
 1. Include the following html, in the editable Email job configuration.
 
-    `&lt;a href="mailto:&lt;jenkins_poll_mailbox&gt;@gmail.com?subject=Jenkins &gt; $JOB_NAME"&gt;Retry $JOB_NAME&lt;/a&gt;`
+    &lt;a href="mailto:&lt;jenkins_poll_mailbox&gt;@gmail.com?subject=Jenkins &gt; $JOB_NAME"&gt;Retry $JOB_NAME&lt;/a&gt;
 
 That way, when the job fails, it will email you a nice "Retry My Job" link. Clicking on it, opens a new email, which
 you can just send straight away (good for mobile phones).
