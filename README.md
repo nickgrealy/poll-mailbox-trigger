@@ -12,7 +12,7 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 1. [Overview](#overview)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
-1. [Email_Conventions](#email_conventions)
+1. [Email_Conventions](#email conventions)
 1. [Troubleshooting](#troubleshooting)
 
 __Additional:__
@@ -130,9 +130,54 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
 
 ---
 
-## Email_Conventions
+## Email Conventions
 
-As of version 0.14, you can pass job parameters to the new build, by simply putting key=value property notation into the content of your email.
+### Job Parameters
+
+The following build parameters, are injected into the job (sample values provided):
+
+#### From the Incoming Email
+
+|Name             |Sample value                                                |
+|-----------------|------------------------------------------------------------|
+|pmt_content      |<the email's content>                                       |
+|pmt_contentType  |multipart/ALTERNATIVE; boundary=1234                        |
+|pmt_flags        |SEEN                                                        |
+|pmt_folder       |INBOX                                                       |
+|pmt_from         |Me <Sender@gmail.com>                                       |
+|pmt_headers      |Delivered-To=Foobar@gmail.com etc                           |
+|pmt_messageNumber|14                                                          |
+|pmt_receivedDate |2014-10-14T12:19Z                                           |
+|pmt_recipients   |Foobar@gmail.com                                            |
+|pmt_replyTo      |Me <Sender@gmail.com>                                       |
+|pmt_sentDate     |2014-10-14T12:19Z                                           |
+|pmt_subject      |Jenkins > My Job                                            |
+
+#### From the poll-mailbox-trigger configuration
+
+|Name                   |Sample value    |
+|-----------------------|----------------|
+|pmt_mail.debug         |TRUE            |
+|pmt_mail.debug.auth    |TRUE            |
+|pmt_mail.imaps.host    |imap.gmail.com  |
+|pmt_mail.imaps.port    |993             |
+|pmt_host               |imap.gmail.com  |
+|pmt_username           |Foobar@gmail.com|
+|pmt_storeName          |imaps           |
+|pmt_receivedXMinutesAgo|1440            |
+|pmt_subjectContains    |Jenkins >       |
+
+#### Calculated values (pmt_subject - pmt_subjectContains)
+
+|Name                   |Sample value    |
+|-----------------------|----------------|
+|pmt_jobTrigger         |My Job          |
+
+### Custom Job Parameters
+
+As of version 0.14, you can pass addition custom job parameters to the new build, by simply putting key=value property
+notation into the content of your email. Note: both `text/plain` and `text/html` content types are supported. Emails
+with attachments have not yet been tested.
 
 For example:
 
