@@ -1,5 +1,8 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools
 
+import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils
+import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify
+
 import javax.mail.Flags
 import javax.mail.Message
 import javax.mail.internet.InternetAddress
@@ -12,6 +15,7 @@ import javax.mail.internet.MimeMultipart
 class MessageBuilder {
 
     static final TEST_DATE = new Date(1413196250440)
+    static final TEST_DATE_FORMATTED = Stringify.df.format(TEST_DATE)
 
     static final TEXT = '''
 fruit=banana
