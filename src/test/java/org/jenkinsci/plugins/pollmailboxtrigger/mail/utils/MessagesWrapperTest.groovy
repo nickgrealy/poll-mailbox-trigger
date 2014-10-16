@@ -46,7 +46,7 @@ class MessagesWrapperTest {
         wrapper.print()
         assertEquals """Found message(s) : 1
 >>>>>>
-Date    : Mon Oct 13 21:30:50 EST 2014
+Date    : $TEST_DATE
 From    : foo1@bar.com
 Subject : foobar!!!
 <<<<<<
@@ -75,17 +75,17 @@ Subject : null
         wrapper.print()
         assertEquals """Found message(s) : 3
 >>>>>>
-Date    : Mon Oct 13 21:30:50 EST 2014
+Date    : $TEST_DATE
 From    : foo1@bar.com
 Subject : foobar1
 <<<<<<
 >>>>>>
-Date    : Mon Oct 13 21:30:50 EST 2014
+Date    : $TEST_DATE
 From    : foo1@bar.com
 Subject : foobar2
 <<<<<<
 >>>>>>
-Date    : Mon Oct 13 21:30:50 EST 2014
+Date    : $TEST_DATE
 From    : foo1@bar.com
 Subject : foobar3
 <<<<<<
