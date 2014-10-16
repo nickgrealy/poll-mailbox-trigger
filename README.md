@@ -192,7 +192,7 @@ you can just send straight away (good for mobile phones).
 
 ### Custom Job Parameters
 
-As of version 0.14, you can pass addition custom job parameters to the new build, by simply putting key=value property
+As of version 0.15, you can pass addition custom job parameters to the new build, by simply putting key=value property
 notation into the content of your email. N.B. both `text/plain` and `text/html` content types are supported. Emails
 with attachments have not yet been tested.
 
@@ -202,12 +202,9 @@ For example:
 
     Please execute the job with these parameters:
 
-    aaa1=bbb
-    aaa2= This is a test.
-    aaa3= This is a test. - foo !
-    aaa4_aaa=bbb
-    aaa5 aaa=ccc
-    aaa6.aaa=ddd
+    fruit=banana
+    veg=carrot
+    email=foobar@abc.com
 
     --
     Kind regards,
@@ -216,14 +213,11 @@ For example:
 
 Will inject the following job parameters into the new job instance:
 
-|Name    | Value                  |
-|--------|------------------------|
-|aaa1    | bbb                    |
-|aaa2    | This is a test.        |
-|aaa3    | This is a test. - foo !|
-|aaa4_aaa| bbb                    |
-|aaa5    | aaa=ccc                |
-|aaa6.aaa| ddd                    |
+|Name    | Value           |
+|--------|-----------------|
+|fruit   | banana          |
+|veg     | carrot          |
+|email   | foobar@abc.com  |
 
 ---
 
@@ -265,6 +259,9 @@ In the meantime, the error is caught and the following message is displayed.
 ---
 
 ## ChangeLog
+
+### 0.15
+1. Fixed defect in parsing properties
 
 ### 0.14
 1. Added ability to inject 'custom variables' as job parameters
