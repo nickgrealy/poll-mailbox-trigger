@@ -298,6 +298,7 @@ In the meantime, the error is caught and the following message is displayed.
 
 ## Backlog
 1. Add option to filter emails by other fields (e.g. "from")
+1. Add link to wiki in documentation
 1. test email connections using SSH keys
 1. Implement Push-IMAP?
 
