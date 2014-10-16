@@ -142,8 +142,9 @@ public abstract class Stringify {
 
     /* javax.mail */
 
-    public static final String text_wildcard = "text/*", text_html = "text/html", text_plain = "text/plain",
-            multipart_wildcard = "multipart/*", multipart_alternative = "multipart/alternative", NEWLINE = "\n";
+    public static final String TEXT_WILDCARD = "text/*", TEXT_HTML = "text/html", TEXT_PLAIN = "text/plain",
+            MULTIPART_WILDCARD = "multipart/*", MULTIPART_ALTERNATIVE = "multipart/alternative", NEWLINE = "\n",
+            BLANK = "";
 
 
     public static String stringify(Header content) {
@@ -172,12 +173,14 @@ public abstract class Stringify {
         if (content == null){
             return "null";
         }
-        if (part.isMimeType(text_wildcard) && content instanceof String) {
+        if (part.isMimeType(TEXT_WILDCARD) && content instanceof String) {
             builder.append(NEWLINE + content);
         }
-        if (part.isMimeType(multipart_wildcard) && content instanceof Multipart) {
+        if (part.isMimeType(MULTIPART_WILDCARD) && content instanceof Multipart) {
             Multipart mp = (Multipart) content;
-            for (int i = 0; i < mp.getCount(); i++) {
+
+            // iterate backwards through the parts... should be html first (muddled with html tags), plain text (pure) last
+            for (int i = mp.getCount()-1; i >= 0; i--) {
                 stringify(builder, mp.getBodyPart(i));
             }
         }

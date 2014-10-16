@@ -12,7 +12,7 @@ import javax.mail.Multipart
 import javax.mail.Store
 
 /**
- * Created by nickpersonal on 13/10/14.
+ * Created by nickgrealy@gmail.com on 13/10/14.
  */
 class NoopObjects {
 }

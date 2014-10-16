@@ -1,18 +1,16 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.utils
 
+import org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.MessageBuilder
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.NoopFolder
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.NoopLogger
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.NoopMessage
 import org.junit.Before
 import org.junit.Test
 
-import javax.mail.Flags
 import javax.mail.Folder
 import javax.mail.Message
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeBodyPart
-import javax.mail.internet.MimeMultipart
 
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.MessageBuilder.*
 import static org.junit.Assert.assertEquals
 
 /**
@@ -20,7 +18,6 @@ import static org.junit.Assert.assertEquals
  */
 class MessagesWrapperTest {
 
-    public static final Date TEST_DATE = new Date(1413196250440)
     StringBuilder sb
     Logger logger
     Folder folder = new NoopFolder()
@@ -117,12 +114,12 @@ a_subject=null
 
     @Test
     void getMessagePropertiesWithValidValues() {
-        def message = buildMessage()
+        def message = MessageBuilder.buildMessage()
         def newProps = wrapper.getMessageProperties(message, 'a_', properties)
         def result = newProps.keySet().sort().collect { "${it}='${newProps[it]}'" }.join("\n")
         assertEquals """a_content='
 aaa=bbb
-foo=bar'
+foo=<b>bar</b>'
 a_contentType='text/html'
 a_flags='ANSWERED, DRAFT'
 a_folder='Drafts/Foobar'
@@ -142,20 +139,9 @@ foo='bar'""".toString(), result.toString()
     void getMessagePropertiesFromMultipartMessage() {
         def message = buildMultipartMessage()
         def newProps = wrapper.getMessageProperties(message, 'a_', properties)
+        newProps.remove 'a_content'
         def result = newProps.keySet().sort().collect { "${it}='${newProps[it]}'" }.join("\n")
-        assertEquals """a_content='
-
-aaa=bbb
-foo=bar
-
---
-Kind regards,
-
-Nick Grealy
-M: +61 4 1234 5678
-<div dir="ltr">aaa=bbb<br clear="all">foo=bar<br clear="all"><div><br></div>-- <br>Kind regards,<br><br><div>Nick Grealy</div><div>M: +61 4 1234 5678</div>
-</div>'
-a_contentType='${message.contentType}'
+        assertEquals """a_contentType='${message.contentType}'
 a_flags='ANSWERED, DRAFT'
 a_folder='Drafts/Foobar'
 a_from='foo1@bar.com, foo2@bar.com'
@@ -166,61 +152,17 @@ a_recipients='foo3@bar.com, foo4@bar.com'
 a_replyTo='foo1@bar.com, foo2@bar.com'
 a_sentDate='2014-10-13T21:30Z'
 a_subject='foobar!!!'
-aaa='bbb'
-foo='bar'""".toString(), result.toString()
+abc='0123456789'
+def='!@#\$%^&*()'
+email='foobar@abc.com'
+email2='foobar@abc.com'
+fruit='banana'
+fruit2='banana'
+ghi='[];',./{}|:"?'
+veg='carrot'
+veg2='carrot'""".toString(), result.toString()
     }
 
-    private Message buildMessage(subject) {
-        (subject == null ? buildMessageCandidate() : buildMessageCandidate(subject)) as NoopMessage
-    }
-
-    private Map buildMessageCandidate(subject = 'foobar!!!') {
-        [
-                getSentDate     : { TEST_DATE },
-                getFrom         : { ['foo1@bar.com', 'foo2@bar.com'].collect { new InternetAddress(it) } },
-                getSubject      : { subject },
-                getFlags        : {
-                    def flags = new Flags()
-                    flags.add(Flags.Flag.ANSWERED)
-                    flags.add(Flags.Flag.DRAFT)
-                    flags
-                },
-                getFolder       : { [getFullName: { 'Drafts/Foobar' }] as NoopFolder },
-                getMessageNumber: { 1337 },
-                getReceivedDate : { TEST_DATE },
-                getAllHeaders   : { Collections.enumeration(['Foo', 'Bar']) },
-                getContentType  : { 'text/html' },
-                getAllRecipients: { ['foo3@bar.com', 'foo4@bar.com'].collect { new InternetAddress(it) } },
-                getContent      : { 'aaa=bbb\nfoo=bar'.toString() },
-                isMimeType      : { it.startsWith('text') }
-        ]
-    }
-
-
-    Message buildMultipartMessage() {
-        // build multipart message
-        MimeBodyPart textPart = new MimeBodyPart();
-        textPart.setText("""
-aaa=bbb
-foo=bar
-
---
-Kind regards,
-
-Nick Grealy
-M: +61 4 1234 5678""", "TEXT/PLAIN; charset=UTF-8");
-
-        MimeBodyPart htmlPart = new MimeBodyPart();
-        htmlPart.setContent("""<div dir="ltr">aaa=bbb<br clear="all">foo=bar<br clear="all"><div><br></div>-- <br>Kind regards,<br><br><div>Nick Grealy</div><div>M: +61 4 1234 5678</div>
-</div>""", "TEXT/HTML; charset=UTF-8");
-        def multiPart = new MimeMultipart("ALTERNATIVE")
-        multiPart.addBodyPart(textPart)
-        multiPart.addBodyPart(htmlPart)
-        def candidate = buildMessageCandidate()
-        candidate['getContent'] = { multiPart }
-        candidate['isMimeType'] = { it.startsWith('multipart') }
-        candidate['getContentType'] = { multiPart.getContentType() }
-        candidate as NoopMessage
-    }
+    /* utils */
 
 }

@@ -7,6 +7,7 @@ import java.util.*;
 
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.subjectContains;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.*;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.NEWLINE;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.stringify;
 
@@ -105,15 +106,18 @@ public abstract class MailWrapperUtils {
         }
 
         public static String getText(Part p) {
+            /* I could probably do this all in one line, with groovy. :( */
             try {
                 // get all text from the email body...
                 String text = stringify(p);
-                // strip out html...
-                text = stringify(text.split("(\\<[^\\>]*\\>)+"), NEWLINE).trim();
+                // turn BR, P, DIV into newlines
+                text = stringify(text.split("(?i)</?br[^>]*>|</?p[^>]*>|</?div[^>]*>"), NEWLINE);
+                // strip out any remaining HTML tags
+                text = stringify(text.split("<[^>]*>"), BLANK);
                 // only keep lines with a "=" sign...
                 final List<String> content = filterProperties(text.split(NEWLINE), "=");
                 // join lines back up into a single string...
-                text = stringify(content, NEWLINE).trim();
+                text = stringify(content, NEWLINE);
                 return text;
             } catch (Exception e) {
                 throw new RuntimeException(e);
