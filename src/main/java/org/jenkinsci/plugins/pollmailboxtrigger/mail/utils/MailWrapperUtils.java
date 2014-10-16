@@ -42,8 +42,8 @@ public abstract class MailWrapperUtils {
             logger.info("Found message(s) : " + messages.size());
             for (Message message : messages) {
                 logger.info(">>>>>>");
-                logger.info("Date    : " + message.getSentDate().toString());
-                logger.info("From    : " + message.getFrom()[0].toString());
+                logger.info("Date    : " + message.getSentDate());
+                logger.info("From    : " + (message.getFrom().length > 0 ? message.getFrom()[0] : null));
                 logger.info("Subject : " + message.getSubject());
                 logger.info("<<<<<<");
             }
@@ -90,7 +90,7 @@ public abstract class MailWrapperUtils {
             // add parameters from email content
             final CustomProperties properties = CustomProperties.read(getText(message));
             envVars.putAll(properties);
-            envVars.put(prefix + "emailParams", stringify(properties.getMap(), "=", "&"));
+//            envVars.put(prefix + "emailParams", stringify(properties.getMap(), "=", "&"));
             // add "jobTrigger"
             if (p.has(subjectContains)) {
                 String subject = p.get(subjectContains);

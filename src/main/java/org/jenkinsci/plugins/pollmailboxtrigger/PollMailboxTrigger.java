@@ -180,8 +180,8 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 // look for mail...
                 final MailWrapperUtils.FolderWrapper mbFolder = mailbox.folder(properties.get(folder));
                 testing.add("Searching folder...");
-                MessagesWrapper messages = mbFolder.search(searchTerms);
-                List<Message> messageList = messages.getMessages();
+                MessagesWrapper messagesTool = mbFolder.search(searchTerms);
+                List<Message> messageList = messagesTool.getMessages();
                 final String foundEmails = String.format("Found matching email(s) : %s. ", messageList.size());
                 log.info(foundEmails);
                 testing.add(foundEmails);
@@ -189,11 +189,11 @@ public class PollMailboxTrigger extends AbstractTrigger {
                     // trigger jobs...
                     for (Message message : messageList) {
                         final String prefix = "pmt_";
-                        CustomProperties buildParams = messages.getMessageProperties(message, prefix, properties);
+                        CustomProperties buildParams = messagesTool.getMessageProperties(message, prefix, properties);
                         properties.remove(Properties.password);
                         buildParams.putAll(properties, prefix);
                         pmt.startJob(log, buildParams.getMap());
-                        messages.markAsRead(message);
+                        messagesTool.markAsRead(message);
                     }
                 }
             }

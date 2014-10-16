@@ -93,6 +93,9 @@ public abstract class Stringify {
     }
 
     public static String stringify(Date date) {
+        if (date == null){
+            return "null";
+        }
         return df.format(date);
     }
 
@@ -101,6 +104,9 @@ public abstract class Stringify {
     }
 
     public static String stringify(Enumeration allHeaders) {
+        if (allHeaders == null){
+            return "null";
+        }
         List<Object> list = new ArrayList<Object>();
         while (allHeaders.hasMoreElements()) {
             list.add(allHeaders.nextElement());
@@ -163,6 +169,9 @@ public abstract class Stringify {
 
     private static String stringify(StringBuilder builder, Part part) throws MessagingException, IOException {
         final Object content = part.getContent();
+        if (content == null){
+            return "null";
+        }
         if (part.isMimeType(text_wildcard) && content instanceof String) {
             builder.append(NEWLINE + content);
         }
@@ -176,6 +185,9 @@ public abstract class Stringify {
     }
 
     public static String stringify(Flags flags) {
+        if (flags == null){
+            return "null";
+        }
         List tmp = new ArrayList();
         tmp.addAll(Arrays.asList(flags.getSystemFlags()));
         tmp.addAll(Arrays.asList(flags.getUserFlags()));
@@ -203,6 +215,9 @@ public abstract class Stringify {
     }
 
     public static String stringify(Folder folder) {
+        if (folder == null){
+            return "null";
+        }
         return folder.getFullName();
     }
 
