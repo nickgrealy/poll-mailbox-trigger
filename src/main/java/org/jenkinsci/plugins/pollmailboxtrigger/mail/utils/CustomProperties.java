@@ -23,6 +23,10 @@ public class CustomProperties {
         putAll(properties1);
     }
 
+    public CustomProperties(Map<String, String> properties1) {
+        putAll(properties1);
+    }
+
     public CustomProperties(String properties) {
         putAll(properties);
     }
@@ -100,19 +104,20 @@ public class CustomProperties {
         return get(o.name());
     }
 
-    public String put(Enum s, String s2) {
-        return put(s.name(), s2);
+    public CustomProperties put(Enum s, String s2) {
+        put(s.name(), s2);
+        return this;
     }
 
     public String remove(Enum o) {
         return remove(o.name());
     }
 
-    public String putIfBlank(Enum s, String s2) {
+    public CustomProperties putIfBlank(Enum s, String s2) {
         return putIfBlank(s.name(), s2);
     }
 
-    public String putIfBlank(String s, String s2) {
+    public CustomProperties putIfBlank(String s, String s2) {
         if (!has(s) || get(s) == null || "".equals(get(s))) {
             return put(s, s2);
         }
@@ -144,8 +149,9 @@ public class CustomProperties {
         return delegate.get(o);
     }
 
-    public String put(String s, String s2) {
-        return delegate.put(s, s2);
+    public CustomProperties put(String s, String s2) {
+        delegate.put(s, s2);
+        return this;
     }
 
     public String remove(String o) {

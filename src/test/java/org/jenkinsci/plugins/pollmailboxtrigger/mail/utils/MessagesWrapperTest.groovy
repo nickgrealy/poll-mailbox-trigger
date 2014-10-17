@@ -46,7 +46,7 @@ class MessagesWrapperTest {
         wrapper.print()
         assertEquals """Found message(s) : 1
 >>>>>>
-Date    : $TEST_DATE
+Date    : $DEFAULT_DATE
 From    : foo1@bar.com
 Subject : foobar!!!
 <<<<<<
@@ -75,17 +75,17 @@ Subject : null
         wrapper.print()
         assertEquals """Found message(s) : 3
 >>>>>>
-Date    : $TEST_DATE
+Date    : $DEFAULT_DATE
 From    : foo1@bar.com
 Subject : foobar1
 <<<<<<
 >>>>>>
-Date    : $TEST_DATE
+Date    : $DEFAULT_DATE
 From    : foo1@bar.com
 Subject : foobar2
 <<<<<<
 >>>>>>
-Date    : $TEST_DATE
+Date    : $DEFAULT_DATE
 From    : foo1@bar.com
 Subject : foobar3
 <<<<<<
@@ -126,10 +126,10 @@ a_folder='Drafts/Foobar'
 a_from='foo1@bar.com, foo2@bar.com'
 a_headers='Foo, Bar'
 a_messageNumber='1337'
-a_receivedDate='$TEST_DATE_FORMATTED'
+a_receivedDate='$DEFAULT_DATE_FORMATTED'
 a_recipients='foo3@bar.com, foo4@bar.com'
 a_replyTo='foo1@bar.com, foo2@bar.com'
-a_sentDate='$TEST_DATE_FORMATTED'
+a_sentDate='$DEFAULT_DATE_FORMATTED'
 a_subject='foobar!!!'
 aaa='bbb'
 foo='bar'""".toString(), result.toString()
@@ -147,10 +147,10 @@ a_folder='Drafts/Foobar'
 a_from='foo1@bar.com, foo2@bar.com'
 a_headers='Foo, Bar'
 a_messageNumber='1337'
-a_receivedDate='$TEST_DATE_FORMATTED'
+a_receivedDate='$DEFAULT_DATE_FORMATTED'
 a_recipients='foo3@bar.com, foo4@bar.com'
 a_replyTo='foo1@bar.com, foo2@bar.com'
-a_sentDate='$TEST_DATE_FORMATTED'
+a_sentDate='$DEFAULT_DATE_FORMATTED'
 a_subject='foobar!!!'
 abc='0123456789'
 def='!@#\$%^&*()'

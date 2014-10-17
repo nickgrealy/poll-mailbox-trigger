@@ -1,6 +1,5 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools
 
-import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify
 
 import javax.mail.Flags
@@ -14,8 +13,8 @@ import javax.mail.internet.MimeMultipart
  */
 class MessageBuilder {
 
-    static final TEST_DATE = new Date(1413196250440)
-    static final TEST_DATE_FORMATTED = Stringify.df.format(TEST_DATE)
+    static final DEFAULT_DATE = new Date(1413196250440)
+    static final DEFAULT_DATE_FORMATTED = Stringify.df.format(DEFAULT_DATE)
 
     static final TEXT = '''
 fruit=banana
@@ -40,14 +39,15 @@ Nick
 </div>
 
 '''
+    public static final String DEFAULT_SUBJECT = 'foobar!!!'
 
     /**
      * Builds a simple email Message.
      * @param subject
      * @return
      */
-    public static Message buildMessage(subject = null) {
-        (subject == null ? buildMessageCandidate() : buildMessageCandidate(subject)) as NoopMessage
+    public static Message buildMessage(subject = DEFAULT_SUBJECT, sentReceivedDate = DEFAULT_DATE) {
+        buildMessageCandidate(subject, sentReceivedDate) as NoopMessage
     }
 
     /**
@@ -55,9 +55,9 @@ Nick
      * @param subject
      * @return
      */
-    private static Map buildMessageCandidate(subject = 'foobar!!!') {
+    private static Map buildMessageCandidate(subject = DEFAULT_SUBJECT, sentReceivedDate = DEFAULT_DATE) {
         [
-                getSentDate     : { TEST_DATE },
+                getSentDate     : { sentReceivedDate },
                 getFrom         : { ['foo1@bar.com', 'foo2@bar.com'].collect { new InternetAddress(it) } },
                 getSubject      : { subject },
                 getFlags        : {
@@ -68,7 +68,7 @@ Nick
                 },
                 getFolder       : { [getFullName: { 'Drafts/Foobar' }] as NoopFolder },
                 getMessageNumber: { 1337 },
-                getReceivedDate : { TEST_DATE },
+                getReceivedDate : { sentReceivedDate },
                 getAllHeaders   : { Collections.enumeration(['Foo', 'Bar']) },
                 getContentType  : { 'text/html' },
                 getAllRecipients: { ['foo3@bar.com', 'foo4@bar.com'].collect { new InternetAddress(it) } },
