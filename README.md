@@ -21,7 +21,7 @@ __Additional:__
 1. [Backlog](#backlog)
 1. [Wiki](https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin)
 1. [Source Code](https://github.com/jenkinsci/poll-mailbox-trigger-plugin)
-1. [Issue Tracking](https://issues.jenkins-ci.org/secure/IssueNavigator.jspa?jqlQuery=component+%3D+%27poll-mailbox-trigger%27)
+1. [Issue Tracking](https://issues.jenkins-ci.org/secure/IssueNavigator.jspa?jqlQuery=component+%3D+%27poll-mailbox-trigger-plugin%27)
 1. [License](LICENSE)
 
 ---
