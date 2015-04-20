@@ -132,8 +132,8 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
     mail.imap.starttls.enable=true
 
 #### MS Exchange Servers (2003, 2007, 2010, 2013)
-    I haven't yet attempted this, if you've managed to successfully setup a connection, please contact me, and I'll
-    update this section.
+    I haven't yet attempted this, if you've managed to successfully setup a connection, 
+	please contact me, and I'll update this section.
 
 ---
 
