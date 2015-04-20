@@ -124,6 +124,13 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
     username=<your_email>
     password=<your_password>
 
+#### [Office 365](# "Thanks to Jason Swager for this contribution!")
+    host=<your_mail_server>
+    username=<your_email>
+    password=<your_password>
+    mail.imap.ssl.enable=true
+    mail.imap.starttls.enable=true
+
 #### MS Exchange Servers (2003, 2007, 2010, 2013)
     I haven't yet attempted this, if you've managed to successfully setup a connection, please contact me, and I'll
     update this section.
