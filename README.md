@@ -124,7 +124,7 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
     username=<your_email>
     password=<your_password>
 
-#### [Office 365](# "Thanks to Jason Swager for this contribution!")
+#### [Office 365](#office-365 "Thanks to Jason Swager for this contribution!")
     host=<your_mail_server>
     username=<your_email>
     password=<your_password>
