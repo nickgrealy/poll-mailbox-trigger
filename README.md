@@ -14,6 +14,7 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 1. [Configuration](#configuration)
 1. [Email Conventions](#email-conventions)
 1. [Troubleshooting](#troubleshooting)
+1. [Want to say thanks?](#want-to-say-thanks)
 
 __Additional:__
 
@@ -264,6 +265,25 @@ In the meantime, the error is caught and the following message is displayed.
     https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.
 
 ---
+
+## Want to say thanks?
+
+Want to say thanks but can't find the words? Coffee donations are VERY welcome!
+
+![http://wrldhq.com/2014/02/12/new-meaning-to-the-term-coffee-drip-coined/](src/main/site/images/star-wars-coffee.jpg "http://wrldhq.com/2014/02/12/new-meaning-to-the-term-coffee-drip-coined/")
+
+You can donate using Stripe...
+ 
+<form action="" method="POST">
+<script
+src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+data-key="pk_test_Mo4BdBwoJFFAWiZuPF2AANAJ"
+data-amount="350"
+data-name="'Thanks!'"
+data-description="Donate 1 Coffee ($3.50)"
+data-image="/128x128.png">
+</script>
+</form>
 
 ## ChangeLog
 
