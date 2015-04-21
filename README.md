@@ -268,19 +268,9 @@ In the meantime, the error is caught and the following message is displayed.
 
 ## Want to say thanks?
 
-Want to say thanks but can't find the words? Coffee donations are VERY welcome!
+Want to say thanks but can't find the words? [Coffee donations are VERY welcome](http://nickgrealy.github.io/)!
 
 ![http://wrldhq.com/2014/02/12/new-meaning-to-the-term-coffee-drip-coined/](src/main/site/images/star-wars-coffee.jpg "http://wrldhq.com/2014/02/12/new-meaning-to-the-term-coffee-drip-coined/")
-
-You can only donate using PayPal at this point in time!
- 
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-">
-<input type="image" src="https://www.paypalobjects.com/en_AU/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal — The safer, easier way to pay online.">
-<img alt="" border="0" src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif" width="1" height="1">
-</form>
 
 ## ChangeLog
 
