@@ -15,7 +15,7 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
     1. [GMAIL](#gmail)
     1. [HOTMAIL](#hotmail)
     1. [ZIMBRA](#zimbra)
-    1. [Office 365](#office 365)
+    1. [Office 365](#office-365)
     1. [MS Exchange Server 2013](#ms-exchange-server-2013)
     1. [Want to add a server example](#want-to-add-a-server-example)
 1. [Email Conventions](#email-conventions)
