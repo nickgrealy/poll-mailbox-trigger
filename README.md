@@ -12,6 +12,12 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 1. [Overview](#overview)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
+    1. [GMAIL](#GMAIL)
+    1. [HOTMAIL](#HOTMAIL)
+    1. [ZIMBRA](#ZIMBRA)
+    1. [Office 365](#Office-365)
+    1. [MS Exchange Server 2013](#MS-Exchange-Server-2013)
+    1. [Want to add a server example](#Want-to-add-a-server-example)
 1. [Email Conventions](#email-conventions)
 1. [Troubleshooting](#troubleshooting)
 1. [Want to say thanks?](#want-to-say-thanks)
@@ -140,7 +146,7 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
     mail.imap.ssl.enable=true
     mail.imap.starttls.enable=true
 
-#### MS Exchange Servers (2003, 2007, 2010)
+#### Want to add a server example?
     If you've managed to successfully setup a connection, 
     please contact me, and I'll update this section.
 
