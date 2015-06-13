@@ -132,9 +132,17 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
     mail.imap.ssl.enable=true
     mail.imap.starttls.enable=true
 
-#### MS Exchange Servers (2003, 2007, 2010, 2013)
-    I haven't yet attempted this, if you've managed to successfully setup a connection, 
-	please contact me, and I'll update this section.
+#### [MS Exchange Server 2013](#ms-exchange-server-2013 "Thanks to Shaun Alexander for this contribution!")
+    host=<your_imap_host_server>
+    username=<your_email>
+    password=<your_password>
+    mail.imaps.port=993
+    mail.imap.ssl.enable=true
+    mail.imap.starttls.enable=true
+
+#### MS Exchange Servers (2003, 2007, 2010)
+    If you've managed to successfully setup a connection, 
+    please contact me, and I'll update this section.
 
 ---
 
