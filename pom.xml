@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>1.424</version>
+        <version>1.581</version>
     </parent>
 
     <licenses>
@@ -20,6 +20,11 @@
     <packaging>hpi</packaging>
     <version>1.000-MAVEN_TEST_ONLY</version>
     <name>Poll Mailbox Trigger Plugin</name>
+    <url>http://wiki.jenkins-ci.org/display/JENKINS/Poll Mailbox Trigger Plugin</url>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://issues.jenkins-ci.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+JENKINS+AND+status+in+%28Open%2C+%22In+Progress%22%2C+Reopened%29+AND+component+%3D+%27poll-mailbox-trigger-plugin%27</url>
+    </issueManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +37,19 @@
             <email>nickgrealy@gmail.com</email>
         </developer>
     </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/jenkinsci/poll-mailbox-trigger-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/poll-mailbox-trigger-plugin.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>http://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

@@ -51,8 +51,5 @@ jenkinsPlugin {
 dependencies {
 	compile "org.jenkins-ci.lib:xtrigger-lib:$xtriggerLibVersion"
     compile "com.sun.mail:javax.mail:$javaxMailVersion"
-//    compile "javax.mail:javax.mail-api:$javaxMailVersion"
-//    compile "com.sun.mail:imap:$javaxMailVersion"
     testCompile 'org.jvnet.mock-javamail:mock-javamail:1.7'
-//    testCompile 'org.codehaus.groovy:groovy:2.4.4'
 }
