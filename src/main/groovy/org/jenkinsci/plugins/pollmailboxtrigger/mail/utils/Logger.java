@@ -7,9 +7,12 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 /**
- * Logger interface, so that we're not tied to XTriggerLog!
- * <p/>
- * Question: is there a better/generic way of doing this?
+ * <p>
+ *     Logger interface, so that we're not tied to XTriggerLog!
+ * </p>
+ * <p>
+ *     Question: is there a better/generic way of doing this?
+ * </p>
  *
  * @author Nick Grealy
  */
@@ -69,10 +72,6 @@ public abstract class Logger {
             this.logger = logger;
         }
 
-        /**
-         * @param b
-         * @throws IOException
-         */
         @Override
         public void write(byte[] b) throws IOException {
             logger.info(new String(b));

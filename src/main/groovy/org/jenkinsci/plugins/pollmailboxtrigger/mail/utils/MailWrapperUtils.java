@@ -124,7 +124,7 @@ public abstract class MailWrapperUtils {
             }
         }
 
-        /**
+        /*
          * Only keep text containing the given string.
          */
         public static List<String> filterProperties(String[] props, String containing) {
@@ -142,8 +142,7 @@ public abstract class MailWrapperUtils {
         }
     }
 
-
-    /**
+    /*
      * Utility class for providing extra Folder related methods!
      */
     public static class FolderWrapper extends Logger.HasLogger {

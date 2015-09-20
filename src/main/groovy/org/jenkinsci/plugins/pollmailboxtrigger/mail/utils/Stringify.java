@@ -157,8 +157,9 @@ public abstract class Stringify {
 
     /**
      * Get text from all parts of the email.
-     * <p/>
      * Loosely based on <a href="http://www.oracle.com/technetwork/java/javamail/faq/index.html#mainbody">oracle.com</a>.
+     * @param part - the mail part to convert to string.
+     * @return String
      */
     public static String stringify(Part part) {
         try {
