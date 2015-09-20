@@ -42,7 +42,7 @@ public class MailReader extends HasLogger {
     }
 
     public MailReader connect() throws MessagingException {
-        Session session = Session.getDefaultInstance(properties.getProperties(), null);
+        Session session = Session.getInstance(properties.getProperties(), null);
         session.setDebugOut(logger.getPrintStream());
         store = session.getStore(storeName);
         store.connect(host, username, password);

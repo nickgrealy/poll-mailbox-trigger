@@ -53,9 +53,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     private Secret password;
     private String script;
 
-
     @DataBoundConstructor
-
     public PollMailboxTrigger(String cronTabSpec, LabelRestrictionClass labelRestriction, boolean enableConcurrentBuild,
                               String host, String username, Secret password, String script) throws ANTLRException {
         super(cronTabSpec, labelRestriction != null, (labelRestriction == null) ? null : labelRestriction.getTriggerLabel(), enableConcurrentBuild);
@@ -182,7 +180,11 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 testing.add("Searching folder...");
                 MessagesWrapper messagesTool = mbFolder.search(searchTerms);
                 List<Message> messageList = messagesTool.getMessages();
-                final String foundEmails = String.format("Found matching email(s) : %s. ", messageList.size());
+                StringBuilder subjects = new StringBuilder();
+                for (Message message : messageList) {
+                    subjects.append("\n\n- ").append(message.getSubject()).append(" (").append(message.getReceivedDate()).append(")");
+                }
+                final String foundEmails = "Found matching email(s) : " + messageList.size() + subjects.toString();
                 log.info(foundEmails);
                 testing.add(foundEmails);
                 if (!testConnection) {
@@ -199,7 +201,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
             }
             // return success
             if (testConnection) {
-                testing.add("Result: Success!");
+                testing.add("\nResult: Success!");
                 return FormValidation.ok(stringify(testing, "\n"));
             }
         } catch (FolderNotFoundException e) {
@@ -336,7 +338,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
         @Override
         public String getDisplayName() {
-            return "[Poll Mailbox Trigger] - Poll an email inbox";
+            return "Poll Mailbox Trigger";
         }
 
         @Override

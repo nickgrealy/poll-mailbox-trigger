@@ -14,7 +14,6 @@ defaultTasks 'clean', 'jpi'
 
 /**
 === Usage ===
-
 gradlew jpi - Build the Jenkins plugin file, which can then be found in the build directory. The file will currently end in ".hpi".
 gradlew publishToMavenLocal - Build the Jenkins plugin and install it into your local Maven repository.
 gradlew publish - Deploy your plugin to the Jenkins Maven repository to be included in the Update Center.
@@ -33,14 +32,12 @@ repositories {
 }
 
 jenkinsPlugin {
-    coreVersion = '1.424'
+    coreVersion = '1.581'
     shortName = project.name
     displayName = jenkinsDisplayName
     url = "https://wiki.jenkins-ci.org/display/JENKINS/$jenkinsDisplayName"
     gitHubUrl = "https://github.com/jenkinsci/$project.name"
-    pluginFirstClassLoader = true
-    maskClasses = 'groovy groovyjarjarantlr groovyjarjarasm groovyjarjarcommonscli org.codehaus.groovy'
-    compatibleSinceVersion = '1.20'
+    compatibleSinceVersion = '1.581'
     fileExtension = 'jpi'
     developers {
         developer {
@@ -51,15 +48,9 @@ jenkinsPlugin {
     }
 }
 
-configurations { forceGroovy }
-
 dependencies {
-    //providedCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
 	compile "org.jenkins-ci.lib:xtrigger-lib:$xtriggerLibVersion"
-    compile "com.sun.mail:javax.mail:1.5.1"
-    //providedCompile 'org.jvnet.mock-javamail:mock-javamail:1.7'
+    compile "com.sun.mail:javax.mail:1.5.4"
+    compile "javax.mail:javax.mail-api:1.5.1"
+    compile "com.sun.mail:imap:1.5.4"
 }
-
-//jpi {
-//	classpath configurations.forceGroovy // add the Groovy lib to the plugin to make @Grap work
-//}
