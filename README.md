@@ -5,6 +5,7 @@ Table of contents
 ---
 
 1. [Overview](#overview)
+1. [Building](#building)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
     1. [GMAIL](#gmail)

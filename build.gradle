@@ -53,4 +53,5 @@ dependencies {
     compile "com.sun.mail:javax.mail:1.5.4"
     compile "javax.mail:javax.mail-api:1.5.1"
     compile "com.sun.mail:imap:1.5.4"
+    testCompile 'org.jvnet.mock-javamail:mock-javamail:1.7'
 }

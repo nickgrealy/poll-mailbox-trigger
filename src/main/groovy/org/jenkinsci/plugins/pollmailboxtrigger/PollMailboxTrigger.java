@@ -120,7 +120,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return p;
     }
 
-    public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) {
+    public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt, boolean unitTestMode) {
         MailReader mailbox = null;
         List<String> testing = new ArrayList<String>();
         try {
@@ -141,11 +141,12 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
             // connect to mailbox
             log.info("Connecting to the mailbox...");
-            String clearPassword = Secret.decrypt(properties.get(Properties.password)).getPlainText();
+            String encryptedPassword = properties.get(Properties.password);
+            String decryptedPassword = unitTestMode ? encryptedPassword : Secret.decrypt(encryptedPassword).getPlainText();
             mailbox = new MailReader(
                     properties.get(Properties.host),
                     properties.get(Properties.username),
-                    clearPassword,
+                    decryptedPassword,
                     properties.get(storeName),
                     new Logger.XTriggerLoggerWrapper(log),
                     properties
@@ -295,7 +296,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
         CustomProperties properties = initialiseDefaults(host, username, password, script);
-        checkForEmails(properties, log, false, this); // use executingNode, ???
+        checkForEmails(properties, log, false, this, false); // use executingNode, ???
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
 
@@ -354,7 +355,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         ) {
             try {
                 CustomProperties properties = initialiseDefaults(host, username, password, script);
-                return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null);
+                return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null, false);
             } catch (Throwable t) {
                 return FormValidation.error("Error : " + stringify(t));
             }

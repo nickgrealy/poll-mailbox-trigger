@@ -21,7 +21,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
     @Test
     def void testConnectionWithMissingConfigShouldBeError() {
         // run
-        def validation = checkForEmails(new CustomProperties(), logger, true, trigger)
+        def validation = checkForEmails(new CustomProperties(), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.ERROR, validation.kind
         assertEquals 'hudson.util.FormValidation$1: Error : Email property &#039;host&#039; is required!, Email property &#039;storeName&#039; is required!, Email property &#039;username&#039; is required!, Email property &#039;password&#039; is required!', validation.toString()
@@ -30,7 +30,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
     @Test
     def void testConnectionWithNoFolderShouldBeError() {
         // run
-        def validation = checkForEmails(config, logger, true, trigger)
+        def validation = checkForEmails(config, logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.ERROR, validation.kind
         assertEquals 'hudson.util.FormValidation$1: Connected to mailbox. <br>Please set the &#039;folder=XXX&#039; parameter to one of the following values: <br>Folders: ', validation.toString()
@@ -39,7 +39,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
     @Test
     def void testConnectionWithNoEmailsAndNoFiltersIsOk() {
         // run
-        def validation = checkForEmails(config.put(folder, 'INBOX'), logger, true, trigger)
+        def validation = checkForEmails(config.put(folder, 'INBOX'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
         assertEquals 'hudson.util.FormValidation$1: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 0. <br>Result: Success!', validation.toString()
@@ -50,7 +50,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
         // setup
         inmemoryMailbox.add(buildMessage('foobar'))
         // run
-        def validation = checkForEmails(config.put(folder, 'INBOX'), logger, true, trigger)
+        def validation = checkForEmails(config.put(folder, 'INBOX'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
         assertEquals 'hudson.util.FormValidation$1: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1. <br>Result: Success!', validation.toString()
@@ -62,7 +62,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
         int numEmails = SEED_EMAILS
         (1..numEmails).each { inmemoryMailbox.add(buildMessage("foobar$it")) }
         // run
-        def validation = checkForEmails(config.put(folder, 'INBOX'), logger, true, trigger)
+        def validation = checkForEmails(config.put(folder, 'INBOX'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
         assertEquals "hudson.util.FormValidation\$1: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : $numEmails. <br>Result: Success!".toString(), validation.toString()
@@ -75,7 +75,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
         (1..numEmails).each { inmemoryMailbox.add(buildMessage("foobar$it")) }  // these should be ignored
         inmemoryMailbox.add(buildMessage("Jenkins > Foobar!"))                  // this should be picked up (by subject)
         // run
-        def validation = checkForEmails(config.put(folder, 'INBOX').put(subjectContains, 'Jenkins >'), logger, true, trigger)
+        def validation = checkForEmails(config.put(folder, 'INBOX').put(subjectContains, 'Jenkins >'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
         assertEquals 'hudson.util.FormValidation$1: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1. <br>Result: Success!', validation.toString()
@@ -88,7 +88,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
         (1..numEmails).each { inmemoryMailbox.add(buildMessage("foobar$it")) }  // these should be ignored
         inmemoryMailbox.add(buildMessage("foobar", new Date()))               // this should be picked up (by date)
         // run
-        def validation = checkForEmails(config.put(folder, 'INBOX').put(receivedXMinutesAgo, '1'), logger, true, trigger)
+        def validation = checkForEmails(config.put(folder, 'INBOX').put(receivedXMinutesAgo, '1'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
         assertEquals 'hudson.util.FormValidation$1: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1. <br>Result: Success!', validation.toString()
@@ -103,7 +103,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
         inmemoryMailbox.add(buildMessage("Jenkins > Foobar!"))                  // this should NOT be picked up
         inmemoryMailbox.add(buildMessage("Jenkins > Foobar!", new Date()))      // this should be picked up (by subject and date)
         // run
-        def validation = checkForEmails(config.put(folder, 'INBOX').put(subjectContains, 'Jenkins >').put(receivedXMinutesAgo, '1'), logger, true, trigger)
+        def validation = checkForEmails(config.put(folder, 'INBOX').put(subjectContains, 'Jenkins >').put(receivedXMinutesAgo, '1'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
         assertEquals 'hudson.util.FormValidation$1: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1. <br>Result: Success!', validation.toString()
