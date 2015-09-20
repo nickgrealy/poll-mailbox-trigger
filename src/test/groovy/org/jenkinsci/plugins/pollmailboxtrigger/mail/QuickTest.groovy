@@ -27,6 +27,8 @@ class QuickTest {
         assertEquals 1, tmp.size()
 
         // Connect to the inmemory mailbox using "imap"
+        System.setProperty('mail.imap.timeout', '5000')
+        System.setProperty('mail.imap.connectiontimeout', '5000')
         Session session = Session.getInstance(System.getProperties(), null);
         Store store = session.getStore('imap');
         store.connect("bar.com", "foo", "anything");

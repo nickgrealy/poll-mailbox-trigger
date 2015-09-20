@@ -37,7 +37,7 @@ jenkinsPlugin {
     displayName = jenkinsDisplayName
     url = "https://wiki.jenkins-ci.org/display/JENKINS/$jenkinsDisplayName"
     gitHubUrl = "https://github.com/jenkinsci/$project.name"
-    compatibleSinceVersion = '1.581'
+    compatibleSinceVersion = '1.424'
     fileExtension = 'jpi'
     developers {
         developer {
@@ -50,8 +50,9 @@ jenkinsPlugin {
 
 dependencies {
 	compile "org.jenkins-ci.lib:xtrigger-lib:$xtriggerLibVersion"
-    compile "com.sun.mail:javax.mail:1.5.4"
-    compile "javax.mail:javax.mail-api:1.5.1"
-    compile "com.sun.mail:imap:1.5.4"
+    compile "com.sun.mail:javax.mail:$javaxMailVersion"
+//    compile "javax.mail:javax.mail-api:$javaxMailVersion"
+//    compile "com.sun.mail:imap:$javaxMailVersion"
     testCompile 'org.jvnet.mock-javamail:mock-javamail:1.7'
+//    testCompile 'org.codehaus.groovy:groovy:2.4.4'
 }
