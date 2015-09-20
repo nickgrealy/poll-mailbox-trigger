@@ -86,7 +86,7 @@
                 <artifactId>gradle-maven-plugin</artifactId>
                 <version>1.0.5</version>
                 <configuration>
-                    <gradleVersion>2.4</gradleVersion>
+                    <gradleVersion>2.7</gradleVersion>
                     <tasks>
                         <!-- this would effectively call "gradle clean check publishToMavenLocal" -->
                         <task>clean</task>
