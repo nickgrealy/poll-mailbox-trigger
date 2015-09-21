@@ -38,7 +38,7 @@ jenkinsPlugin {
     url = "https://wiki.jenkins-ci.org/display/JENKINS/$jenkinsDisplayName"
     gitHubUrl = "https://github.com/jenkinsci/$project.name"
     compatibleSinceVersion = '1.424'
-    fileExtension = 'jpi'
+    fileExtension = 'hpi'
     developers {
         developer {
             id 'nickg'
