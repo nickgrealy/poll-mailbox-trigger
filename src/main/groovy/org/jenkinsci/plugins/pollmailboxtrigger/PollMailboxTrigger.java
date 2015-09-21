@@ -53,9 +53,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     private Secret password;
     private String script;
 
-
     @DataBoundConstructor
-
     public PollMailboxTrigger(String cronTabSpec, LabelRestrictionClass labelRestriction, boolean enableConcurrentBuild,
                               String host, String username, Secret password, String script) throws ANTLRException {
         super(cronTabSpec, labelRestriction != null, (labelRestriction == null) ? null : labelRestriction.getTriggerLabel(), enableConcurrentBuild);
@@ -122,7 +120,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return p;
     }
 
-    public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) {
+    public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt, boolean unitTestMode) {
         MailReader mailbox = null;
         List<String> testing = new ArrayList<String>();
         try {
@@ -143,11 +141,12 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
             // connect to mailbox
             log.info("Connecting to the mailbox...");
-            String clearPassword = Secret.decrypt(properties.get(Properties.password)).getPlainText();
+            String encryptedPassword = properties.get(Properties.password);
+            String decryptedPassword = unitTestMode ? encryptedPassword : Secret.decrypt(encryptedPassword).getPlainText();
             mailbox = new MailReader(
                     properties.get(Properties.host),
                     properties.get(Properties.username),
-                    clearPassword,
+                    decryptedPassword,
                     properties.get(storeName),
                     new Logger.XTriggerLoggerWrapper(log),
                     properties
@@ -182,7 +181,11 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 testing.add("Searching folder...");
                 MessagesWrapper messagesTool = mbFolder.search(searchTerms);
                 List<Message> messageList = messagesTool.getMessages();
-                final String foundEmails = String.format("Found matching email(s) : %s. ", messageList.size());
+                StringBuilder subjects = new StringBuilder();
+                for (Message message : messageList) {
+                    subjects.append("\n\n- ").append(message.getSubject()).append(" (").append(message.getReceivedDate()).append(")");
+                }
+                final String foundEmails = "Found matching email(s) : " + messageList.size() + subjects.toString();
                 log.info(foundEmails);
                 testing.add(foundEmails);
                 if (!testConnection) {
@@ -199,7 +202,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
             }
             // return success
             if (testConnection) {
-                testing.add("Result: Success!");
+                testing.add("\nResult: Success!");
                 return FormValidation.ok(stringify(testing, "\n"));
             }
         } catch (FolderNotFoundException e) {
@@ -293,7 +296,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
         CustomProperties properties = initialiseDefaults(host, username, password, script);
-        checkForEmails(properties, log, false, this); // use executingNode, ???
+        checkForEmails(properties, log, false, this, false); // use executingNode, ???
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
 
@@ -336,7 +339,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
         @Override
         public String getDisplayName() {
-            return "[Poll Mailbox Trigger] - Poll an email inbox";
+            return "Poll Mailbox Trigger";
         }
 
         @Override
@@ -352,7 +355,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         ) {
             try {
                 CustomProperties properties = initialiseDefaults(host, username, password, script);
-                return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null);
+                return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null, false);
             } catch (Throwable t) {
                 return FormValidation.error("Error : " + stringify(t));
             }

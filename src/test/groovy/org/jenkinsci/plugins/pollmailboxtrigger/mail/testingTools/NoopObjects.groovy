@@ -241,7 +241,7 @@ class NoopLogger extends Logger {
 
 class NoopFolder extends Folder {
 
-    protected NoopFolder() {
+    public NoopFolder() {
         super((Store)null)
     }
 

@@ -1,19 +1,22 @@
-poll-mailbox-trigger
-================
-
+# Poll Mailbox Trigger Plugin
 A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
-[![Built on CloudBees](src/main/site/images/Button-Powered-by-CB.png "Built on CloudBees")](http://www.cloudbees.com)
-
+Table of contents
 ---
 
-## Table of contents
-
 1. [Overview](#overview)
+1. [Building](#building)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
+    1. [GMAIL](#gmail)
+    1. [HOTMAIL](#hotmail)
+    1. [ZIMBRA](#zimbra)
+    1. [Office 365](#office-365)
+    1. [MS Exchange Server 2013](#ms-exchange-server-2013)
+    1. [Want to add a server example](#want-to-add-a-server-example)
 1. [Email Conventions](#email-conventions)
 1. [Troubleshooting](#troubleshooting)
+1. [Want to say thanks?](#want-to-say-thanks)
 
 __Additional:__
 
@@ -24,9 +27,8 @@ __Additional:__
 1. [Issue Tracking](https://issues.jenkins-ci.org/secure/IssueNavigator.jspa?jqlQuery=component+%3D+%27poll-mailbox-trigger-plugin%27)
 1. [License](LICENSE)
 
+Overview
 ---
-
-## Overview
 
 The _poll-mailbox-trigger_ allows a build to poll an email inbox using the imap protocol.
 When an unread email is found matching the configured criteria, it:
@@ -62,17 +64,51 @@ Alternatives to polling?
 1. Utilising [Push-IMAP](http://en.wikipedia.org/wiki/Push-IMAP)
 1. Installing a sendmail/postfix server, forward emails to it, and write a perl script to process incoming emails.
 
+Building
 ---
 
-## Screenshots
+Build Status: [![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/poll-mailbox-trigger-plugin "Build Status")](https://jenkins.ci.cloudbees.com/job/plugins/job/poll-mailbox-trigger-plugin/)
 
-_Screenshot - Version 0.12_
+Prerequisites:
 
-![Version 0.12](src/main/site/images/screenshot-0.12.png "Version 0.12")
+- JDK 6 (or above)
 
+To setup for use with Intellij IDEA
+
+```Shell
+./gradlew cleanIdea idea
+```
+
+To run Jenkins ([http://localhost:8080](http://localhost:8080)) locally with the plugin installed:
+
+```Shell
+./gradlew clean server
+```
+
+To build the Jenkins plugin (.jpi) file:
+
+```Shell
+./gradlew clean jpi
+```
+
+To publish/release the Jenkins plugin:
+
+1. Update the `version` in `gradle.properties`, to remove "-SNAPSHOT" (increment and re-add after publishing)
+
+```Shell
+./gradlew clean publish
+```
+
+Screenshots
 ---
 
-## Configuration
+_Screenshot - Version 1.018_
+
+![Version 1.018](src/main/site/images/screenshot-version-1.018.png "Version 1.018")
+
+
+Configuration
+---
 
 The <i>Host</i> field, allows you to enter the DNS name/hostname/IP Address of the server, hosting the email account service.
 
@@ -124,13 +160,27 @@ For hotmail passwords, go to "Account Settings > Security Info > Create a new ap
     username=<your_email>
     password=<your_password>
 
-#### MS Exchange Servers (2003, 2007, 2010, 2013)
-    I haven't yet attempted this, if you've managed to successfully setup a connection, please contact me, and I'll
-    update this section.
+#### [Office 365](#office-365 "Thanks to Jason Swager for this contribution!")
+    host=<your_mail_server>
+    username=<your_email>
+    password=<your_password>
+    mail.imap.ssl.enable=true
+    mail.imap.starttls.enable=true
 
+#### [MS Exchange Server 2013](#ms-exchange-server-2013 "Thanks to Shaun Alexander for this contribution!")
+    host=<your_imap_host_server>
+    username=<your_email>
+    password=<your_password>
+    mail.imaps.port=993
+    mail.imap.ssl.enable=true
+    mail.imap.starttls.enable=true
+
+#### Want to add a server example?
+    If you've managed to successfully setup a connection, 
+    please contact me, and I'll update this section.
+
+Email Conventions
 ---
-
-## Email Conventions
 
 ### Job Parameters
 
@@ -219,9 +269,8 @@ Will inject the following job parameters into the new job instance:
 |veg     | carrot          |
 |email   | foobar@abc.com  |
 
+Troubleshooting
 ---
-
-## Troubleshooting
 
 ###1. Error: javax.mail.AuthenticationFailedException: AUTHENTICATE failed.
 __Solution:__ Check the credentials you're using are correct.
@@ -256,9 +305,19 @@ In the meantime, the error is caught and the following message is displayed.
     this is an error, please raise an 'issue' under
     https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.
 
+Want to say thanks?
 ---
 
-## ChangeLog
+Want to say thanks but can't find the words? [Coffee donations are VERY welcome](http://nickgrealy.github.io/)!
+
+![http://wrldhq.com/2014/02/12/new-meaning-to-the-term-coffee-drip-coined/](src/main/site/images/star-wars-coffee.jpg "http://wrldhq.com/2014/02/12/new-meaning-to-the-term-coffee-drip-coined/")
+
+ChangeLog
+---
+
+### 1.018
+1. Fixed defect in Session.getDefaultInstance -> getInstance
+1. Changed build process to use gradle
 
 ### 0.15
 1. Fixed defect in parsing properties

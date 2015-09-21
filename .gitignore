@@ -1,10 +1,10 @@
 .idea/
+.gradle/
 target/
 work/
+build/
+out/
+target/
 *.iml
-pom.xml.releaseBackup
-pom.xml~
-release.properties
-pom.xml.next
-pom.xml.tag
-*.orig
+*.iws
+*.ipr

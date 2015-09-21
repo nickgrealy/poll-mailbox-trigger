@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url 'http://repo.jenkins-ci.org/releases/'
+        }
+    }
+    dependencies {
+        classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.12.2'
+    }
+}
+
+defaultTasks 'clean', 'jpi'
+
+/**
+=== Usage ===
+gradlew jpi - Build the Jenkins plugin file, which can then be found in the build directory. The file will currently end in ".hpi".
+gradlew publishToMavenLocal - Build the Jenkins plugin and install it into your local Maven repository.
+gradlew publish - Deploy your plugin to the Jenkins Maven repository to be included in the Update Center.
+gradlew server - Start a local instance of Jenkins (http://localhost:8080) with the plugin pre-installed for testing and debugging.
+ */
+
+apply plugin: 'org.jenkins-ci.jpi'
+apply from: "$rootDir/gradle/common.gradle"
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://repo.jenkins-ci.org/releases/'
+    }
+}
+
+jenkinsPlugin {
+    coreVersion = '1.581'
+    shortName = project.name
+    displayName = jenkinsDisplayName
+    url = "https://wiki.jenkins-ci.org/display/JENKINS/$jenkinsDisplayName"
+    gitHubUrl = "https://github.com/jenkinsci/$project.name"
+    compatibleSinceVersion = '1.424'
+    fileExtension = 'hpi'
+    developers {
+        developer {
+            id 'nickg'
+            name 'Nick Grealy'
+            email 'nickgrealy@gmail.com'
+        }
+    }
+}
+
+dependencies {
+	compile "org.jenkins-ci.lib:xtrigger-lib:$xtriggerLibVersion"
+    compile "com.sun.mail:javax.mail:$javaxMailVersion"
+    testCompile 'org.jvnet.mock-javamail:mock-javamail:1.7'
+}
