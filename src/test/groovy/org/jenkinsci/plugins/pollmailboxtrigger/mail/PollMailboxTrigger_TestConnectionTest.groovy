@@ -5,6 +5,7 @@ import org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.MailboxIntegra
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.CustomProperties
 import org.junit.Ignore
 import org.junit.Test
+import org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger
 
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.*
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.checkForEmails
@@ -49,37 +50,40 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
     @Test
     def void testConnectionWithOneEmailAndNoFiltersIsOk() {
         // setup
-        inmemoryMailbox.add(buildMessage('foobar'))
+        def date = new Date()
+        inmemoryMailbox.add(buildMessage('foobar', date))
         // run
         def validation = checkForEmails(config.put(folder, 'INBOX'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
-        assertEquals 'OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1<br><br>- foobar (Mon Oct 13 21:30:50 AEDT 2014)<br><br>Result: Success!', validation.toString()
+        assertEquals "OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1<br><br>- foobar (${ PollMailboxTrigger.formatter.format(date) })<br><br>Result: Success!".toString(), validation.toString()
     }
 
     @Test
     def void testConnectionWithManyEmailsAndNoFiltersIsOk() {
         // setup
         int numEmails = SEED_EMAILS
-        (1..numEmails).each { inmemoryMailbox.add(buildMessage("foobar$it")) }
+        def date = new Date()
+        (1..numEmails).each { inmemoryMailbox.add(buildMessage("foobar$it", date)) }
         // run
         def validation = checkForEmails(config.put(folder, 'INBOX'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
-        assertEquals "OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 3<br><br>- foobar1 (Mon Oct 13 21:30:50 AEDT 2014)<br><br>- foobar2 (Mon Oct 13 21:30:50 AEDT 2014)<br><br>- foobar3 (Mon Oct 13 21:30:50 AEDT 2014)<br><br>Result: Success!".toString(), validation.toString()
+        assertEquals "OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 3<br><br>- foobar1 (${ PollMailboxTrigger.formatter.format(date) })<br><br>- foobar2 (${ PollMailboxTrigger.formatter.format(date) })<br><br>- foobar3 (${ PollMailboxTrigger.formatter.format(date) })<br><br>Result: Success!".toString(), validation.toString()
     }
 
     @Test
     def void testConnectionWithManyEmailsAndSubjectFilterIsOk() {
         // setup
         int numEmails = SEED_EMAILS
-        (1..numEmails).each { inmemoryMailbox.add(buildMessage("foobar$it")) }  // these should be ignored
-        inmemoryMailbox.add(buildMessage("Jenkins > Foobar!"))                  // this should be picked up (by subject)
+        def date = new Date()
+        (1..numEmails).each { inmemoryMailbox.add(buildMessage("foobar$it", date)) }  // these should be ignored
+        inmemoryMailbox.add(buildMessage("Jenkins > Foobar!", date))                  // this should be picked up (by subject)
         // run
         def validation = checkForEmails(config.put(folder, 'INBOX').put(subjectContains, 'Jenkins >'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
-        assertEquals 'OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1<br><br>- Jenkins > Foobar! (Mon Oct 13 21:30:50 AEDT 2014)<br><br>Result: Success!', validation.toString()
+        assertEquals "OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1<br><br>- Jenkins > Foobar! (${ PollMailboxTrigger.formatter.format(date) })<br><br>Result: Success!".toString(), validation.toString()
     }
 
     @Test
@@ -94,7 +98,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
         def validation = checkForEmails(config.put(folder, 'INBOX').put(receivedXMinutesAgo, '1'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
-        assertEquals "OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1<br><br>- foobar ($date)<br><br>Result: Success!".toString(), validation.toString()
+        assertEquals "OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1<br><br>- foobar (${ PollMailboxTrigger.formatter.format(date) })<br><br>Result: Success!".toString(), validation.toString()
     }
 
     @Test
@@ -111,7 +115,7 @@ class PollMailboxTrigger_TestConnectionTest extends MailboxIntegrationTest {
         def validation = checkForEmails(config.put(folder, 'INBOX').put(subjectContains, 'Jenkins >').put(receivedXMinutesAgo, '1'), logger, true, trigger, true)
         // assert
         assertEquals FormValidation.Kind.OK, validation.kind
-        assertEquals "OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1<br><br>- Jenkins > Foobar! ($date)<br><br>Result: Success!".toString(), validation.toString()
+        assertEquals "OK: Connected to mailbox. <br>Searching folder...<br>Found matching email(s) : 1<br><br>- Jenkins > Foobar! (${ PollMailboxTrigger.formatter.format(date) })<br><br>Result: Success!".toString(), validation.toString()
     }
 
 }

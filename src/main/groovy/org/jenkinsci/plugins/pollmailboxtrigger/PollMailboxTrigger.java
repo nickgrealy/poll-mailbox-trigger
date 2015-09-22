@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.text.*;
 
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils.MessagesWrapper;
@@ -47,6 +48,8 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.stri
  */
 @SuppressWarnings("unused")
 public class PollMailboxTrigger extends AbstractTrigger {
+    
+    public static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss a");
 
     private String host;
     private String username;
@@ -183,7 +186,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 List<Message> messageList = messagesTool.getMessages();
                 StringBuilder subjects = new StringBuilder();
                 for (Message message : messageList) {
-                    subjects.append("\n\n- ").append(message.getSubject()).append(" (").append(message.getReceivedDate()).append(")");
+                    subjects.append("\n\n- ").append(message.getSubject()).append(" (").append(formatter.format(message.getReceivedDate())).append(")");
                 }
                 final String foundEmails = "Found matching email(s) : " + messageList.size() + subjects.toString();
                 log.info(foundEmails);
