@@ -1,6 +1,8 @@
 # Poll Mailbox Trigger Plugin
 A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
+[![Version](http://sebastian-badge.info/plugins/poll-mailbox-trigger-plugin.svg "Version")](https://wiki.jenkins-ci.org/display/JENKINS/Poll Mailbox Trigger Plugin) [![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/poll-mailbox-trigger-plugin&style=plastic "Build Status")](https://jenkins.ci.cloudbees.com/job/plugins/job/poll-mailbox-trigger-plugin/)
+
 Table of contents
 ---
 
@@ -66,8 +68,6 @@ Alternatives to polling?
 
 Building
 ---
-
-Build Status: [![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/poll-mailbox-trigger-plugin "Build Status")](https://jenkins.ci.cloudbees.com/job/plugins/job/poll-mailbox-trigger-plugin/)
 
 Prerequisites:
 
