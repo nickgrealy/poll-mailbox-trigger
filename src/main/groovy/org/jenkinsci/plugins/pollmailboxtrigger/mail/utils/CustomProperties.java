@@ -34,7 +34,7 @@ public class CustomProperties {
     public static CustomProperties read(String properties) {
         Properties p = new Properties();
         try {
-            if (properties != null && !"".equals(properties)) {
+            if (properties != null && !"".equals(properties.trim())) {
                 p.load(new StringReader(properties));
             }
         } catch (IOException e) {
