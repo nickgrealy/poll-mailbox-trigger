@@ -105,7 +105,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 		script = Util.replaceMacro(script, envVars);
 
 		// build properties
-		CustomProperties p = new CustomProperties(script);
+        CustomProperties p = new CustomProperties();
         p.put(Properties.host, host);
         p.put(Properties.username, username);
         p.put(Properties.password, password.getEncryptedValue());
@@ -120,6 +120,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         p.putIfBlank("mail." + cnfStoreName + ".port", cnfStoreName.toLowerCase().endsWith("s") ? "993" : "143");
         p.putIfBlank("mail.debug", "false");
         p.putIfBlank("mail.debug.auth", "false");
+        p.read(script);
         return p;
     }
 
