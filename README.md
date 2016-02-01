@@ -315,6 +315,10 @@ Want to say thanks but can't find the words? [Coffee donations are VERY welcome]
 ChangeLog
 ---
 
+### 1.020 - [thanks Alexei](https://github.com/alexei-znamensky-movile)!
+1. If the "script" property has spaces only (someone might have pressed some spaces by mistake), the CustomProperties class still should recognized it as empty (.equals(""))
+1. The default values of the properties were being loaded AFTER loading the user-provided ones. For instance I want to get rid of the subject filter "jenkins >" and I cannot do that, because when I add the property with the empty value, this default takes over. Thus, I submit this PR to change the order in which these data is loaded: first we load the defaults, THEN we load the user-provided values
+
 ### 1.018
 1. Fixed defect in Session.getDefaultInstance -> getInstance
 1. Changed build process to use gradle
