@@ -7,11 +7,13 @@ import hudson.util.Secret;
 import jenkins.model.Jenkins;
 
 /**
+ * <p>
  * This class provides a way for us to invoke the Jenkins.getInstance() method, during testing, without it throwing NoSuchMethod errors.
  * Currently this method throws the following error: 'java.lang.NoSuchMethodError: hudson.util.XStream2.getConverterRegistry()Lcom/thoughtworks/xstream/converters/ConverterRegistry;'.
- * <br/><br/>
+ * </p><p>
  * Unfortunately this method is invoked in many places, often nested with other static methods. This makes mocking very
  * difficult/impossible. So, I've fashioned the following class to address these issues.
+ * </p>
  */
 public class SafeJenkins {
 

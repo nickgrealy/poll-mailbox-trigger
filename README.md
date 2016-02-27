@@ -94,6 +94,8 @@ To build the Jenkins plugin (.jpi) file:
 To publish/release the Jenkins plugin:
 
 1. Update the `version` in `gradle.properties`, to remove "-SNAPSHOT" (increment and re-add after publishing)
+2. Setup the `~/.jenkins-ci.org` credentials file as per the instructions here [https://wiki.jenkins-ci.org/display/JENKINS/Gradle+JPI+Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Gradle+JPI+Plugin)
+3. Then run the command:
 
 ```Shell
 ./gradlew clean publish
