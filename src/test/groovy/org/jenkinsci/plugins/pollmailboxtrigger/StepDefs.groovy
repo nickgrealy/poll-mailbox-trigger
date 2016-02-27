@@ -14,9 +14,6 @@ import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.CustomProperties
 import org.jenkinsci.plugins.scripttrigger.LabelRestrictionClass
 import org.jvnet.mock_javamail.Mailbox
 
-import java.time.LocalDateTime
-
-import static java.time.temporal.ChronoUnit.MINUTES
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.core.Is.is
 import static org.hamcrest.core.StringContains.containsString
@@ -71,7 +68,7 @@ public class StepDefs {
     public void setup_mailbox(String domain, String username, List<EmailRow> emails) {
         inmemoryMailbox = Mailbox.get("$username@$domain")
         emails.each {
-            inmemoryMailbox.add(buildMessage(it.subject, LocalDateTime.now().minus(it.sentXMinutesAgo, MINUTES), it.isSeenFlag))
+            inmemoryMailbox.add(buildMessage(it.subject, it.sentXMinutesAgo, it.isSeenFlag))
         }
     }
 

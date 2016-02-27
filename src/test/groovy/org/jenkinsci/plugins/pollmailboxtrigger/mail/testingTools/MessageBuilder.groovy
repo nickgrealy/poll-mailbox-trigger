@@ -7,8 +7,6 @@ import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMultipart
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 import static javax.mail.Flags.Flag
 
@@ -54,8 +52,11 @@ Nick
         buildMessageCandidate(subject, sentReceivedDate) as NoopMessage
     }
 
-    public static Message buildMessage(String subject = DEFAULT_SUBJECT, LocalDateTime sentReceivedDate, boolean isSeenFlag) {
-        Date date = Date.from(sentReceivedDate.atZone(ZoneId.systemDefault()).toInstant())
+    public static Message buildMessage(String subject = DEFAULT_SUBJECT, int sentXMinutesAgo, boolean isSeenFlag) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, -1 * sentXMinutesAgo);
+        Date date = cal.getTime();
         buildMessageCandidate(subject, date, [isSeenFlag ? Flag.SEEN : Flag.RECENT]) as NoopMessage
     }
 
