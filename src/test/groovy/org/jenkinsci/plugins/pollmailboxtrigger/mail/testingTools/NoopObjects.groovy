@@ -3,13 +3,7 @@ package org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Logger
 
 import javax.activation.DataHandler
-import javax.mail.Address
-import javax.mail.Flags
-import javax.mail.Folder
-import javax.mail.Message
-import javax.mail.MessagingException
-import javax.mail.Multipart
-import javax.mail.Store
+import javax.mail.*
 
 /**
  * Created by nickgrealy@gmail.com on 13/10/14.

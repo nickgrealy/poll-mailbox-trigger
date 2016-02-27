@@ -16,13 +16,14 @@ import org.jvnet.mock_javamail.Mailbox
 
 import java.time.LocalDateTime
 
-import static java.time.temporal.ChronoUnit.*
-import static java.util.Objects.*
+import static java.time.temporal.ChronoUnit.MINUTES
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.core.Is.is
-import static org.hamcrest.core.StringContains.*
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.MessageBuilder.*
-import static org.junit.Assert.*
+import static org.hamcrest.core.StringContains.containsString
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.isNull
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.useNativeInstance
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.MessageBuilder.buildMessage
+import static org.junit.Assert.fail
 import static org.mockito.Mockito.doReturn
 import static org.mockito.Mockito.spy
 
@@ -42,7 +43,7 @@ public class StepDefs {
     @Before
     void setup() {
 //        MockitoAnnotations.initMocks(this)
-        SafeJenkins.useNativeInstance(false)
+        useNativeInstance(false)
         descriptor = new PollMailboxTrigger.PollMailboxTriggerDescriptor()
 //        plugin.metaClass.startJob = { XTriggerLog log, Map<String, String> envVars ->
 //            println "startJob invoked."

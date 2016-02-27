@@ -3,7 +3,7 @@ package org.jenkinsci.plugins.pollmailboxtrigger.bdd
 import hudson.util.Secret
 import org.apache.commons.lang.StringUtils
 
-import static java.util.Objects.isNull
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.isNull
 
 class ConfigurationRow {
 

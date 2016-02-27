@@ -21,15 +21,15 @@ Feature: Test Connection Errors
     Then the response should be ERROR with message 'java.net.SocketTimeoutException'
 
 
-#  Scenario: I want the plugin to tell me if the supplied folder doesn't exist, so that I can troubleshoot the root cause of any issues.
-#    When I set the configuration to
-#      | Host     | Username | Password |
-#      | mail.com | rick     | rabbits  |
-#    And script to
-#    """
-#    folder=XXX
-#    storeName=imap
-#    mail.imap.connectiontimeout=2000
-#    """
-#    And I test the connection
-#    Then the response should be OK with message 'java.net.SocketTimeoutException'
+  Scenario: I want the plugin to tell me if the supplied folder doesn't exist, so that I can troubleshoot the root cause of any issues.
+    When I set the configuration to
+      | Host     | Username | Password |
+      | mail.com | rick     | rabbits  |
+    And script to
+    """
+    folder=
+    storeName=imap
+    mail.imap.connectiontimeout=2000
+    """
+    And I test the connection
+    Then the response should be ERROR with message 'Please set the &#039;folder=XXX&#039; parameter to one of the following values: <br>Folders: '

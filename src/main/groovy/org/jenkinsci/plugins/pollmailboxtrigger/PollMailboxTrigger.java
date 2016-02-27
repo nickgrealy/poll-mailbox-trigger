@@ -13,7 +13,6 @@ import hudson.util.DescribableList;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
 import hudson.util.StreamTaskListener;
-import jenkins.model.Jenkins;
 import org.apache.commons.jelly.XMLOutput;
 import org.jenkinsci.lib.xtrigger.XTriggerCause;
 import org.jenkinsci.lib.xtrigger.XTriggerDescriptor;
@@ -35,11 +34,11 @@ import javax.mail.search.SearchTerm;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.text.*;
 
-import static java.util.Objects.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.*;
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils.MessagesWrapper;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.stringify;
@@ -70,7 +69,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     public static CustomProperties initialiseDefaults(String host, String username, Secret password, String script) {
 
         // extracts global node properties from environment, add them to new empty local list
-        DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = SafeJenkins.getGlobalNodeProperties();
+        DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = getGlobalNodeProperties();
         EnvVars envVars = new EnvVars();
 		if (null != properties) {
 			final EnvironmentVariablesNodeProperty envClass = properties
@@ -81,7 +80,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 		}
 		
         // extracts specific node properties from environment, merge them with local copy of global list
-        DescribableList<NodeProperty<?>, NodePropertyDescriptor> propsNode = SafeJenkins.getNodeProperties();
+        DescribableList<NodeProperty<?>, NodePropertyDescriptor> propsNode = getNodeProperties();
 		if (null != propsNode) {
 			final EnvironmentVariablesNodeProperty envClass = propsNode
 					.get(EnvironmentVariablesNodeProperty.class);
@@ -104,7 +103,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         p.putAll(userConfig);
         p.put(Properties.host, host);
         p.put(Properties.username, username);
-        p.put(Properties.password, SafeJenkins.encrypt(passwordVariableReplaced));
+        p.put(Properties.password, encrypt(passwordVariableReplaced));
         // setup default values
         p.putIfBlank(storeName, "imaps");
         p.putIfBlank(folder, "INBOX");
@@ -144,7 +143,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
             // connect to mailbox
             log.info("Connecting to the mailbox...");
             String encryptedPassword = properties.get(Properties.password);
-            String decryptedPassword = SafeJenkins.decrypt(encryptedPassword);
+            String decryptedPassword = decrypt(encryptedPassword);
             mailbox = new MailReader(
                     properties.get(Properties.host),
                     properties.get(Properties.username),

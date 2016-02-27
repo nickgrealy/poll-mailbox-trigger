@@ -6,10 +6,6 @@ import hudson.util.DescribableList;
 import hudson.util.Secret;
 import jenkins.model.Jenkins;
 
-import java.util.Base64;
-
-import static java.util.Objects.isNull;
-
 /**
  * This class provides a way for us to invoke the Jenkins.getInstance() method, during testing, without it throwing NoSuchMethod errors.
  * Currently this method throws the following error: 'java.lang.NoSuchMethodError: hudson.util.XStream2.getConverterRegistry()Lcom/thoughtworks/xstream/converters/ConverterRegistry;'.
@@ -57,12 +53,20 @@ public class SafeJenkins {
     public static String encrypt(String message){
         return useNativeInstance
                 ? Secret.fromString(message).getEncryptedValue()
-                : new String(Base64.getEncoder().encode(message.getBytes()));
+                : new StringBuffer(message).reverse().toString();
     }
 
     public static String decrypt(String encryptedMessage){
         return useNativeInstance
                 ? Secret.decrypt(encryptedMessage).getPlainText()
-                : new String(Base64.getDecoder().decode(encryptedMessage));
+                : new StringBuffer(encryptedMessage).reverse().toString();
+    }
+
+    public static boolean isNull(Object object){
+        return object == null;
+    }
+
+    public static boolean nonNull(Object object){
+        return object != null;
     }
 }

@@ -8,8 +8,6 @@ import java.util.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.subjectContains;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.*;
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.NEWLINE;
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.stringify;
 
 /**
  * @author Nick Grealy

@@ -1,13 +1,12 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.utils;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 
-import static java.util.Objects.*;
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.isNull;
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.nonNull;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.stringify;
 
 /**

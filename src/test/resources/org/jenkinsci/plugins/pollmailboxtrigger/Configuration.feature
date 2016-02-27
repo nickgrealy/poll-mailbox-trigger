@@ -1,4 +1,3 @@
-
 Feature: Configuration
 
   Background: The tests are setup.
@@ -23,17 +22,17 @@ Feature: Configuration
       | Host     | Username | Password |
       | mail.com | morty    | chickens |
     Then the effective configuration should be
-      | folder              | INBOX        |
-      | host                | mail.com     |
-      | mail.debug          | false        |
-      | mail.debug.auth     | false        |
-      | mail.imaps.host     | mail.com     |
-      | mail.imaps.port     | 993          |
-      | password            | Y2hpY2tlbnM= |
-      | receivedXMinutesAgo | 1440         |
-      | storeName           | imaps        |
-      | subjectContains     | jenkins >    |
-      | username            | morty        |
+      | folder              | INBOX     |
+      | host                | mail.com  |
+      | mail.debug          | false     |
+      | mail.debug.auth     | false     |
+      | mail.imaps.host     | mail.com  |
+      | mail.imaps.port     | 993       |
+      | password            | snekcihc  |
+      | receivedXMinutesAgo | 1440      |
+      | storeName           | imaps     |
+      | subjectContains     | jenkins > |
+      | username            | morty     |
 
 
   Scenario: I want to be able to override the default config values.
@@ -62,7 +61,7 @@ Feature: Configuration
       | mail.fff.host              | xxx  |
       | mail.fff.port              | 111  |
       | mail.fff.timeout           | 333  |
-      | password                   | Y2Nj |
+      | password                   | ccc  |
       | receivedXMinutesAgo        | 222  |
       | storeName                  | fff  |
       | subjectContains            | ddd  |
@@ -84,8 +83,8 @@ Feature: Configuration
     subjectContains=
     """
     Then the effective configuration should be
-      | password | Y2Nj |
-      | username | bbb  |
+      | password | ccc |
+      | username | bbb |
 
 
   Scenario: I want the imap port and host varaibles to be automatically updated, if I switch to IMAP [no 'S'].
@@ -97,14 +96,14 @@ Feature: Configuration
     storeName=imap
     """
     Then the effective configuration should be
-      | folder              | INBOX        |
-      | host                | mail.com     |
-      | mail.debug          | false        |
-      | mail.debug.auth     | false        |
-      | mail.imap.host      | mail.com     |
-      | mail.imap.port      | 143          |
-      | password            | Y2hpY2tlbnM= |
-      | receivedXMinutesAgo | 1440         |
-      | storeName           | imap         |
-      | subjectContains     | jenkins >    |
-      | username            | morty        |
+      | folder              | INBOX     |
+      | host                | mail.com  |
+      | mail.debug          | false     |
+      | mail.debug.auth     | false     |
+      | mail.imap.host      | mail.com  |
+      | mail.imap.port      | 143       |
+      | password            | snekcihc  |
+      | receivedXMinutesAgo | 1440      |
+      | storeName           | imap      |
+      | subjectContains     | jenkins > |
+      | username            | morty     |

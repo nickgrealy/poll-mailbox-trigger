@@ -7,11 +7,10 @@ import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMultipart
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-import static javax.mail.Flags.*
+import static javax.mail.Flags.Flag
 
 /**
  * Created by nickgrealy@gmail.com on 17/10/14.
