@@ -7,6 +7,11 @@ import javax.mail.Message
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMultipart
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+
+import static javax.mail.Flags.*
 
 /**
  * Created by nickgrealy@gmail.com on 17/10/14.
@@ -46,8 +51,13 @@ Nick
      * @param subject
      * @return
      */
-    public static Message buildMessage(subject = DEFAULT_SUBJECT, sentReceivedDate = DEFAULT_DATE) {
+    public static Message buildMessage(String subject = DEFAULT_SUBJECT, Date sentReceivedDate = DEFAULT_DATE) {
         buildMessageCandidate(subject, sentReceivedDate) as NoopMessage
+    }
+
+    public static Message buildMessage(String subject = DEFAULT_SUBJECT, LocalDateTime sentReceivedDate, boolean isSeenFlag) {
+        Date date = Date.from(sentReceivedDate.atZone(ZoneId.systemDefault()).toInstant())
+        buildMessageCandidate(subject, date, [isSeenFlag ? Flag.SEEN : Flag.RECENT]) as NoopMessage
     }
 
     /**
@@ -55,16 +65,15 @@ Nick
      * @param subject
      * @return
      */
-    private static Map buildMessageCandidate(subject = DEFAULT_SUBJECT, sentReceivedDate = DEFAULT_DATE) {
+    private static Map buildMessageCandidate(String subject = DEFAULT_SUBJECT, Date sentReceivedDate = DEFAULT_DATE, List<Flag> flags = [Flag.ANSWERED, Flag.DRAFT]) {
         [
                 getSentDate     : { sentReceivedDate },
                 getFrom         : { ['foo1@bar.com', 'foo2@bar.com'].collect { new InternetAddress(it) } },
                 getSubject      : { subject },
                 getFlags        : {
-                    def flags = new Flags()
-                    flags.add(Flags.Flag.ANSWERED)
-                    flags.add(Flags.Flag.DRAFT)
-                    flags
+                    def tmp = new Flags()
+                    flags.each { tmp.add(it) }
+                    tmp
                 },
                 getFolder       : { [getFullName: { 'Drafts/Foobar' }] as NoopFolder },
                 getMessageNumber: { 1337 },

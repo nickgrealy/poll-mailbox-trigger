@@ -1,0 +1,3264 @@
+:dependencies
+
+------------------------------------------------------------
+Root project - A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
+------------------------------------------------------------
+
+archives - Configuration for archive artifacts.
+No dependencies
+
+compile - Compile classpath for source set 'main'.
++--- org.jenkins-ci.lib:xtrigger-lib:0.25
+|    \--- org.jenkins-ci.lib:envinject-lib:1.18
++--- com.sun.mail:javax.mail:1.5.1
+|    \--- javax.activation:activation:1.1
++--- org.jenkins-ci.main:jenkins-core:1.581
+|    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    +--- org.jenkins-ci.main:remoting:2.44
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci.main:cli:1.581
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:version-number:1.1
+|    +--- org.jenkins-ci:crypto-util:1.1
+|    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    +--- com.google.inject:guice:4.0-beta
+|    |    +--- javax.inject:javax.inject:1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    +--- cglib:cglib:3.0
+|    |    |    \--- org.ow2.asm:asm:4.0
+|    |    \--- org.ow2.asm:asm-util:4.0
+|    |         \--- org.ow2.asm:asm-tree:4.0
+|    |              \--- org.ow2.asm:asm:4.0
+|    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    +--- org.kohsuke:windows-package-checker:1.0
+|    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    +--- commons-httpclient:commons-httpclient:3.1
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    +--- args4j:args4j:2.0.23
+|    +--- org.jenkins-ci:annotation-indexer:1.7
+|    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    +--- org.kohsuke:asm5:5.0.1
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci:task-reactor:1.4
+|    +--- org.jvnet.localizer:localizer:1.10
+|    +--- antlr:antlr:2.7.6
+|    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    +--- jfree:jfreechart:1.0.9
+|    |    \--- jfree:jcommon:1.0.12
+|    +--- org.apache.ant:ant:1.8.3
+|    |    \--- org.apache.ant:ant-launcher:1.8.3
+|    +--- commons-io:commons-io:2.4
+|    +--- commons-lang:commons-lang:2.6
+|    +--- commons-digester:commons-digester:2.1
+|    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    +--- javax.mail:mail:1.4.4
+|    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    +--- jaxen:jaxen:1.1-beta-11
+|    |    +--- jdom:jdom:1.0
+|    |    \--- xom:xom:1.0b3
+|    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |         +--- xalan:xalan:2.6.0
+|    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    \--- xerces:xerces:2.2.1
+|    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    +--- oro:oro:2.0.8
+|    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    \--- log4j:log4j:1.2.9
+|    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    +--- jline:jline:0.9.94
+|    |    \--- junit:junit:3.8.1
+|    +--- org.fusesource.jansi:jansi:1.9
+|    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- xpp3:xpp3:1.1.4c
+|    +--- javax.servlet:jstl:1.1.0
+|    +--- commons-logging:commons-logging:1.1.3
+|    +--- com.sun.xml.txw2:txw2:20110809
+|    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    +--- commons-collections:commons-collections:3.2.1
+|    +--- org.jvnet.winp:winp:1.21
+|    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    \--- stax:stax-api:1.0.1
+|    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    +--- org.kohsuke:akuma:1.9
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.kohsuke:libpam4j:1.6
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- com.sun.solaris:embedded_su4j:1.1
+|    +--- net.java.sezpoz:sezpoz:1.9
+|    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    +--- commons-codec:commons-codec:1.8
+|    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.mindrot:jbcrypt:0.3m
+|    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
++--- findbugs:annotations:1.0.0
+\--- javax.servlet:servlet-api:2.4
+
+default - Configuration for default artifacts.
++--- org.jenkins-ci.lib:xtrigger-lib:0.25
+|    \--- org.jenkins-ci.lib:envinject-lib:1.18
++--- com.sun.mail:javax.mail:1.5.1
+|    \--- javax.activation:activation:1.1
++--- org.jenkins-ci.main:jenkins-core:1.581
+|    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    +--- org.jenkins-ci.main:remoting:2.44
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci.main:cli:1.581
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:version-number:1.1
+|    +--- org.jenkins-ci:crypto-util:1.1
+|    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    +--- com.google.inject:guice:4.0-beta
+|    |    +--- javax.inject:javax.inject:1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    +--- cglib:cglib:3.0
+|    |    |    \--- org.ow2.asm:asm:4.0
+|    |    \--- org.ow2.asm:asm-util:4.0
+|    |         \--- org.ow2.asm:asm-tree:4.0
+|    |              \--- org.ow2.asm:asm:4.0
+|    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    +--- org.kohsuke:windows-package-checker:1.0
+|    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    +--- commons-httpclient:commons-httpclient:3.1
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    +--- args4j:args4j:2.0.23
+|    +--- org.jenkins-ci:annotation-indexer:1.7
+|    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    +--- org.kohsuke:asm5:5.0.1
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci:task-reactor:1.4
+|    +--- org.jvnet.localizer:localizer:1.10
+|    +--- antlr:antlr:2.7.6
+|    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    +--- jfree:jfreechart:1.0.9
+|    |    \--- jfree:jcommon:1.0.12
+|    +--- org.apache.ant:ant:1.8.3
+|    |    \--- org.apache.ant:ant-launcher:1.8.3
+|    +--- commons-io:commons-io:2.4
+|    +--- commons-lang:commons-lang:2.6
+|    +--- commons-digester:commons-digester:2.1
+|    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    +--- javax.mail:mail:1.4.4
+|    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    +--- jaxen:jaxen:1.1-beta-11
+|    |    +--- jdom:jdom:1.0
+|    |    \--- xom:xom:1.0b3
+|    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |         +--- xalan:xalan:2.6.0
+|    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    \--- xerces:xerces:2.2.1
+|    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    +--- oro:oro:2.0.8
+|    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    \--- log4j:log4j:1.2.9
+|    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    +--- jline:jline:0.9.94
+|    |    \--- junit:junit:3.8.1
+|    +--- org.fusesource.jansi:jansi:1.9
+|    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- xpp3:xpp3:1.1.4c
+|    +--- javax.servlet:jstl:1.1.0
+|    +--- commons-logging:commons-logging:1.1.3
+|    +--- com.sun.xml.txw2:txw2:20110809
+|    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    +--- commons-collections:commons-collections:3.2.1
+|    +--- org.jvnet.winp:winp:1.21
+|    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    \--- stax:stax-api:1.0.1
+|    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    +--- org.kohsuke:akuma:1.9
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.kohsuke:libpam4j:1.6
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- com.sun.solaris:embedded_su4j:1.1
+|    +--- net.java.sezpoz:sezpoz:1.9
+|    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    +--- commons-codec:commons-codec:1.8
+|    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.mindrot:jbcrypt:0.3m
+|    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
++--- findbugs:annotations:1.0.0
+\--- javax.servlet:servlet-api:2.4
+
+jenkinsCore - Jenkins core that your plugin is built against
++--- org.jenkins-ci.main:jenkins-core:1.581
+|    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    +--- org.jenkins-ci.main:remoting:2.44
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci.main:cli:1.581
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:version-number:1.1
+|    +--- org.jenkins-ci:crypto-util:1.1
+|    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    +--- com.google.inject:guice:4.0-beta
+|    |    +--- javax.inject:javax.inject:1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    +--- cglib:cglib:3.0
+|    |    |    \--- org.ow2.asm:asm:4.0
+|    |    \--- org.ow2.asm:asm-util:4.0
+|    |         \--- org.ow2.asm:asm-tree:4.0
+|    |              \--- org.ow2.asm:asm:4.0
+|    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    +--- org.kohsuke:windows-package-checker:1.0
+|    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    +--- commons-httpclient:commons-httpclient:3.1
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    +--- args4j:args4j:2.0.23
+|    +--- org.jenkins-ci:annotation-indexer:1.7
+|    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    +--- org.kohsuke:asm5:5.0.1
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci:task-reactor:1.4
+|    +--- org.jvnet.localizer:localizer:1.10
+|    +--- antlr:antlr:2.7.6
+|    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    +--- jfree:jfreechart:1.0.9
+|    |    \--- jfree:jcommon:1.0.12
+|    +--- org.apache.ant:ant:1.8.3
+|    |    \--- org.apache.ant:ant-launcher:1.8.3
+|    +--- commons-io:commons-io:2.4
+|    +--- commons-lang:commons-lang:2.6
+|    +--- commons-digester:commons-digester:2.1
+|    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    +--- javax.mail:mail:1.4.4
+|    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    +--- jaxen:jaxen:1.1-beta-11
+|    |    +--- jdom:jdom:1.0
+|    |    \--- xom:xom:1.0b3
+|    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |         +--- xalan:xalan:2.6.0
+|    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    \--- xerces:xerces:2.2.1
+|    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    +--- oro:oro:2.0.8
+|    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    \--- log4j:log4j:1.2.9
+|    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    +--- jline:jline:0.9.94
+|    |    \--- junit:junit:3.8.1
+|    +--- org.fusesource.jansi:jansi:1.9
+|    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- xpp3:xpp3:1.1.4c
+|    +--- javax.servlet:jstl:1.1.0
+|    +--- commons-logging:commons-logging:1.1.3
+|    +--- com.sun.xml.txw2:txw2:20110809
+|    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    +--- commons-collections:commons-collections:3.2.1
+|    +--- org.jvnet.winp:winp:1.21
+|    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    \--- stax:stax-api:1.0.1
+|    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    +--- org.kohsuke:akuma:1.9
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.kohsuke:libpam4j:1.6
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- com.sun.solaris:embedded_su4j:1.1
+|    +--- net.java.sezpoz:sezpoz:1.9
+|    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    +--- commons-codec:commons-codec:1.8
+|    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.mindrot:jbcrypt:0.3m
+|    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
++--- findbugs:annotations:1.0.0
+\--- javax.servlet:servlet-api:2.4
+
+jenkinsPlugins - Jenkins plugins which your plugin is built against
+No dependencies
+
+jenkinsTest - Jenkins plugin test dependencies.
++--- org.jenkins-ci.main:jenkins-test-harness:1.581
+|    +--- org.jenkins-ci.main:jenkins-war:1.581
+|    |    +--- org.jenkins-ci.main:jenkins-core:1.581
+|    |    |    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    |    |    +--- org.jenkins-ci.main:remoting:2.44
+|    |    |    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    |    |    +--- org.jenkins-ci.main:cli:1.581
+|    |    |    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    |    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    |    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    |    |    +--- org.jenkins-ci:version-number:1.1
+|    |    |    +--- org.jenkins-ci:crypto-util:1.1
+|    |    |    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    |    |    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    |    |    +--- com.google.inject:guice:4.0-beta
+|    |    |    |    +--- javax.inject:javax.inject:1
+|    |    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    |    |    +--- cglib:cglib:3.0
+|    |    |    |    |    \--- org.ow2.asm:asm:4.0
+|    |    |    |    \--- org.ow2.asm:asm-util:4.0
+|    |    |    |         \--- org.ow2.asm:asm-tree:4.0
+|    |    |    |              \--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    |    |    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    |    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    |    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    |    |    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    |    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    |    |    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    |    |    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    |    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    |    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    |    |    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    |    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    |    |    +--- org.kohsuke:windows-package-checker:1.0
+|    |    |    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    |    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    |    |    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    |    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    |    |    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    |    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    |    |    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    |    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    |    |    +--- commons-httpclient:commons-httpclient:3.1
+|    |    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    |    |    +--- args4j:args4j:2.0.23
+|    |    |    +--- org.jenkins-ci:annotation-indexer:1.7
+|    |    |    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    |    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    |    |    +--- org.jenkins-ci:task-reactor:1.4
+|    |    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    |    +--- antlr:antlr:2.7.6
+|    |    |    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    |    |    +--- jfree:jfreechart:1.0.9
+|    |    |    |    \--- jfree:jcommon:1.0.12
+|    |    |    +--- org.apache.ant:ant:1.8.3 -> 1.9.2
+|    |    |    |    \--- org.apache.ant:ant-launcher:1.9.2
+|    |    |    +--- commons-io:commons-io:2.4
+|    |    |    +--- commons-lang:commons-lang:2.6
+|    |    |    +--- commons-digester:commons-digester:2.1
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    |    +--- javax.mail:mail:1.4.4
+|    |    |    |    \--- javax.activation:activation:1.1
+|    |    |    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    |    |    +--- jaxen:jaxen:1.1-beta-11
+|    |    |    |    +--- jdom:jdom:1.0
+|    |    |    |    \--- xom:xom:1.0b3
+|    |    |    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |    |    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |    |    |         +--- xalan:xalan:2.6.0 -> 2.7.1
+|    |    |    |         |    \--- xalan:serializer:2.7.1
+|    |    |    |         |         \--- xml-apis:xml-apis:1.3.04
+|    |    |    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    |    |    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    |    |    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    |    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    |    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    |    |    \--- xerces:xerces:2.2.1
+|    |    |    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    |    |    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    |    |    +--- oro:oro:2.0.8
+|    |    |    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    |    |    \--- log4j:log4j:1.2.9
+|    |    |    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    |    |    +--- jline:jline:0.9.94
+|    |    |    |    \--- junit:junit:3.8.1 -> 4.11
+|    |    |    |         \--- org.hamcrest:hamcrest-core:1.3
+|    |    |    +--- org.fusesource.jansi:jansi:1.9
+|    |    |    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |    |    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- xpp3:xpp3:1.1.4c
+|    |    |    +--- javax.servlet:jstl:1.1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.3
+|    |    |    +--- com.sun.xml.txw2:txw2:20110809
+|    |    |    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    |    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    +--- org.jvnet.winp:winp:1.21
+|    |    |    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    |    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    |    |    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    |    |    \--- stax:stax-api:1.0.1
+|    |    |    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    |    |    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    |    |    +--- org.kohsuke:akuma:1.9
+|    |    |    |    \--- net.java.dev.jna:jna:3.4.0
+|    |    |    +--- org.kohsuke:libpam4j:1.6
+|    |    |    |    \--- net.java.dev.jna:jna:3.4.0
+|    |    |    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    |    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    |    |    +--- com.sun.solaris:embedded_su4j:1.1
+|    |    |    +--- net.java.sezpoz:sezpoz:1.9
+|    |    |    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    |    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |    |    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    |    |    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    |    |    +--- commons-codec:commons-codec:1.8
+|    |    |    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    |    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    |    +--- org.mindrot:jbcrypt:0.3m
+|    |    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    |    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jenkins-ci.modules:instance-identity:1.4
+|    |    |    \--- org.bouncycastle:bcpkix-jdk15on:1.47
+|    |    |         \--- org.bouncycastle:bcprov-jdk15on:1.47
+|    |    +--- org.jenkins-ci.modules:slave-installer:1.3
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.1 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:windows-slave-installer:1.4
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    +--- org.jenkins-ci.modules:launchd-slave-installer:1.2
+|    |    |    +--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.1 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:upstart-slave-installer:1.1
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    +--- org.jenkins-ci.modules:systemd-slave-installer:1.1
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.3 (*)
+|    |    \--- org.slf4j:slf4j-jdk14:1.7.7
+|    |         \--- org.slf4j:slf4j-api:1.7.7
+|    +--- org.jenkins-ci.main:maven-plugin:2.5
+|    |    +--- org.jenkins-ci.plugins:javadoc:1.0
+|    |    +--- org.jenkins-ci.plugins:mailer:1.7 -> 1.10
+|    |    +--- org.jenkins-ci.main.maven:maven-agent:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven-interceptor:1.5
+|    |    |    |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    |    +--- org.apache.ant:ant:1.9.2 (*)
+|    |    |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven-interceptor:1.5 (*)
+|    |    +--- org.jvnet.hudson:maven2.1-interceptor:1.2
+|    |    +--- org.jenkins-ci.main.maven:maven3-agent:1.5
+|    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0
+|    |    |    |    +--- org.apache.maven:maven-settings:3.1.0
+|    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    +--- org.apache.maven:maven-core:3.1.0
+|    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |    |    +--- org.apache.maven:maven-settings-builder:3.1.0
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |    |    |    \--- org.sonatype.plexus:plexus-sec-dispatcher:1.3
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-utils:1.5.5 -> 3.0.10
+|    |    |    |    |    |         \--- org.sonatype.plexus:plexus-cipher:1.4 -> 1.7
+|    |    |    |    |    +--- org.apache.maven:maven-repository-metadata:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-artifact:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-plugin-api:3.1.0
+|    |    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    |    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5
+|    |    |    |    |    |         +--- javax.enterprise:cdi-api:1.0
+|    |    |    |    |    |         |    +--- javax.annotation:jsr250-api:1.0
+|    |    |    |    |    |         |    \--- javax.inject:javax.inject:1
+|    |    |    |    |    |         +--- com.google.guava:guava:10.0.1 -> 14.0
+|    |    |    |    |    |         +--- org.sonatype.sisu:sisu-guice:3.1.0
+|    |    |    |    |    |         |    +--- javax.inject:javax.inject:1
+|    |    |    |    |    |         |    \--- aopalliance:aopalliance:1.0
+|    |    |    |    |    |         +--- org.eclipse.sisu:org.eclipse.sisu.inject:0.0.0.M5
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-classworlds:2.4 -> 2.5.1
+|    |    |    |    |    |         \--- org.codehaus.plexus:plexus-utils:2.1 -> 3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    \--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0
+|    |    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-repository-metadata:3.1.0 (*)
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    |    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    \--- org.sonatype.plexus:plexus-sec-dispatcher:1.3 (*)
+|    |    |    |    +--- org.apache.maven:maven-plugin-api:3.1.0 (*)
+|    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    +--- org.sonatype.plexus:plexus-sec-dispatcher:1.3 (*)
+|    |    |    |    +--- org.sonatype.plexus:plexus-cipher:1.7
+|    |    |    |    +--- org.slf4j:slf4j-api:1.7.4 -> 1.7.7
+|    |    |    |    +--- commons-cli:commons-cli:1.2
+|    |    |    |    \--- org.apache.maven:maven-compat:3.1.0
+|    |    |    |         +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    |         +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |         +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |         +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |         +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |         \--- org.apache.maven.wagon:wagon-provider-api:2.4
+|    |    |    |              \--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    \--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    +--- org.jenkins-ci.main.maven:maven31-agent:1.5
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven3-interceptor:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5
+|    |    |    |    +--- org.apache.maven:maven-core:3.0.5 -> 3.1.0 (*)
+|    |    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0 (*)
+|    |    |    |    \--- org.apache.maven:maven-aether-provider:3.0.5 -> 3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-core:3.0.5 -> 3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0 (*)
+|    |    |    \--- org.apache.maven:maven-aether-provider:3.0.5 -> 3.1.0 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven31-interceptor:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5 (*)
+|    |    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5 (*)
+|    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-compat:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    +--- org.eclipse.aether:aether-impl:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-transport-wagon:0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0 -> 2.4 (*)
+|    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M5 (*)
+|    |    +--- com.google.inject:guice:4.0-beta (*)
+|    |    +--- org.apache.maven.wagon:wagon-http:2.4
+|    |    |    +--- org.apache.maven.wagon:wagon-http-shared4:2.4
+|    |    |    |    +--- org.jsoup:jsoup:1.7.1
+|    |    |    |    +--- org.apache.httpcomponents:httpclient:4.2.3 -> 4.2.5
+|    |    |    |    |    +--- org.apache.httpcomponents:httpcore:4.2.4
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- commons-codec:commons-codec:1.6 -> 1.8
+|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.2.3 -> 4.2.4
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:2.0.1 -> 2.4
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    |    +--- org.apache.httpcomponents:httpclient:4.2.3 -> 4.2.5 (*)
+|    |    |    +--- org.apache.httpcomponents:httpcore:4.2.3 -> 4.2.4
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.httpcomponents:httpclient:4.2.5 (*)
+|    |    +--- org.apache.httpcomponents:httpcore:4.2.4
+|    |    +--- org.apache.maven.wagon:wagon-file:2.4
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ftp:2.4
+|    |    |    +--- commons-net:commons-net:3.1
+|    |    |    +--- org.slf4j:slf4j-api:1.7.2 -> 1.7.7
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ssh:2.4
+|    |    |    +--- com.jcraft:jsch:0.1.44-1
+|    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    +--- org.apache.maven.wagon:wagon-ssh-common:2.4
+|    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    |    +--- org.codehaus.plexus:plexus-interactivity-api:1.0-alpha-6
+|    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:1.4 -> 3.0.10
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ssh-external:2.4
+|    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    +--- org.apache.maven.wagon:wagon-ssh-common:2.4 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.reporting:maven-reporting-api:3.0
+|    |    |    \--- org.apache.maven.doxia:doxia-sink-api:1.0
+|    |    +--- org.codehaus.plexus:plexus-classworlds:2.5.1
+|    |    +--- org.jenkins-ci.lib:lib-jenkins-maven-artifact-manager:1.2
+|    |    |    +--- org.codehaus.plexus:plexus-utils:2.0.5 -> 3.0.10
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0-beta-7 -> 2.4 (*)
+|    |    +--- org.jenkins-ci.lib:lib-jenkins-maven-embedder:3.11
+|    |    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-compat:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    +--- org.eclipse.aether:aether-connector-wagon:0.9.0.M2
+|    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0 -> 2.4 (*)
+|    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.apache.ant:ant:1.9.2 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    \--- org.apache.maven.wagon:wagon-webdav-jackrabbit:2.4
+|    |         +--- org.apache.maven.wagon:wagon-http-shared:2.4
+|    |         |    +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         |    +--- commons-lang:commons-lang:2.6
+|    |         |    +--- commons-io:commons-io:2.2 -> 2.4
+|    |         |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |         +--- org.apache.jackrabbit:jackrabbit-webdav:2.5.2
+|    |         |    +--- org.slf4j:slf4j-api:1.6.4 -> 1.7.7
+|    |         |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         +--- org.slf4j:slf4j-api:1.7.2 -> 1.7.7
+|    |         +--- commons-lang:commons-lang:2.6
+|    |         +--- commons-io:commons-io:2.2 -> 2.4
+|    |         +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    +--- org.jenkins-ci.plugins:ant:1.2
+|    +--- org.jenkins-ci.plugins:subversion:1.45
+|    |    \--- org.jenkins-ci.svnkit:svnkit:1.7.6-jenkins-1
+|    |         +--- org.tmatesoft.sqljet:sqljet:1.1.0
+|    |         |    \--- org.antlr:antlr-runtime:3.4
+|    |         \--- de.regnis.q.sequence:sequence-library:1.0.1
+|    +--- org.jenkins-ci.plugins:mailer:1.10
+|    +--- org.jenkins-ci.plugins:matrix-auth:1.0.2
+|    +--- org.jenkins-ci.plugins:antisamy-markup-formatter:1.0
+|    |    \--- org.kohsuke:owasp-html-sanitizer:r88
+|    +--- org.jenkins-ci.plugins:matrix-project:1.0-beta-1
+|    +--- org.jenkins-ci.plugins:junit:1.0
+|    +--- org.mortbay.jetty:jetty:6.1.26
+|    |    +--- org.mortbay.jetty:jetty-util:6.1.26
+|    |    \--- org.mortbay.jetty:servlet-api:2.5-20081211
+|    +--- org.jenkins-ci:test-annotations:1.1
+|    +--- org.jvnet.mock-javamail:mock-javamail:1.7
+|    |    +--- javax.mail:mail:1.4 -> 1.4.4 (*)
+|    |    \--- junit:junit:3.8 -> 4.11 (*)
+|    +--- junit:junit:4.11 (*)
+|    +--- org.hamcrest:hamcrest-library:1.3
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    +--- org.jenkins-ci:htmlunit:2.6-jenkins-6
+|    |    +--- xalan:xalan:2.7.1 (*)
+|    |    +--- commons-collections:commons-collections:3.2.1
+|    |    +--- commons-lang:commons-lang:2.4 -> 2.6
+|    |    +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jvnet.hudson:htmlunit-core-js:2.6-hudson-1
+|    |    +--- xerces:xercesImpl:2.9.1
+|    |    +--- net.sourceforge.nekohtml:nekohtml:1.9.13
+|    |    +--- net.sourceforge.cssparser:cssparser:0.9.5
+|    |    |    \--- org.w3c.css:sac:1.3
+|    |    +--- commons-io:commons-io:1.4 -> 2.4
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- xalan:xalan:2.7.1 (*)
+|    +--- org.jvnet.hudson:embedded-rhino-debugger:1.2
+|    |    \--- org.jvnet.hudson:htmlunit-core-js:2.6-hudson-1
+|    +--- org.jvnet.hudson:netx:0.5-hudson-2
+|    +--- org.easymock:easymock:2.4
+|    +--- org.netbeans.modules:org-netbeans-insane:RELEASE72
+|    +--- com.github.stephenc.findbugs:findbugs-annotations:1.3.9-1
+|    \--- org.codehaus.geb:geb-implicit-assertions:0.7.2
++--- org.jenkins-ci.main:ui-samples-plugin:2.0
+\--- org.jenkins-ci.main:jenkins-war:1.581 (*)
+
+jenkinsWar - Jenkins war that corresponds to the Jenkins core
+\--- org.jenkins-ci.main:jenkins-war:1.581
+
+optionalJenkinsPlugins - Optional Jenkins plugins dependencies which your plugin is built against
+No dependencies
+
+pluginResources
++--- org.jenkins-ci.main:jenkins-test-harness:1.581
+|    +--- org.jenkins-ci.main:jenkins-war:1.581
+|    |    +--- org.jenkins-ci.main:jenkins-core:1.581
+|    |    |    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    |    |    +--- org.jenkins-ci.main:remoting:2.44
+|    |    |    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    |    |    +--- org.jenkins-ci.main:cli:1.581
+|    |    |    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    |    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    |    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    |    |    +--- org.jenkins-ci:version-number:1.1
+|    |    |    +--- org.jenkins-ci:crypto-util:1.1
+|    |    |    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    |    |    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    |    |    +--- com.google.inject:guice:4.0-beta
+|    |    |    |    +--- javax.inject:javax.inject:1
+|    |    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    |    |    +--- cglib:cglib:3.0
+|    |    |    |    |    \--- org.ow2.asm:asm:4.0
+|    |    |    |    \--- org.ow2.asm:asm-util:4.0
+|    |    |    |         \--- org.ow2.asm:asm-tree:4.0
+|    |    |    |              \--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    |    |    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    |    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    |    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    |    |    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    |    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    |    |    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    |    |    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    |    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    |    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    |    |    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    |    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    |    |    +--- org.kohsuke:windows-package-checker:1.0
+|    |    |    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    |    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    |    |    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    |    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    |    |    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    |    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    |    |    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    |    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    |    |    +--- commons-httpclient:commons-httpclient:3.1
+|    |    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    |    |    +--- args4j:args4j:2.0.23
+|    |    |    +--- org.jenkins-ci:annotation-indexer:1.7
+|    |    |    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    |    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    |    |    +--- org.jenkins-ci:task-reactor:1.4
+|    |    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    |    +--- antlr:antlr:2.7.6
+|    |    |    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    |    |    +--- jfree:jfreechart:1.0.9
+|    |    |    |    \--- jfree:jcommon:1.0.12
+|    |    |    +--- org.apache.ant:ant:1.8.3 -> 1.9.2
+|    |    |    |    \--- org.apache.ant:ant-launcher:1.9.2
+|    |    |    +--- commons-io:commons-io:2.4
+|    |    |    +--- commons-lang:commons-lang:2.6
+|    |    |    +--- commons-digester:commons-digester:2.1
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    |    +--- javax.mail:mail:1.4.4
+|    |    |    |    \--- javax.activation:activation:1.1
+|    |    |    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    |    |    +--- jaxen:jaxen:1.1-beta-11
+|    |    |    |    +--- jdom:jdom:1.0
+|    |    |    |    \--- xom:xom:1.0b3
+|    |    |    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |    |    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |    |    |         +--- xalan:xalan:2.6.0 -> 2.7.1
+|    |    |    |         |    \--- xalan:serializer:2.7.1
+|    |    |    |         |         \--- xml-apis:xml-apis:1.3.04
+|    |    |    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    |    |    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    |    |    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    |    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    |    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    |    |    \--- xerces:xerces:2.2.1
+|    |    |    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    |    |    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    |    |    +--- oro:oro:2.0.8
+|    |    |    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    |    |    \--- log4j:log4j:1.2.9
+|    |    |    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    |    |    +--- jline:jline:0.9.94
+|    |    |    |    \--- junit:junit:3.8.1 -> 4.11
+|    |    |    |         \--- org.hamcrest:hamcrest-core:1.3
+|    |    |    +--- org.fusesource.jansi:jansi:1.9
+|    |    |    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |    |    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- xpp3:xpp3:1.1.4c
+|    |    |    +--- javax.servlet:jstl:1.1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.3
+|    |    |    +--- com.sun.xml.txw2:txw2:20110809
+|    |    |    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    |    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    +--- org.jvnet.winp:winp:1.21
+|    |    |    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    |    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    |    |    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    |    |    \--- stax:stax-api:1.0.1
+|    |    |    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    |    |    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    |    |    +--- org.kohsuke:akuma:1.9
+|    |    |    |    \--- net.java.dev.jna:jna:3.4.0
+|    |    |    +--- org.kohsuke:libpam4j:1.6
+|    |    |    |    \--- net.java.dev.jna:jna:3.4.0
+|    |    |    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    |    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    |    |    +--- com.sun.solaris:embedded_su4j:1.1
+|    |    |    +--- net.java.sezpoz:sezpoz:1.9
+|    |    |    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    |    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |    |    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    |    |    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    |    |    +--- commons-codec:commons-codec:1.8
+|    |    |    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    |    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    |    +--- org.mindrot:jbcrypt:0.3m
+|    |    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    |    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jenkins-ci.modules:instance-identity:1.4
+|    |    |    \--- org.bouncycastle:bcpkix-jdk15on:1.47
+|    |    |         \--- org.bouncycastle:bcprov-jdk15on:1.47
+|    |    +--- org.jenkins-ci.modules:ssh-cli-auth:1.2
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.2 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:slave-installer:1.3
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.1 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:windows-slave-installer:1.4
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    +--- org.jenkins-ci.modules:launchd-slave-installer:1.2
+|    |    |    +--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.1 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:upstart-slave-installer:1.1
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    +--- org.jenkins-ci.modules:systemd-slave-installer:1.1
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.3 (*)
+|    |    +--- org.jenkins-ci.modules:sshd:1.6
+|    |    |    +--- org.slf4j:slf4j-api:1.6.1 -> 1.7.7
+|    |    |    +--- org.apache.sshd:sshd-core:0.8.0
+|    |    |    |    \--- org.apache.mina:mina-core:2.0.5
+|    |    |    |         \--- org.slf4j:slf4j-api:1.6.6 -> 1.7.7
+|    |    |    +--- org.jenkins-ci.modules:instance-identity:1.2 -> 1.4 (*)
+|    |    |    \--- org.jenkins-ci.modules:ssh-cli-auth:1.1 -> 1.2 (*)
+|    |    \--- org.slf4j:slf4j-jdk14:1.7.7
+|    |         \--- org.slf4j:slf4j-api:1.7.7
+|    +--- org.jenkins-ci.main:maven-plugin:2.5
+|    |    +--- org.jenkins-ci.plugins:javadoc:1.0
+|    |    +--- org.jenkins-ci.plugins:mailer:1.7 -> 1.10
+|    |    +--- org.jenkins-ci.main.maven:maven-agent:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven-interceptor:1.5
+|    |    |    |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    |    +--- org.apache.ant:ant:1.9.2 (*)
+|    |    |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven-interceptor:1.5 (*)
+|    |    +--- org.jvnet.hudson:maven2.1-interceptor:1.2
+|    |    +--- org.jenkins-ci.main.maven:maven3-agent:1.5
+|    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0
+|    |    |    |    +--- org.apache.maven:maven-settings:3.1.0
+|    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    +--- org.apache.maven:maven-core:3.1.0
+|    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |    |    +--- org.apache.maven:maven-settings-builder:3.1.0
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |    |    |    \--- org.sonatype.plexus:plexus-sec-dispatcher:1.3
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-utils:1.5.5 -> 3.0.10
+|    |    |    |    |    |         \--- org.sonatype.plexus:plexus-cipher:1.4 -> 1.7
+|    |    |    |    |    +--- org.apache.maven:maven-repository-metadata:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-artifact:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-plugin-api:3.1.0
+|    |    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    |    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5
+|    |    |    |    |    |         +--- javax.enterprise:cdi-api:1.0
+|    |    |    |    |    |         |    +--- javax.annotation:jsr250-api:1.0
+|    |    |    |    |    |         |    \--- javax.inject:javax.inject:1
+|    |    |    |    |    |         +--- com.google.guava:guava:10.0.1 -> 14.0
+|    |    |    |    |    |         +--- org.sonatype.sisu:sisu-guice:3.1.0
+|    |    |    |    |    |         |    +--- javax.inject:javax.inject:1
+|    |    |    |    |    |         |    \--- aopalliance:aopalliance:1.0
+|    |    |    |    |    |         +--- org.eclipse.sisu:org.eclipse.sisu.inject:0.0.0.M5
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-classworlds:2.4 -> 2.5.1
+|    |    |    |    |    |         \--- org.codehaus.plexus:plexus-utils:2.1 -> 3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    \--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0
+|    |    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-repository-metadata:3.1.0 (*)
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    |    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    \--- org.sonatype.plexus:plexus-sec-dispatcher:1.3 (*)
+|    |    |    |    +--- org.apache.maven:maven-plugin-api:3.1.0 (*)
+|    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    +--- org.sonatype.plexus:plexus-sec-dispatcher:1.3 (*)
+|    |    |    |    +--- org.sonatype.plexus:plexus-cipher:1.7
+|    |    |    |    +--- org.slf4j:slf4j-api:1.7.4 -> 1.7.7
+|    |    |    |    +--- commons-cli:commons-cli:1.2
+|    |    |    |    \--- org.apache.maven:maven-compat:3.1.0
+|    |    |    |         +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    |         +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |         +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |         +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |         +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |         \--- org.apache.maven.wagon:wagon-provider-api:2.4
+|    |    |    |              \--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    \--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    +--- org.jenkins-ci.main.maven:maven31-agent:1.5
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven3-interceptor:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5
+|    |    |    |    +--- org.apache.maven:maven-core:3.0.5 -> 3.1.0 (*)
+|    |    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0 (*)
+|    |    |    |    \--- org.apache.maven:maven-aether-provider:3.0.5 -> 3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-core:3.0.5 -> 3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0 (*)
+|    |    |    \--- org.apache.maven:maven-aether-provider:3.0.5 -> 3.1.0 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven31-interceptor:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5 (*)
+|    |    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5 (*)
+|    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-compat:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    +--- org.eclipse.aether:aether-impl:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-transport-wagon:0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0 -> 2.4 (*)
+|    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M5 (*)
+|    |    +--- com.google.inject:guice:4.0-beta (*)
+|    |    +--- org.apache.maven.wagon:wagon-http:2.4
+|    |    |    +--- org.apache.maven.wagon:wagon-http-shared4:2.4
+|    |    |    |    +--- org.jsoup:jsoup:1.7.1
+|    |    |    |    +--- org.apache.httpcomponents:httpclient:4.2.3 -> 4.2.5
+|    |    |    |    |    +--- org.apache.httpcomponents:httpcore:4.2.4
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- commons-codec:commons-codec:1.6 -> 1.8
+|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.2.3 -> 4.2.4
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:2.0.1 -> 2.4
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    |    +--- org.apache.httpcomponents:httpclient:4.2.3 -> 4.2.5 (*)
+|    |    |    +--- org.apache.httpcomponents:httpcore:4.2.3 -> 4.2.4
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.httpcomponents:httpclient:4.2.5 (*)
+|    |    +--- org.apache.httpcomponents:httpcore:4.2.4
+|    |    +--- org.apache.maven.wagon:wagon-file:2.4
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ftp:2.4
+|    |    |    +--- commons-net:commons-net:3.1
+|    |    |    +--- org.slf4j:slf4j-api:1.7.2 -> 1.7.7
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ssh:2.4
+|    |    |    +--- com.jcraft:jsch:0.1.44-1
+|    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    +--- org.apache.maven.wagon:wagon-ssh-common:2.4
+|    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    |    +--- org.codehaus.plexus:plexus-interactivity-api:1.0-alpha-6
+|    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:1.4 -> 3.0.10
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ssh-external:2.4
+|    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    +--- org.apache.maven.wagon:wagon-ssh-common:2.4 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.reporting:maven-reporting-api:3.0
+|    |    |    \--- org.apache.maven.doxia:doxia-sink-api:1.0
+|    |    +--- org.codehaus.plexus:plexus-classworlds:2.5.1
+|    |    +--- org.jenkins-ci.lib:lib-jenkins-maven-artifact-manager:1.2
+|    |    |    +--- org.codehaus.plexus:plexus-utils:2.0.5 -> 3.0.10
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0-beta-7 -> 2.4 (*)
+|    |    +--- org.jenkins-ci.lib:lib-jenkins-maven-embedder:3.11
+|    |    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-compat:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    +--- org.eclipse.aether:aether-connector-wagon:0.9.0.M2
+|    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0 -> 2.4 (*)
+|    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.apache.ant:ant:1.9.2 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    \--- org.apache.maven.wagon:wagon-webdav-jackrabbit:2.4
+|    |         +--- org.apache.maven.wagon:wagon-http-shared:2.4
+|    |         |    +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         |    +--- commons-lang:commons-lang:2.6
+|    |         |    +--- commons-io:commons-io:2.2 -> 2.4
+|    |         |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |         +--- org.apache.jackrabbit:jackrabbit-webdav:2.5.2
+|    |         |    +--- org.slf4j:slf4j-api:1.6.4 -> 1.7.7
+|    |         |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         +--- org.slf4j:slf4j-api:1.7.2 -> 1.7.7
+|    |         +--- commons-lang:commons-lang:2.6
+|    |         +--- commons-io:commons-io:2.2 -> 2.4
+|    |         +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    +--- org.jenkins-ci.plugins:ant:1.2
+|    +--- org.jenkins-ci.plugins:subversion:1.45
+|    |    \--- org.jenkins-ci.svnkit:svnkit:1.7.6-jenkins-1
+|    |         +--- org.tmatesoft.sqljet:sqljet:1.1.0
+|    |         |    \--- org.antlr:antlr-runtime:3.4
+|    |         \--- de.regnis.q.sequence:sequence-library:1.0.1
+|    +--- org.jenkins-ci.plugins:mailer:1.10
+|    +--- org.jenkins-ci.plugins:matrix-auth:1.0.2
+|    +--- org.jenkins-ci.plugins:antisamy-markup-formatter:1.0
+|    |    \--- org.kohsuke:owasp-html-sanitizer:r88
+|    +--- org.jenkins-ci.plugins:matrix-project:1.0-beta-1
+|    +--- org.jenkins-ci.plugins:junit:1.0
+|    +--- org.mortbay.jetty:jetty:6.1.26
+|    |    +--- org.mortbay.jetty:jetty-util:6.1.26
+|    |    \--- org.mortbay.jetty:servlet-api:2.5-20081211
+|    +--- org.jenkins-ci:test-annotations:1.1
+|    +--- org.jvnet.mock-javamail:mock-javamail:1.7
+|    |    +--- javax.mail:mail:1.4 -> 1.4.4 (*)
+|    |    \--- junit:junit:3.8 -> 4.11 (*)
+|    +--- junit:junit:4.11 (*)
+|    +--- org.hamcrest:hamcrest-library:1.3
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    +--- org.jenkins-ci:htmlunit:2.6-jenkins-6
+|    |    +--- xalan:xalan:2.7.1 (*)
+|    |    +--- commons-collections:commons-collections:3.2.1
+|    |    +--- commons-lang:commons-lang:2.4 -> 2.6
+|    |    +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jvnet.hudson:htmlunit-core-js:2.6-hudson-1
+|    |    +--- xerces:xercesImpl:2.9.1
+|    |    +--- net.sourceforge.nekohtml:nekohtml:1.9.13
+|    |    +--- net.sourceforge.cssparser:cssparser:0.9.5
+|    |    |    \--- org.w3c.css:sac:1.3
+|    |    +--- commons-io:commons-io:1.4 -> 2.4
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- xalan:xalan:2.7.1 (*)
+|    +--- org.jvnet.hudson:embedded-rhino-debugger:1.2
+|    |    \--- org.jvnet.hudson:htmlunit-core-js:2.6-hudson-1
+|    +--- org.jvnet.hudson:netx:0.5-hudson-2
+|    +--- org.easymock:easymock:2.4
+|    +--- org.netbeans.modules:org-netbeans-insane:RELEASE72
+|    +--- com.github.stephenc.findbugs:findbugs-annotations:1.3.9-1
+|    \--- org.codehaus.geb:geb-implicit-assertions:0.7.2
++--- org.jenkins-ci.main:ui-samples-plugin:2.0
+\--- org.jenkins-ci.main:jenkins-war:1.581 (*)
+
+providedCompile - Additional compile classpath for libraries that should not be part of the WAR archive.
++--- org.jenkins-ci.main:jenkins-core:1.581
+|    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    +--- org.jenkins-ci.main:remoting:2.44
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci.main:cli:1.581
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:version-number:1.1
+|    +--- org.jenkins-ci:crypto-util:1.1
+|    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    +--- com.google.inject:guice:4.0-beta
+|    |    +--- javax.inject:javax.inject:1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    +--- cglib:cglib:3.0
+|    |    |    \--- org.ow2.asm:asm:4.0
+|    |    \--- org.ow2.asm:asm-util:4.0
+|    |         \--- org.ow2.asm:asm-tree:4.0
+|    |              \--- org.ow2.asm:asm:4.0
+|    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    +--- org.kohsuke:windows-package-checker:1.0
+|    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    +--- commons-httpclient:commons-httpclient:3.1
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    +--- args4j:args4j:2.0.23
+|    +--- org.jenkins-ci:annotation-indexer:1.7
+|    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    +--- org.kohsuke:asm5:5.0.1
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci:task-reactor:1.4
+|    +--- org.jvnet.localizer:localizer:1.10
+|    +--- antlr:antlr:2.7.6
+|    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    +--- jfree:jfreechart:1.0.9
+|    |    \--- jfree:jcommon:1.0.12
+|    +--- org.apache.ant:ant:1.8.3
+|    |    \--- org.apache.ant:ant-launcher:1.8.3
+|    +--- commons-io:commons-io:2.4
+|    +--- commons-lang:commons-lang:2.6
+|    +--- commons-digester:commons-digester:2.1
+|    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    +--- javax.mail:mail:1.4.4
+|    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    +--- jaxen:jaxen:1.1-beta-11
+|    |    +--- jdom:jdom:1.0
+|    |    \--- xom:xom:1.0b3
+|    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |         +--- xalan:xalan:2.6.0
+|    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    \--- xerces:xerces:2.2.1
+|    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    +--- oro:oro:2.0.8
+|    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    \--- log4j:log4j:1.2.9
+|    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    +--- jline:jline:0.9.94
+|    |    \--- junit:junit:3.8.1
+|    +--- org.fusesource.jansi:jansi:1.9
+|    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- xpp3:xpp3:1.1.4c
+|    +--- javax.servlet:jstl:1.1.0
+|    +--- commons-logging:commons-logging:1.1.3
+|    +--- com.sun.xml.txw2:txw2:20110809
+|    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    +--- commons-collections:commons-collections:3.2.1
+|    +--- org.jvnet.winp:winp:1.21
+|    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    \--- stax:stax-api:1.0.1
+|    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    +--- org.kohsuke:akuma:1.9
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.kohsuke:libpam4j:1.6
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- com.sun.solaris:embedded_su4j:1.1
+|    +--- net.java.sezpoz:sezpoz:1.9
+|    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    +--- commons-codec:commons-codec:1.8
+|    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.mindrot:jbcrypt:0.3m
+|    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
++--- findbugs:annotations:1.0.0
+\--- javax.servlet:servlet-api:2.4
+
+providedRuntime - Additional runtime classpath for libraries that should not be part of the WAR archive.
++--- org.jenkins-ci.main:jenkins-core:1.581
+|    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    +--- org.jenkins-ci.main:remoting:2.44
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci.main:cli:1.581
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:version-number:1.1
+|    +--- org.jenkins-ci:crypto-util:1.1
+|    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    +--- com.google.inject:guice:4.0-beta
+|    |    +--- javax.inject:javax.inject:1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    +--- cglib:cglib:3.0
+|    |    |    \--- org.ow2.asm:asm:4.0
+|    |    \--- org.ow2.asm:asm-util:4.0
+|    |         \--- org.ow2.asm:asm-tree:4.0
+|    |              \--- org.ow2.asm:asm:4.0
+|    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    +--- org.kohsuke:windows-package-checker:1.0
+|    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    +--- commons-httpclient:commons-httpclient:3.1
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    +--- args4j:args4j:2.0.23
+|    +--- org.jenkins-ci:annotation-indexer:1.7
+|    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    +--- org.kohsuke:asm5:5.0.1
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci:task-reactor:1.4
+|    +--- org.jvnet.localizer:localizer:1.10
+|    +--- antlr:antlr:2.7.6
+|    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    +--- jfree:jfreechart:1.0.9
+|    |    \--- jfree:jcommon:1.0.12
+|    +--- org.apache.ant:ant:1.8.3
+|    |    \--- org.apache.ant:ant-launcher:1.8.3
+|    +--- commons-io:commons-io:2.4
+|    +--- commons-lang:commons-lang:2.6
+|    +--- commons-digester:commons-digester:2.1
+|    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    +--- javax.mail:mail:1.4.4
+|    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    +--- jaxen:jaxen:1.1-beta-11
+|    |    +--- jdom:jdom:1.0
+|    |    \--- xom:xom:1.0b3
+|    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |         +--- xalan:xalan:2.6.0
+|    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    \--- xerces:xerces:2.2.1
+|    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    +--- oro:oro:2.0.8
+|    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    \--- log4j:log4j:1.2.9
+|    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    +--- jline:jline:0.9.94
+|    |    \--- junit:junit:3.8.1
+|    +--- org.fusesource.jansi:jansi:1.9
+|    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- xpp3:xpp3:1.1.4c
+|    +--- javax.servlet:jstl:1.1.0
+|    +--- commons-logging:commons-logging:1.1.3
+|    +--- com.sun.xml.txw2:txw2:20110809
+|    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    +--- commons-collections:commons-collections:3.2.1
+|    +--- org.jvnet.winp:winp:1.21
+|    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    \--- stax:stax-api:1.0.1
+|    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    +--- org.kohsuke:akuma:1.9
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.kohsuke:libpam4j:1.6
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- com.sun.solaris:embedded_su4j:1.1
+|    +--- net.java.sezpoz:sezpoz:1.9
+|    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    +--- commons-codec:commons-codec:1.8
+|    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.mindrot:jbcrypt:0.3m
+|    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
++--- findbugs:annotations:1.0.0
+\--- javax.servlet:servlet-api:2.4
+
+runtime - Runtime classpath for source set 'main'.
++--- org.jenkins-ci.lib:xtrigger-lib:0.25
+|    \--- org.jenkins-ci.lib:envinject-lib:1.18
++--- com.sun.mail:javax.mail:1.5.1
+|    \--- javax.activation:activation:1.1
++--- org.jenkins-ci.main:jenkins-core:1.581
+|    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    +--- org.jenkins-ci.main:remoting:2.44
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci.main:cli:1.581
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:version-number:1.1
+|    +--- org.jenkins-ci:crypto-util:1.1
+|    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    +--- com.google.inject:guice:4.0-beta
+|    |    +--- javax.inject:javax.inject:1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    +--- cglib:cglib:3.0
+|    |    |    \--- org.ow2.asm:asm:4.0
+|    |    \--- org.ow2.asm:asm-util:4.0
+|    |         \--- org.ow2.asm:asm-tree:4.0
+|    |              \--- org.ow2.asm:asm:4.0
+|    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    +--- org.kohsuke:windows-package-checker:1.0
+|    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    +--- commons-httpclient:commons-httpclient:3.1
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    +--- args4j:args4j:2.0.23
+|    +--- org.jenkins-ci:annotation-indexer:1.7
+|    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    +--- org.kohsuke:asm5:5.0.1
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci:task-reactor:1.4
+|    +--- org.jvnet.localizer:localizer:1.10
+|    +--- antlr:antlr:2.7.6
+|    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    +--- jfree:jfreechart:1.0.9
+|    |    \--- jfree:jcommon:1.0.12
+|    +--- org.apache.ant:ant:1.8.3
+|    |    \--- org.apache.ant:ant-launcher:1.8.3
+|    +--- commons-io:commons-io:2.4
+|    +--- commons-lang:commons-lang:2.6
+|    +--- commons-digester:commons-digester:2.1
+|    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    +--- javax.mail:mail:1.4.4
+|    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    +--- jaxen:jaxen:1.1-beta-11
+|    |    +--- jdom:jdom:1.0
+|    |    \--- xom:xom:1.0b3
+|    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |         +--- xalan:xalan:2.6.0
+|    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    \--- xerces:xerces:2.2.1
+|    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    +--- oro:oro:2.0.8
+|    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    \--- log4j:log4j:1.2.9
+|    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    +--- jline:jline:0.9.94
+|    |    \--- junit:junit:3.8.1
+|    +--- org.fusesource.jansi:jansi:1.9
+|    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- xpp3:xpp3:1.1.4c
+|    +--- javax.servlet:jstl:1.1.0
+|    +--- commons-logging:commons-logging:1.1.3
+|    +--- com.sun.xml.txw2:txw2:20110809
+|    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    +--- commons-collections:commons-collections:3.2.1
+|    +--- org.jvnet.winp:winp:1.21
+|    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    \--- stax:stax-api:1.0.1
+|    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    +--- org.kohsuke:akuma:1.9
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.kohsuke:libpam4j:1.6
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- com.sun.solaris:embedded_su4j:1.1
+|    +--- net.java.sezpoz:sezpoz:1.9
+|    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    +--- commons-codec:commons-codec:1.8
+|    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.mindrot:jbcrypt:0.3m
+|    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
++--- findbugs:annotations:1.0.0
+\--- javax.servlet:servlet-api:2.4
+
+testCompile - Compile classpath for source set 'test'.
++--- org.jenkins-ci.lib:xtrigger-lib:0.25
+|    \--- org.jenkins-ci.lib:envinject-lib:1.18
++--- com.sun.mail:javax.mail:1.5.1
+|    \--- javax.activation:activation:1.1
++--- org.jenkins-ci.main:jenkins-core:1.581
+|    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    +--- org.jenkins-ci.main:remoting:2.44
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci.main:cli:1.581
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:version-number:1.1
+|    +--- org.jenkins-ci:crypto-util:1.1
+|    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    +--- com.google.inject:guice:4.0-beta
+|    |    +--- javax.inject:javax.inject:1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    +--- cglib:cglib:3.0
+|    |    |    \--- org.ow2.asm:asm:4.0
+|    |    \--- org.ow2.asm:asm-util:4.0
+|    |         \--- org.ow2.asm:asm-tree:4.0
+|    |              \--- org.ow2.asm:asm:4.0
+|    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    +--- org.kohsuke:windows-package-checker:1.0
+|    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    +--- commons-httpclient:commons-httpclient:3.1
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    +--- args4j:args4j:2.0.23
+|    +--- org.jenkins-ci:annotation-indexer:1.7
+|    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    +--- org.kohsuke:asm5:5.0.1
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci:task-reactor:1.4
+|    +--- org.jvnet.localizer:localizer:1.10
+|    +--- antlr:antlr:2.7.6
+|    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    +--- jfree:jfreechart:1.0.9
+|    |    \--- jfree:jcommon:1.0.12
+|    +--- org.apache.ant:ant:1.8.3 -> 1.9.2
+|    |    \--- org.apache.ant:ant-launcher:1.9.2
+|    +--- commons-io:commons-io:2.4
+|    +--- commons-lang:commons-lang:2.6
+|    +--- commons-digester:commons-digester:2.1
+|    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    +--- javax.mail:mail:1.4.4
+|    |    \--- javax.activation:activation:1.1
+|    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    +--- jaxen:jaxen:1.1-beta-11
+|    |    +--- jdom:jdom:1.0
+|    |    \--- xom:xom:1.0b3
+|    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |         +--- xalan:xalan:2.6.0 -> 2.7.1
+|    |         |    \--- xalan:serializer:2.7.1
+|    |         |         \--- xml-apis:xml-apis:1.3.04
+|    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    \--- xerces:xerces:2.2.1
+|    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    +--- oro:oro:2.0.8
+|    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    \--- log4j:log4j:1.2.9
+|    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    +--- jline:jline:0.9.94
+|    |    \--- junit:junit:3.8.1 -> 4.11
+|    |         \--- org.hamcrest:hamcrest-core:1.3
+|    +--- org.fusesource.jansi:jansi:1.9
+|    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- xpp3:xpp3:1.1.4c
+|    +--- javax.servlet:jstl:1.1.0
+|    +--- commons-logging:commons-logging:1.1.3
+|    +--- com.sun.xml.txw2:txw2:20110809
+|    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    +--- commons-collections:commons-collections:3.2.1
+|    +--- org.jvnet.winp:winp:1.21
+|    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    \--- stax:stax-api:1.0.1
+|    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    +--- org.kohsuke:akuma:1.9
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.kohsuke:libpam4j:1.6
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- com.sun.solaris:embedded_su4j:1.1
+|    +--- net.java.sezpoz:sezpoz:1.9
+|    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    +--- commons-codec:commons-codec:1.8
+|    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.mindrot:jbcrypt:0.3m
+|    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
++--- findbugs:annotations:1.0.0
++--- javax.servlet:servlet-api:2.4
++--- org.jenkins-ci.main:jenkins-test-harness:1.581
+|    +--- org.jenkins-ci.main:jenkins-war:1.581
+|    |    +--- org.jenkins-ci.main:jenkins-core:1.581 (*)
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jenkins-ci.modules:instance-identity:1.4
+|    |    |    \--- org.bouncycastle:bcpkix-jdk15on:1.47
+|    |    |         \--- org.bouncycastle:bcprov-jdk15on:1.47
+|    |    +--- org.jenkins-ci.modules:slave-installer:1.3
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.1 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:windows-slave-installer:1.4
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    +--- org.jenkins-ci.modules:launchd-slave-installer:1.2
+|    |    |    +--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.1 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:upstart-slave-installer:1.1
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    +--- org.jenkins-ci.modules:systemd-slave-installer:1.1
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.3 (*)
+|    |    \--- org.slf4j:slf4j-jdk14:1.7.7
+|    |         \--- org.slf4j:slf4j-api:1.7.7
+|    +--- org.jenkins-ci.main:maven-plugin:2.5
+|    |    +--- org.jenkins-ci.plugins:javadoc:1.0
+|    |    +--- org.jenkins-ci.plugins:mailer:1.7 -> 1.10
+|    |    +--- org.jenkins-ci.main.maven:maven-agent:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven-interceptor:1.5
+|    |    |    |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    |    +--- org.apache.ant:ant:1.9.2 (*)
+|    |    |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven-interceptor:1.5 (*)
+|    |    +--- org.jvnet.hudson:maven2.1-interceptor:1.2
+|    |    +--- org.jenkins-ci.main.maven:maven3-agent:1.5
+|    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0
+|    |    |    |    +--- org.apache.maven:maven-settings:3.1.0
+|    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    +--- org.apache.maven:maven-core:3.1.0
+|    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |    |    +--- org.apache.maven:maven-settings-builder:3.1.0
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |    |    |    \--- org.sonatype.plexus:plexus-sec-dispatcher:1.3
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-utils:1.5.5 -> 3.0.10
+|    |    |    |    |    |         \--- org.sonatype.plexus:plexus-cipher:1.4 -> 1.7
+|    |    |    |    |    +--- org.apache.maven:maven-repository-metadata:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-artifact:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-plugin-api:3.1.0
+|    |    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    |    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5
+|    |    |    |    |    |         +--- javax.enterprise:cdi-api:1.0
+|    |    |    |    |    |         |    +--- javax.annotation:jsr250-api:1.0
+|    |    |    |    |    |         |    \--- javax.inject:javax.inject:1
+|    |    |    |    |    |         +--- com.google.guava:guava:10.0.1 -> 14.0
+|    |    |    |    |    |         +--- org.sonatype.sisu:sisu-guice:3.1.0
+|    |    |    |    |    |         |    +--- javax.inject:javax.inject:1
+|    |    |    |    |    |         |    \--- aopalliance:aopalliance:1.0
+|    |    |    |    |    |         +--- org.eclipse.sisu:org.eclipse.sisu.inject:0.0.0.M5
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-classworlds:2.4 -> 2.5.1
+|    |    |    |    |    |         \--- org.codehaus.plexus:plexus-utils:2.1 -> 3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    \--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0
+|    |    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-repository-metadata:3.1.0 (*)
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    |    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    \--- org.sonatype.plexus:plexus-sec-dispatcher:1.3 (*)
+|    |    |    |    +--- org.apache.maven:maven-plugin-api:3.1.0 (*)
+|    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    +--- org.sonatype.plexus:plexus-sec-dispatcher:1.3 (*)
+|    |    |    |    +--- org.sonatype.plexus:plexus-cipher:1.7
+|    |    |    |    +--- org.slf4j:slf4j-api:1.7.4 -> 1.7.7
+|    |    |    |    +--- commons-cli:commons-cli:1.2
+|    |    |    |    \--- org.apache.maven:maven-compat:3.1.0
+|    |    |    |         +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    |         +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |         +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |         +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |         +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |         \--- org.apache.maven.wagon:wagon-provider-api:2.4
+|    |    |    |              \--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    \--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    +--- org.jenkins-ci.main.maven:maven31-agent:1.5
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven3-interceptor:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5
+|    |    |    |    +--- org.apache.maven:maven-core:3.0.5 -> 3.1.0 (*)
+|    |    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0 (*)
+|    |    |    |    \--- org.apache.maven:maven-aether-provider:3.0.5 -> 3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-core:3.0.5 -> 3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0 (*)
+|    |    |    \--- org.apache.maven:maven-aether-provider:3.0.5 -> 3.1.0 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven31-interceptor:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5 (*)
+|    |    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5 (*)
+|    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-compat:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    +--- org.eclipse.aether:aether-impl:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-transport-wagon:0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0 -> 2.4 (*)
+|    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M5 (*)
+|    |    +--- com.google.inject:guice:4.0-beta (*)
+|    |    +--- org.apache.maven.wagon:wagon-http:2.4
+|    |    |    +--- org.apache.maven.wagon:wagon-http-shared4:2.4
+|    |    |    |    +--- org.jsoup:jsoup:1.7.1
+|    |    |    |    +--- org.apache.httpcomponents:httpclient:4.2.3 -> 4.2.5
+|    |    |    |    |    +--- org.apache.httpcomponents:httpcore:4.2.4
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- commons-codec:commons-codec:1.6 -> 1.8
+|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.2.3 -> 4.2.4
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:2.0.1 -> 2.4
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    |    +--- org.apache.httpcomponents:httpclient:4.2.3 -> 4.2.5 (*)
+|    |    |    +--- org.apache.httpcomponents:httpcore:4.2.3 -> 4.2.4
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.httpcomponents:httpclient:4.2.5 (*)
+|    |    +--- org.apache.httpcomponents:httpcore:4.2.4
+|    |    +--- org.apache.maven.wagon:wagon-file:2.4
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ftp:2.4
+|    |    |    +--- commons-net:commons-net:3.1
+|    |    |    +--- org.slf4j:slf4j-api:1.7.2 -> 1.7.7
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ssh:2.4
+|    |    |    +--- com.jcraft:jsch:0.1.44-1
+|    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    +--- org.apache.maven.wagon:wagon-ssh-common:2.4
+|    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    |    +--- org.codehaus.plexus:plexus-interactivity-api:1.0-alpha-6
+|    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:1.4 -> 3.0.10
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ssh-external:2.4
+|    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    +--- org.apache.maven.wagon:wagon-ssh-common:2.4 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.reporting:maven-reporting-api:3.0
+|    |    |    \--- org.apache.maven.doxia:doxia-sink-api:1.0
+|    |    +--- org.codehaus.plexus:plexus-classworlds:2.5.1
+|    |    +--- org.jenkins-ci.lib:lib-jenkins-maven-artifact-manager:1.2
+|    |    |    +--- org.codehaus.plexus:plexus-utils:2.0.5 -> 3.0.10
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0-beta-7 -> 2.4 (*)
+|    |    +--- org.jenkins-ci.lib:lib-jenkins-maven-embedder:3.11
+|    |    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-compat:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    +--- org.eclipse.aether:aether-connector-wagon:0.9.0.M2
+|    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0 -> 2.4 (*)
+|    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.apache.ant:ant:1.9.2 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    \--- org.apache.maven.wagon:wagon-webdav-jackrabbit:2.4
+|    |         +--- org.apache.maven.wagon:wagon-http-shared:2.4
+|    |         |    +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         |    +--- commons-lang:commons-lang:2.6
+|    |         |    +--- commons-io:commons-io:2.2 -> 2.4
+|    |         |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |         +--- org.apache.jackrabbit:jackrabbit-webdav:2.5.2
+|    |         |    +--- org.slf4j:slf4j-api:1.6.4 -> 1.7.7
+|    |         |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         +--- org.slf4j:slf4j-api:1.7.2 -> 1.7.7
+|    |         +--- commons-lang:commons-lang:2.6
+|    |         +--- commons-io:commons-io:2.2 -> 2.4
+|    |         +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    +--- org.jenkins-ci.plugins:ant:1.2
+|    +--- org.jenkins-ci.plugins:subversion:1.45
+|    |    \--- org.jenkins-ci.svnkit:svnkit:1.7.6-jenkins-1
+|    |         +--- org.tmatesoft.sqljet:sqljet:1.1.0
+|    |         |    \--- org.antlr:antlr-runtime:3.4
+|    |         \--- de.regnis.q.sequence:sequence-library:1.0.1
+|    +--- org.jenkins-ci.plugins:mailer:1.10
+|    +--- org.jenkins-ci.plugins:matrix-auth:1.0.2
+|    +--- org.jenkins-ci.plugins:antisamy-markup-formatter:1.0
+|    |    \--- org.kohsuke:owasp-html-sanitizer:r88
+|    +--- org.jenkins-ci.plugins:matrix-project:1.0-beta-1
+|    +--- org.jenkins-ci.plugins:junit:1.0
+|    +--- org.mortbay.jetty:jetty:6.1.26
+|    |    +--- org.mortbay.jetty:jetty-util:6.1.26
+|    |    \--- org.mortbay.jetty:servlet-api:2.5-20081211
+|    +--- org.jenkins-ci:test-annotations:1.1
+|    +--- org.jvnet.mock-javamail:mock-javamail:1.7
+|    |    +--- javax.mail:mail:1.4 -> 1.4.4 (*)
+|    |    \--- junit:junit:3.8 -> 4.11 (*)
+|    +--- junit:junit:4.11 (*)
+|    +--- org.hamcrest:hamcrest-library:1.3
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    +--- org.jenkins-ci:htmlunit:2.6-jenkins-6
+|    |    +--- xalan:xalan:2.7.1 (*)
+|    |    +--- commons-collections:commons-collections:3.2.1
+|    |    +--- commons-lang:commons-lang:2.4 -> 2.6
+|    |    +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jvnet.hudson:htmlunit-core-js:2.6-hudson-1
+|    |    +--- xerces:xercesImpl:2.9.1
+|    |    +--- net.sourceforge.nekohtml:nekohtml:1.9.13
+|    |    +--- net.sourceforge.cssparser:cssparser:0.9.5
+|    |    |    \--- org.w3c.css:sac:1.3
+|    |    +--- commons-io:commons-io:1.4 -> 2.4
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- xalan:xalan:2.7.1 (*)
+|    +--- org.jvnet.hudson:embedded-rhino-debugger:1.2
+|    |    \--- org.jvnet.hudson:htmlunit-core-js:2.6-hudson-1
+|    +--- org.jvnet.hudson:netx:0.5-hudson-2
+|    +--- org.easymock:easymock:2.4
+|    +--- org.netbeans.modules:org-netbeans-insane:RELEASE72
+|    +--- com.github.stephenc.findbugs:findbugs-annotations:1.3.9-1
+|    \--- org.codehaus.geb:geb-implicit-assertions:0.7.2
++--- org.jenkins-ci.main:ui-samples-plugin:2.0
++--- org.jenkins-ci.main:jenkins-war:1.581 (*)
++--- junit:junit:4.12 -> 4.11 (*)
++--- junit:junit:4.11 (*)
++--- org.jvnet.mock-javamail:mock-javamail:1.7 (*)
++--- org.mockito:mockito-all:1.10.19
++--- info.cukes:cucumber-junit:1.2.4
+|    +--- info.cukes:cucumber-core:1.2.4
+|    |    +--- info.cukes:cucumber-html:0.2.3
+|    |    +--- info.cukes:cucumber-jvm-deps:1.0.5
+|    |    \--- info.cukes:gherkin:2.12.2
+|    \--- junit:junit:4.11 (*)
++--- info.cukes:cucumber-java8:1.2.4
+|    \--- info.cukes:cucumber-java:1.2.4
+|         \--- info.cukes:cucumber-core:1.2.4 (*)
++--- org.jenkins-ci.main:maven-plugin:2.5 (*)
++--- org.jenkins-ci.plugins:ant:1.2
++--- org.jenkins-ci.plugins:subversion:1.45 (*)
++--- org.jenkins-ci.plugins:mailer:1.10
++--- org.jenkins-ci.plugins:matrix-auth:1.0.2
++--- org.jenkins-ci.plugins:antisamy-markup-formatter:1.0 (*)
++--- org.jenkins-ci.plugins:matrix-project:1.0-beta-1
++--- org.jenkins-ci.plugins:junit:1.0
+\--- org.jenkins-ci.plugins:javadoc:1.0
+
+testRuntime - Runtime classpath for source set 'test'.
++--- org.jenkins-ci.lib:xtrigger-lib:0.25
+|    \--- org.jenkins-ci.lib:envinject-lib:1.18
++--- com.sun.mail:javax.mail:1.5.1
+|    \--- javax.activation:activation:1.1
++--- org.jenkins-ci.main:jenkins-core:1.581
+|    +--- org.jenkins-ci.plugins.icon-shim:icon-set:1.0.3
+|    +--- org.jenkins-ci.main:remoting:2.44
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci.main:cli:1.581
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jvnet.localizer:localizer:1.10
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:version-number:1.1
+|    +--- org.jenkins-ci:crypto-util:1.1
+|    |    \--- commons-io:commons-io:1.4 -> 2.4
+|    +--- org.jvnet.hudson:jtidy:4aug2000r7-dev-hudson-1
+|    +--- com.google.inject:guice:4.0-beta
+|    |    +--- javax.inject:javax.inject:1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    |    +--- cglib:cglib:3.0
+|    |    |    \--- org.ow2.asm:asm:4.0
+|    |    \--- org.ow2.asm:asm-util:4.0
+|    |         \--- org.ow2.asm:asm-tree:4.0
+|    |              \--- org.ow2.asm:asm:4.0
+|    +--- org.jruby.ext.posix:jna-posix:1.0.3
+|    +--- com.github.jnr:jnr-posix:3.0.1
+|    |    +--- com.github.jnr:jnr-ffi:1.0.7
+|    |    |    +--- com.github.jnr:jffi:1.2.7
+|    |    |    +--- org.ow2.asm:asm:4.0
+|    |    |    +--- org.ow2.asm:asm-commons:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-analysis:4.0
+|    |    |    |    \--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-tree:4.0 (*)
+|    |    |    +--- org.ow2.asm:asm-util:4.0 (*)
+|    |    |    \--- com.github.jnr:jnr-x86asm:1.0.2
+|    |    \--- com.github.jnr:jnr-constants:0.8.5
+|    +--- org.kohsuke:trilead-putty-extension:1.2
+|    |    \--- org.jenkins-ci:trilead-ssh2:build214-jenkins-1 -> build217-jenkins-5
+|    +--- org.jenkins-ci:trilead-ssh2:build217-jenkins-5
+|    +--- org.kohsuke.stapler:stapler-groovy:1.228
+|    |    +--- org.kohsuke.stapler:stapler-jelly:1.228
+|    |    |    +--- org.kohsuke.stapler:stapler:1.228
+|    |    |    |    +--- javax.annotation:javax.annotation-api:1.2
+|    |    |    |    +--- commons-discovery:commons-discovery:0.4
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3
+|    |    |    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:1.3.1 -> 2.4
+|    |    |    |    +--- org.jvnet.localizer:localizer:1.7 -> 1.10
+|    |    |    |    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2
+|    |    |    |    |    +--- commons-beanutils:commons-beanutils:1.8.0 -> 1.8.3 (*)
+|    |    |    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    |    |    +--- commons-lang:commons-lang:2.5 -> 2.6
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- net.sf.ezmorph:ezmorph:1.0.6
+|    |    |    |    |         \--- commons-lang:commons-lang:2.3 -> 2.6
+|    |    |    |    +--- org.jvnet:tiger-types:1.3
+|    |    |    |    +--- com.google.guava:guava:14.0
+|    |    |    |    +--- org.kohsuke:asm5:5.0.1
+|    |    |    |    +--- commons-fileupload:commons-fileupload:1.2.1
+|    |    |    |    +--- com.google.code.findbugs:jsr305:2.0.1
+|    |    |    |    \--- com.jcraft:jzlib:1.1.3
+|    |    |    +--- org.jenkins-ci:commons-jelly:1.1-jenkins-20120928
+|    |    |    |    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212
+|    |    |    |    |    \--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    |    |    +--- commons-beanutils:commons-beanutils:1.7.0 -> 1.8.3 (*)
+|    |    |    |    \--- commons-collections:commons-collections:3.2 -> 3.2.1
+|    |    |    \--- org.jenkins-ci.dom4j:dom4j:1.6.1-jenkins-4
+|    |    \--- org.codehaus.groovy:groovy-all:1.8.3 -> 1.8.9
+|    +--- org.kohsuke.stapler:stapler-jrebel:1.228
+|    |    \--- org.kohsuke.stapler:stapler:1.228 (*)
+|    +--- org.kohsuke:windows-package-checker:1.0
+|    +--- org.kohsuke.stapler:stapler-adjunct-zeroclipboard:1.1.7-1
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-timeline:1.4
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- org.kohsuke.stapler:stapler-adjunct-codemirror:1.3
+|    |    \--- org.kohsuke.stapler:stapler:1.140 -> 1.228 (*)
+|    +--- com.infradna.tool:bridge-method-annotation:1.13
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.kohsuke.stapler:json-lib:2.4-jenkins-2 (*)
+|    +--- commons-httpclient:commons-httpclient:3.1
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    \--- commons-codec:commons-codec:1.2 -> 1.8
+|    +--- args4j:args4j:2.0.23
+|    +--- org.jenkins-ci:annotation-indexer:1.7
+|    +--- org.jenkins-ci:bytecode-compatibility-transformer:1.5
+|    |    +--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    |    +--- org.kohsuke:asm5:5.0.1
+|    |    \--- org.jenkins-ci:constant-pool-scanner:1.2
+|    +--- org.jenkins-ci:task-reactor:1.4
+|    +--- org.jvnet.localizer:localizer:1.10
+|    +--- antlr:antlr:2.7.6
+|    +--- org.jvnet.hudson:xstream:1.4.7-jenkins-1
+|    +--- jfree:jfreechart:1.0.9
+|    |    \--- jfree:jcommon:1.0.12
+|    +--- org.apache.ant:ant:1.8.3 -> 1.9.2
+|    |    \--- org.apache.ant:ant-launcher:1.9.2
+|    +--- commons-io:commons-io:2.4
+|    +--- commons-lang:commons-lang:2.6
+|    +--- commons-digester:commons-digester:2.1
+|    |    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- commons-beanutils:commons-beanutils:1.8.3 (*)
+|    +--- javax.mail:mail:1.4.4
+|    |    \--- javax.activation:activation:1.1
+|    +--- org.jvnet.hudson:activation:1.1.1-hudson-1
+|    +--- jaxen:jaxen:1.1-beta-11
+|    |    +--- jdom:jdom:1.0
+|    |    \--- xom:xom:1.0b3
+|    |         +--- xerces:xmlParserAPIs:2.6.1
+|    |         +--- com.ibm.icu:icu4j:2.6.1
+|    |         +--- xalan:xalan:2.6.0 -> 2.7.1
+|    |         |    \--- xalan:serializer:2.7.1
+|    |         |         \--- xml-apis:xml-apis:1.3.04
+|    |         \--- org.ccil.cowan.tagsoup:tagsoup:0.9.7
+|    +--- commons-jelly:commons-jelly-tags-fmt:1.0
+|    +--- commons-jelly:commons-jelly-tags-xml:1.1
+|    |    +--- commons-beanutils:commons-beanutils:1.6 -> 1.8.3 (*)
+|    |    +--- commons-collections:commons-collections:2.1 -> 3.2.1
+|    |    +--- commons-logging:commons-logging:1.0.3 -> 1.1.3
+|    |    +--- jaxen:jaxen:1.1-beta-2 -> 1.1-beta-11 (*)
+|    |    \--- xerces:xerces:2.2.1
+|    +--- org.jvnet.hudson:commons-jelly-tags-define:1.0.1-hudson-20071021
+|    +--- org.jenkins-ci:commons-jexl:1.1-jenkins-20111212 (*)
+|    +--- org.acegisecurity:acegi-security:1.0.7
+|    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03
+|    |    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-jdbc:1.2.9
+|    |    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-dao:1.2.9
+|    |    |         +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    |         +--- org.springframework:spring-beans:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    |         +--- org.springframework:spring-context:1.2.9 -> 2.5.6.SEC03
+|    |    |         |    +--- aopalliance:aopalliance:1.0
+|    |    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |         |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |         |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    |         \--- org.springframework:spring-core:1.2.9 -> 2.5.6.SEC03 (*)
+|    |    +--- commons-lang:commons-lang:2.1 -> 2.6
+|    |    +--- commons-logging:commons-logging:1.0.4 -> 1.1.3
+|    |    +--- commons-codec:commons-codec:1.3 -> 1.8
+|    |    +--- oro:oro:2.0.8
+|    |    +--- commons-collections:commons-collections:3.1 -> 3.2.1
+|    |    \--- log4j:log4j:1.2.9
+|    +--- org.codehaus.groovy:groovy-all:1.8.9
+|    +--- jline:jline:0.9.94
+|    |    \--- junit:junit:3.8.1 -> 4.11
+|    |         \--- org.hamcrest:hamcrest-core:1.3
+|    +--- org.fusesource.jansi:jansi:1.9
+|    +--- org.springframework:spring-webmvc:2.5.6.SEC03
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-context-support:2.5.6.SEC03
+|    |    |    +--- aopalliance:aopalliance:1.0
+|    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    |    +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-web:2.5.6.SEC03
+|    |         +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |         +--- org.springframework:spring-context:2.5.6.SEC03 (*)
+|    |         \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- org.springframework:spring-aop:2.5.6.SEC03
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    +--- org.springframework:spring-beans:2.5.6.SEC03 (*)
+|    |    \--- org.springframework:spring-core:2.5.6.SEC03 (*)
+|    +--- xpp3:xpp3:1.1.4c
+|    +--- javax.servlet:jstl:1.1.0
+|    +--- commons-logging:commons-logging:1.1.3
+|    +--- com.sun.xml.txw2:txw2:20110809
+|    |    +--- javax.xml.stream:stax-api:1.0-2
+|    |    \--- relaxngDatatype:relaxngDatatype:20020414
+|    +--- commons-collections:commons-collections:3.2.1
+|    +--- org.jvnet.winp:winp:1.21
+|    +--- org.jenkins-ci:memory-monitor:1.8
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- org.codehaus.woodstox:wstx-asl:3.2.9
+|    |    \--- stax:stax-api:1.0.1
+|    +--- org.jenkins-ci:jmdns:3.4.0-jenkins-3
+|    +--- net.java.dev.jna:jna:3.3.0-jenkins-3 -> 3.4.0
+|    +--- org.kohsuke:akuma:1.9
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.kohsuke:libpam4j:1.6
+|    |    \--- net.java.dev.jna:jna:3.4.0
+|    +--- org.jvnet.libzfs:libzfs:0.5
+|    |    \--- net.java.dev.jna:jna:3.0.3-patch-1 -> 3.4.0
+|    +--- com.sun.solaris:embedded_su4j:1.1
+|    +--- net.java.sezpoz:sezpoz:1.9
+|    +--- org.kohsuke.jinterop:j-interop:2.0.6-kohsuke-1
+|    |    \--- org.kohsuke.jinterop:j-interopdeps:2.0.6-kohsuke-1
+|    |         \--- org.samba.jcifs:jcifs:1.2.19
+|    +--- org.jvnet.robust-http-client:robust-http-client:1.2
+|    +--- commons-codec:commons-codec:1.8
+|    +--- org.kohsuke:access-modifier-annotation:1.4
+|    |    \--- org.jenkins-ci:annotation-indexer:1.4 -> 1.7
+|    +--- org.mindrot:jbcrypt:0.3m
+|    +--- com.google.guava:guava:11.0.1 -> 14.0
+|    \--- com.jcraft:jzlib:1.1.3-kohsuke-1 -> 1.1.3
++--- findbugs:annotations:1.0.0
++--- javax.servlet:servlet-api:2.4
++--- org.jenkins-ci.main:jenkins-test-harness:1.581
+|    +--- org.jenkins-ci.main:jenkins-war:1.581
+|    |    +--- org.jenkins-ci.main:jenkins-core:1.581 (*)
+|    |    +--- org.jenkins-ci.main:remoting:2.44 (*)
+|    |    +--- org.jenkins-ci.modules:instance-identity:1.4
+|    |    |    \--- org.bouncycastle:bcpkix-jdk15on:1.47
+|    |    |         \--- org.bouncycastle:bcprov-jdk15on:1.47
+|    |    +--- org.jenkins-ci.modules:slave-installer:1.3
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.1 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:windows-slave-installer:1.4
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    +--- org.jenkins-ci.modules:launchd-slave-installer:1.2
+|    |    |    +--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    |    \--- org.jenkins-ci.modules:instance-identity:1.1 -> 1.4 (*)
+|    |    +--- org.jenkins-ci.modules:upstart-slave-installer:1.1
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.1 -> 1.3 (*)
+|    |    +--- org.jenkins-ci.modules:systemd-slave-installer:1.1
+|    |    |    \--- org.jenkins-ci.modules:slave-installer:1.3 (*)
+|    |    \--- org.slf4j:slf4j-jdk14:1.7.7
+|    |         \--- org.slf4j:slf4j-api:1.7.7
+|    +--- org.jenkins-ci.main:maven-plugin:2.5
+|    |    +--- org.jenkins-ci.plugins:javadoc:1.0
+|    |    +--- org.jenkins-ci.plugins:mailer:1.7 -> 1.10
+|    |    +--- org.jenkins-ci.main.maven:maven-agent:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven-interceptor:1.5
+|    |    |    |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    |    +--- org.apache.ant:ant:1.9.2 (*)
+|    |    |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven-interceptor:1.5 (*)
+|    |    +--- org.jvnet.hudson:maven2.1-interceptor:1.2
+|    |    +--- org.jenkins-ci.main.maven:maven3-agent:1.5
+|    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0
+|    |    |    |    +--- org.apache.maven:maven-settings:3.1.0
+|    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    +--- org.apache.maven:maven-core:3.1.0
+|    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |    |    +--- org.apache.maven:maven-settings-builder:3.1.0
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |    |    |    \--- org.sonatype.plexus:plexus-sec-dispatcher:1.3
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-utils:1.5.5 -> 3.0.10
+|    |    |    |    |    |         \--- org.sonatype.plexus:plexus-cipher:1.4 -> 1.7
+|    |    |    |    |    +--- org.apache.maven:maven-repository-metadata:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-artifact:3.1.0
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-plugin-api:3.1.0
+|    |    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    |    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5
+|    |    |    |    |    |         +--- javax.enterprise:cdi-api:1.0
+|    |    |    |    |    |         |    +--- javax.annotation:jsr250-api:1.0
+|    |    |    |    |    |         |    \--- javax.inject:javax.inject:1
+|    |    |    |    |    |         +--- com.google.guava:guava:10.0.1 -> 14.0
+|    |    |    |    |    |         +--- org.sonatype.sisu:sisu-guice:3.1.0
+|    |    |    |    |    |         |    +--- javax.inject:javax.inject:1
+|    |    |    |    |    |         |    \--- aopalliance:aopalliance:1.0
+|    |    |    |    |    |         +--- org.eclipse.sisu:org.eclipse.sisu.inject:0.0.0.M5
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |         +--- org.codehaus.plexus:plexus-classworlds:2.4 -> 2.5.1
+|    |    |    |    |    |         \--- org.codehaus.plexus:plexus-utils:2.1 -> 3.0.10
+|    |    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    \--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0
+|    |    |    |    |    |    +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |    |    |    +--- org.apache.maven:maven-repository-metadata:3.1.0 (*)
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    |    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    |    |    |    |    |    \--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    |    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    |    \--- org.sonatype.plexus:plexus-sec-dispatcher:1.3 (*)
+|    |    |    |    +--- org.apache.maven:maven-plugin-api:3.1.0 (*)
+|    |    |    |    +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |    +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |    +--- org.sonatype.plexus:plexus-sec-dispatcher:1.3 (*)
+|    |    |    |    +--- org.sonatype.plexus:plexus-cipher:1.7
+|    |    |    |    +--- org.slf4j:slf4j-api:1.7.4 -> 1.7.7
+|    |    |    |    +--- commons-cli:commons-cli:1.2
+|    |    |    |    \--- org.apache.maven:maven-compat:3.1.0
+|    |    |    |         +--- org.apache.maven:maven-model:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-model-builder:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-settings:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    |         +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    |         +--- org.codehaus.plexus:plexus-utils:3.0.10
+|    |    |    |         +--- org.codehaus.plexus:plexus-interpolation:1.16
+|    |    |    |         +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    |         +--- org.codehaus.plexus:plexus-component-annotations:1.5.5
+|    |    |    |         \--- org.apache.maven.wagon:wagon-provider-api:2.4
+|    |    |    |              \--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    \--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    +--- org.jenkins-ci.main.maven:maven31-agent:1.5
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.codehaus.plexus:plexus-classworlds:2.4.2 -> 2.5.1
+|    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven3-interceptor:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5
+|    |    |    |    +--- org.apache.maven:maven-core:3.0.5 -> 3.1.0 (*)
+|    |    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0 (*)
+|    |    |    |    \--- org.apache.maven:maven-aether-provider:3.0.5 -> 3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-core:3.0.5 -> 3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.0.5 -> 3.1.0 (*)
+|    |    |    \--- org.apache.maven:maven-aether-provider:3.0.5 -> 3.1.0 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven31-interceptor:1.5
+|    |    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5 (*)
+|    |    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    |    \--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    +--- org.jenkins-ci.main.maven:maven3-interceptor-commons:1.5 (*)
+|    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-compat:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    +--- org.eclipse.aether:aether-impl:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    +--- org.eclipse.aether:aether-transport-wagon:0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M3 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0 -> 2.4 (*)
+|    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M5 (*)
+|    |    +--- com.google.inject:guice:4.0-beta (*)
+|    |    +--- org.apache.maven.wagon:wagon-http:2.4
+|    |    |    +--- org.apache.maven.wagon:wagon-http-shared4:2.4
+|    |    |    |    +--- org.jsoup:jsoup:1.7.1
+|    |    |    |    +--- org.apache.httpcomponents:httpclient:4.2.3 -> 4.2.5
+|    |    |    |    |    +--- org.apache.httpcomponents:httpcore:4.2.4
+|    |    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    |    \--- commons-codec:commons-codec:1.6 -> 1.8
+|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.2.3 -> 4.2.4
+|    |    |    |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |    |    |    +--- commons-io:commons-io:2.0.1 -> 2.4
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    |    +--- org.apache.httpcomponents:httpclient:4.2.3 -> 4.2.5 (*)
+|    |    |    +--- org.apache.httpcomponents:httpcore:4.2.3 -> 4.2.4
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.httpcomponents:httpclient:4.2.5 (*)
+|    |    +--- org.apache.httpcomponents:httpcore:4.2.4
+|    |    +--- org.apache.maven.wagon:wagon-file:2.4
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ftp:2.4
+|    |    |    +--- commons-net:commons-net:3.1
+|    |    |    +--- org.slf4j:slf4j-api:1.7.2 -> 1.7.7
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ssh:2.4
+|    |    |    +--- com.jcraft:jsch:0.1.44-1
+|    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    +--- org.apache.maven.wagon:wagon-ssh-common:2.4
+|    |    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    |    +--- org.codehaus.plexus:plexus-interactivity-api:1.0-alpha-6
+|    |    |    |    |    \--- org.codehaus.plexus:plexus-utils:1.4 -> 3.0.10
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-ssh-external:2.4
+|    |    |    +--- org.codehaus.plexus:plexus-utils:3.0.8 -> 3.0.10
+|    |    |    +--- org.apache.maven.wagon:wagon-ssh-common:2.4 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    +--- org.apache.maven.reporting:maven-reporting-api:3.0
+|    |    |    \--- org.apache.maven.doxia:doxia-sink-api:1.0
+|    |    +--- org.codehaus.plexus:plexus-classworlds:2.5.1
+|    |    +--- org.jenkins-ci.lib:lib-jenkins-maven-artifact-manager:1.2
+|    |    |    +--- org.codehaus.plexus:plexus-utils:2.0.5 -> 3.0.10
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0-beta-7 -> 2.4 (*)
+|    |    +--- org.jenkins-ci.lib:lib-jenkins-maven-embedder:3.11
+|    |    |    +--- org.apache.maven:maven-core:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-artifact:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-compat:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-embedder:3.1.0 (*)
+|    |    |    +--- org.apache.maven:maven-aether-provider:3.1.0 (*)
+|    |    |    +--- org.eclipse.sisu:org.eclipse.sisu.plexus:0.0.0.M2a -> 0.0.0.M5 (*)
+|    |    |    +--- org.eclipse.aether:aether-connector-wagon:0.9.0.M2
+|    |    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    |    \--- org.apache.maven.wagon:wagon-provider-api:1.0 -> 2.4 (*)
+|    |    |    +--- org.eclipse.aether:aether-api:0.9.0.M2 -> 0.9.0.M3
+|    |    |    +--- org.eclipse.aether:aether-impl:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-spi:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.eclipse.aether:aether-util:0.9.0.M2 -> 0.9.0.M3 (*)
+|    |    |    +--- org.apache.ant:ant:1.9.2 (*)
+|    |    |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |    \--- org.apache.maven.wagon:wagon-webdav-jackrabbit:2.4
+|    |         +--- org.apache.maven.wagon:wagon-http-shared:2.4
+|    |         |    +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         |    +--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    |         |    +--- commons-lang:commons-lang:2.6
+|    |         |    +--- commons-io:commons-io:2.2 -> 2.4
+|    |         |    \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    |         +--- org.apache.jackrabbit:jackrabbit-webdav:2.5.2
+|    |         |    +--- org.slf4j:slf4j-api:1.6.4 -> 1.7.7
+|    |         |    \--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         +--- org.slf4j:slf4j-api:1.7.2 -> 1.7.7
+|    |         +--- commons-lang:commons-lang:2.6
+|    |         +--- commons-io:commons-io:2.2 -> 2.4
+|    |         +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |         \--- org.apache.maven.wagon:wagon-provider-api:2.4 (*)
+|    +--- org.jenkins-ci.plugins:ant:1.2
+|    +--- org.jenkins-ci.plugins:subversion:1.45
+|    |    \--- org.jenkins-ci.svnkit:svnkit:1.7.6-jenkins-1
+|    |         +--- org.tmatesoft.sqljet:sqljet:1.1.0
+|    |         |    \--- org.antlr:antlr-runtime:3.4
+|    |         \--- de.regnis.q.sequence:sequence-library:1.0.1
+|    +--- org.jenkins-ci.plugins:mailer:1.10
+|    +--- org.jenkins-ci.plugins:matrix-auth:1.0.2
+|    +--- org.jenkins-ci.plugins:antisamy-markup-formatter:1.0
+|    |    \--- org.kohsuke:owasp-html-sanitizer:r88
+|    +--- org.jenkins-ci.plugins:matrix-project:1.0-beta-1
+|    +--- org.jenkins-ci.plugins:junit:1.0
+|    +--- org.mortbay.jetty:jetty:6.1.26
+|    |    +--- org.mortbay.jetty:jetty-util:6.1.26
+|    |    \--- org.mortbay.jetty:servlet-api:2.5-20081211
+|    +--- org.jenkins-ci:test-annotations:1.1
+|    +--- org.jvnet.mock-javamail:mock-javamail:1.7
+|    |    +--- javax.mail:mail:1.4 -> 1.4.4 (*)
+|    |    \--- junit:junit:3.8 -> 4.11 (*)
+|    +--- junit:junit:4.11 (*)
+|    +--- org.hamcrest:hamcrest-library:1.3
+|    |    \--- org.hamcrest:hamcrest-core:1.3
+|    +--- org.jenkins-ci:htmlunit:2.6-jenkins-6
+|    |    +--- xalan:xalan:2.7.1 (*)
+|    |    +--- commons-collections:commons-collections:3.2.1
+|    |    +--- commons-lang:commons-lang:2.4 -> 2.6
+|    |    +--- commons-httpclient:commons-httpclient:3.1 (*)
+|    |    +--- commons-codec:commons-codec:1.4 -> 1.8
+|    |    +--- org.jvnet.hudson:htmlunit-core-js:2.6-hudson-1
+|    |    +--- xerces:xercesImpl:2.9.1
+|    |    +--- net.sourceforge.nekohtml:nekohtml:1.9.13
+|    |    +--- net.sourceforge.cssparser:cssparser:0.9.5
+|    |    |    \--- org.w3c.css:sac:1.3
+|    |    +--- commons-io:commons-io:1.4 -> 2.4
+|    |    \--- commons-logging:commons-logging:1.1.1 -> 1.1.3
+|    +--- xalan:xalan:2.7.1 (*)
+|    +--- org.jvnet.hudson:embedded-rhino-debugger:1.2
+|    |    \--- org.jvnet.hudson:htmlunit-core-js:2.6-hudson-1
+|    +--- org.jvnet.hudson:netx:0.5-hudson-2
+|    +--- org.easymock:easymock:2.4
+|    +--- org.netbeans.modules:org-netbeans-insane:RELEASE72
+|    +--- com.github.stephenc.findbugs:findbugs-annotations:1.3.9-1
+|    \--- org.codehaus.geb:geb-implicit-assertions:0.7.2
++--- org.jenkins-ci.main:ui-samples-plugin:2.0
++--- org.jenkins-ci.main:jenkins-war:1.581 (*)
++--- junit:junit:4.12 -> 4.11 (*)
++--- junit:junit:4.11 (*)
++--- org.jvnet.mock-javamail:mock-javamail:1.7 (*)
++--- org.mockito:mockito-all:1.10.19
++--- info.cukes:cucumber-junit:1.2.4
+|    +--- info.cukes:cucumber-core:1.2.4
+|    |    +--- info.cukes:cucumber-html:0.2.3
+|    |    +--- info.cukes:cucumber-jvm-deps:1.0.5
+|    |    \--- info.cukes:gherkin:2.12.2
+|    \--- junit:junit:4.11 (*)
++--- info.cukes:cucumber-java8:1.2.4
+|    \--- info.cukes:cucumber-java:1.2.4
+|         \--- info.cukes:cucumber-core:1.2.4 (*)
++--- org.jenkins-ci.main:maven-plugin:2.5 (*)
++--- org.jenkins-ci.plugins:ant:1.2
++--- org.jenkins-ci.plugins:subversion:1.45 (*)
++--- org.jenkins-ci.plugins:mailer:1.10
++--- org.jenkins-ci.plugins:matrix-auth:1.0.2
++--- org.jenkins-ci.plugins:antisamy-markup-formatter:1.0 (*)
++--- org.jenkins-ci.plugins:matrix-project:1.0-beta-1
++--- org.jenkins-ci.plugins:junit:1.0
+\--- org.jenkins-ci.plugins:javadoc:1.0
+
+(*) - dependencies omitted (listed previously)
+
+BUILD SUCCESSFUL
+
+Total time: 3.834 secs

@@ -38,6 +38,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.text.*;
 
+import static java.util.Objects.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils.MessagesWrapper;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.*;
@@ -66,18 +67,10 @@ public class PollMailboxTrigger extends AbstractTrigger {
         this.script = Util.fixEmpty(script);
     }
 
-    protected static CustomProperties initialiseDefaults(String host, String username, Secret password, String script) {
-        // expand environment vars
-        Jenkins instance = Jenkins.getInstance();
-        if (instance == null) {
-            throw new RuntimeException("Could not get Jenkins instance using Jenkins.getInstance() (returns null). " +
-                    "This can happen if Jenkins has not been started, or was already shut down. " +
-                    "Please see http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. " +
-                    "If you believe this is an error, please raise an 'issue' under https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.");
-        }
+    public static CustomProperties initialiseDefaults(String host, String username, Secret password, String script) {
 
         // extracts global node properties from environment, add them to new empty local list
-        DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = instance.getGlobalNodeProperties();
+        DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = SafeJenkins.getGlobalNodeProperties();
         EnvVars envVars = new EnvVars();
 		if (null != properties) {
 			final EnvironmentVariablesNodeProperty envClass = properties
@@ -88,7 +81,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 		}
 		
         // extracts specific node properties from environment, merge them with local copy of global list
-        DescribableList<NodeProperty<?>, NodePropertyDescriptor> propsNode = instance.getNodeProperties();
+        DescribableList<NodeProperty<?>, NodePropertyDescriptor> propsNode = SafeJenkins.getNodeProperties();
 		if (null != propsNode) {
 			final EnvironmentVariablesNodeProperty envClass = propsNode
 					.get(EnvironmentVariablesNodeProperty.class);
@@ -100,15 +93,18 @@ public class PollMailboxTrigger extends AbstractTrigger {
 		// perform variable substitution
 		host = Util.replaceMacro(host, envVars);
 		username = Util.replaceMacro(username, envVars);
-		password = Secret.fromString(Util.replaceMacro(password.getPlainText(),
-				envVars));
+        String passwordVariableReplaced = nonNull(password)
+                ? Util.replaceMacro(password.getPlainText(), envVars)
+                : "";
 		script = Util.replaceMacro(script, envVars);
 
 		// build properties
+        CustomProperties userConfig = CustomProperties.read(script);
         CustomProperties p = new CustomProperties();
+        p.putAll(userConfig);
         p.put(Properties.host, host);
         p.put(Properties.username, username);
-        p.put(Properties.password, password.getEncryptedValue());
+        p.put(Properties.password, SafeJenkins.encrypt(passwordVariableReplaced));
         // setup default values
         p.putIfBlank(storeName, "imaps");
         p.putIfBlank(folder, "INBOX");
@@ -120,11 +116,13 @@ public class PollMailboxTrigger extends AbstractTrigger {
         p.putIfBlank("mail." + cnfStoreName + ".port", cnfStoreName.toLowerCase().endsWith("s") ? "993" : "143");
         p.putIfBlank("mail.debug", "false");
         p.putIfBlank("mail.debug.auth", "false");
-        p.read(script);
+        // re-override the user properties, to ensure they're set.
+        p.putAll(userConfig);
+        p.removeBlanks();
         return p;
     }
 
-    public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt, boolean unitTestMode) {
+    public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) {
         MailReader mailbox = null;
         List<String> testing = new ArrayList<String>();
         try {
@@ -146,7 +144,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
             // connect to mailbox
             log.info("Connecting to the mailbox...");
             String encryptedPassword = properties.get(Properties.password);
-            String decryptedPassword = unitTestMode ? encryptedPassword : Secret.decrypt(encryptedPassword).getPlainText();
+            String decryptedPassword = SafeJenkins.decrypt(encryptedPassword);
             mailbox = new MailReader(
                     properties.get(Properties.host),
                     properties.get(Properties.username),
@@ -300,7 +298,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
         CustomProperties properties = initialiseDefaults(host, username, password, script);
-        checkForEmails(properties, log, false, this, false); // use executingNode, ???
+        checkForEmails(properties, log, false, this); // use executingNode, ???
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
 
@@ -359,7 +357,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         ) {
             try {
                 CustomProperties properties = initialiseDefaults(host, username, password, script);
-                return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null, false);
+                return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null);
             } catch (Throwable t) {
                 return FormValidation.error("Error : " + stringify(t));
             }

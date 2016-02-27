@@ -1,9 +1,13 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.utils;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 
+import static java.util.Objects.*;
+import static org.apache.commons.lang.StringUtils.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.stringify;
 
 /**
@@ -34,7 +38,7 @@ public class CustomProperties {
     public static CustomProperties read(String properties) {
         Properties p = new Properties();
         try {
-            if (properties != null && !"".equals(properties.trim())) {
+            if (nonNull(properties) && !isBlank((properties.trim()))) {
                 p.load(new StringReader(properties));
             }
         } catch (IOException e) {
@@ -68,7 +72,7 @@ public class CustomProperties {
     }
 
     public void putAll(Map<String, String> p2, String prefix) {
-        if (prefix == null) {
+        if (isNull(prefix)) {
             prefix = "";
         }
         final Iterator<Map.Entry<String, String>> entries = p2.entrySet().iterator();
@@ -118,15 +122,30 @@ public class CustomProperties {
     }
 
     public CustomProperties putIfBlank(String s, String s2) {
-        if (!has(s) || get(s) == null || "".equals(get(s))) {
+        String existingValue = get(s);
+        if (!has(s) || isNull(existingValue) || isBlank(existingValue)) {
             return put(s, s2);
         }
         return null;
     }
 
+    public void removeBlanks() {
+        List<String> removekeys = new ArrayList<String>();
+        for (String key : delegate.keySet()){
+            String value = delegate.get(key);
+            if (isBlank(value)){
+                removekeys.add(key);
+            }
+        }
+        for (String removekey : removekeys){
+            delegate.remove(removekey);
+        }
+    }
+
     public String toString() {
         return stringify(delegate);
     }
+
     /* delegate methods */
 
     public int size() {

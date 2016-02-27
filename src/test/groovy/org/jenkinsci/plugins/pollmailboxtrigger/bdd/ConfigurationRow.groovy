@@ -1,0 +1,24 @@
+package org.jenkinsci.plugins.pollmailboxtrigger.bdd
+
+import hudson.util.Secret
+import org.apache.commons.lang.StringUtils
+
+import static java.util.Objects.isNull
+
+class ConfigurationRow {
+
+    String host
+    String username
+    String password
+    String script
+
+    Secret buildPasswordSecret(){
+        password ? new Secret(password) : null
+    }
+
+    void appendScript(String newScript){
+        if (!StringUtils.isBlank(newScript)){
+            script = isNull(script) ? newScript : script + "\n" + newScript
+        }
+    }
+}
