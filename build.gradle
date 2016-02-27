@@ -57,7 +57,7 @@ dependencies {
     testCompile 'org.mockito:mockito-all:1.10.19'
     // bdd testing
     testCompile "info.cukes:cucumber-junit:$cucumber_version"
-    testCompile "info.cukes:cucumber-java8:$cucumber_version"
+    testCompile "info.cukes:cucumber-java:$cucumber_version"
 }
 
 /**
