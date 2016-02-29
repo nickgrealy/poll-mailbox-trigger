@@ -39,15 +39,8 @@ public class StepDefs {
 
     @Before
     void setup() {
-//        MockitoAnnotations.initMocks(this)
         useNativeInstance(false)
         descriptor = new PollMailboxTrigger.PollMailboxTriggerDescriptor()
-//        plugin.metaClass.startJob = { XTriggerLog log, Map<String, String> envVars ->
-//            println "startJob invoked."
-//        }
-//        logger = new XTriggerLog()
-//
-//        config = new CustomProperties([host: 'bar.com', storeName: 'imap', username: 'foo', password: secret.getPlainText()])
     }
 
     @After
@@ -70,6 +63,11 @@ public class StepDefs {
         emails.each {
             inmemoryMailbox.add(buildMessage(it.subject, it.sentXMinutesAgo, it.isSeenFlag))
         }
+    }
+
+    @Given('the following Jenkins variables')
+    public void setup_envvars(Map<String, String> envVars){
+        SafeJenkins.setLocalNodeProperties(envVars);
     }
 
     @When('I set the configuration to')

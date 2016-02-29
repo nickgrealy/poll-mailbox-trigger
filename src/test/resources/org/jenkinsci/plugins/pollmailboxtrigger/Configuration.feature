@@ -68,6 +68,42 @@ Feature: Configuration
       | username                   | bbb  |
 
 
+  Scenario: I want to be able to use Jenkins environment variables in my configuration.
+    Given the following Jenkins variables
+      | cat     | meow  |
+      | dog     | woof  |
+      | pig     | oink  |
+      | cow     | wazoo |
+      | truthy  | true  |
+      | falsey  | false |
+      | numeric | 80085 |
+    When I set the configuration to
+      | Host       | Username   | Password   |
+      | aa $cat aa | bb $dog bb | cc $pig cc |
+    And script to
+    """
+    mail.debug=$truthy
+    mail.debug.auth=${falsey}
+    receivedXMinutesAgo=$numeric
+    subjectContains=dd ${cow} dd
+    folder=ee ${dog} ee
+    mail.imaps.connectiontimeout=${numeric}
+    """
+    Then the effective configuration should be
+      | folder                       | ee woof ee  |
+      | host                         | aa meow aa  |
+      | mail.debug                   | true        |
+      | mail.debug.auth              | false       |
+      | mail.imaps.connectiontimeout | 80085       |
+      | mail.imaps.host              | aa meow aa  |
+      | mail.imaps.port              | 993         |
+      | password                     | cc knio cc  |
+      | receivedXMinutesAgo          | 80085       |
+      | storeName                    | imaps       |
+      | subjectContains              | dd wazoo dd |
+      | username                     | bb woof bb  |
+
+
   Scenario: I want to be able to clear the default config values.
     When I set the configuration to
       | Username | Password |

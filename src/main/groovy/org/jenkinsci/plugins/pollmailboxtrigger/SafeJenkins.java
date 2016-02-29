@@ -1,10 +1,17 @@
 package org.jenkinsci.plugins.pollmailboxtrigger;
 
+import hudson.model.Saveable;
+import hudson.slaves.EnvironmentVariablesNodeProperty;
 import hudson.slaves.NodeProperty;
 import hudson.slaves.NodePropertyDescriptor;
 import hudson.util.DescribableList;
 import hudson.util.Secret;
 import jenkins.model.Jenkins;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -52,6 +59,20 @@ public class SafeJenkins {
         return useNativeInstance ? getJenkinsInstance().getNodeProperties() : localNodeProperties;
     }
 
+    /**
+     * Creates a {@link EnvironmentVariablesNodeProperty} of environment properties, from the given {@link Map}.
+     */
+    public static void setLocalNodeProperties(Map<String, String> properties){
+        if (isNull(localNodeProperties)){
+            localNodeProperties = new DescribableList<NodeProperty<?>, NodePropertyDescriptor>(new NoopSaveable());
+        }
+        List<EnvironmentVariablesNodeProperty.Entry> envVarEntries = new ArrayList<EnvironmentVariablesNodeProperty.Entry>();
+        for (Map.Entry<String, String> entry : properties.entrySet()){
+            envVarEntries.add(new EnvironmentVariablesNodeProperty.Entry(entry.getKey(), entry.getValue()));
+        }
+        localNodeProperties.add(new EnvironmentVariablesNodeProperty(envVarEntries));
+    }
+
     public static String encrypt(String message){
         return useNativeInstance
                 ? Secret.fromString(message).getEncryptedValue()
@@ -71,4 +92,12 @@ public class SafeJenkins {
     public static boolean nonNull(Object object){
         return object != null;
     }
+
+    static class NoopSaveable implements Saveable {
+        @Override
+        public void save() throws IOException {
+            // noop
+        }
+    }
+
 }
