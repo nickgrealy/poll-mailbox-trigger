@@ -1,10 +1,16 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.utils;
 
+import com.google.common.io.Files;
+import org.apache.commons.lang.StringUtils;
+
 import javax.mail.*;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.search.SearchTerm;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import static org.apache.commons.lang.StringUtils.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.subjectContains;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.*;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.*;
@@ -133,6 +139,27 @@ public abstract class MailWrapperUtils {
                 if (!foo.contains(containing)) it.remove();
             }
             return list;
+        }
+
+        /**
+         * Saves all attachments to a temp directory, and returns the directory path. Null if no attachments.
+         */
+        public File saveAttachments(Message message) throws IOException, MessagingException {
+            File tmpDir = Files.createTempDir();
+            boolean foundAttachments = false;
+            Object content = message.getContent();
+            if (message.isMimeType(MULTIPART_WILDCARD) && content instanceof Multipart) {
+                Multipart mp = (Multipart) content;
+                for (int i = 0; i < mp.getCount(); i++) {
+                    BodyPart bodyPart = mp.getBodyPart(i);
+                    if (bodyPart instanceof MimeBodyPart && isNotBlank(bodyPart.getFileName())){
+                        MimeBodyPart mimeBodyPart = (MimeBodyPart) bodyPart;
+                        mimeBodyPart.saveFile(new File(tmpDir, mimeBodyPart.getFileName()));
+                        foundAttachments = true;
+                    }
+                }
+            }
+            return foundAttachments ? tmpDir : null;
         }
 
         public void close() throws MessagingException {

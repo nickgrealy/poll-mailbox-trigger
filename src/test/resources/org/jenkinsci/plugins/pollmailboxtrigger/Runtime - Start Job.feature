@@ -1,4 +1,3 @@
-@wip
 Feature: Runtime - Start Job
 
   Background: The tests are setup.
@@ -25,13 +24,43 @@ Feature: Runtime - Start Job
     Then a Jenkins job is scheduled with quietPeriod 0 and cause '[PollMailboxTrigger] Job was triggered by email sent from fred@email.com (<a href="triggerCauseAction">log</a>)'
 
 
+  Scenario: I the job's logging to give me useful information,
+  So that I know exactly what happened.
+    Given the emails
+      | Subject                   | SentXMinutesAgo | IsSeenFlag |
+      | Jenkins > Build Plugin #3 | 5               | false      |
+      | Jenkins > Build Plugin #4 | 10              | false      |
+    When the Plugin's polling is triggered
+    Then the log is
+    """
+    Connecting to the mailbox...
+    [Poll Mailbox Trigger] - Connected!
+    Connected to mailbox. Searching for messages where:
+    - [flag is unread]
+    - [subject contains 'jenkins >']
+    - [received date is greater than '<date>']
+    ...
+    Found matching email(s) : 2
+
+    - Jenkins > Build Plugin #3 (<date>)
+
+    - Jenkins > Build Plugin #4 (<date>)
+    Changes found. Scheduling a build.
+    Marked email(s) as read : 1
+    Changes found. Scheduling a build.
+    Marked email(s) as read : 1
+
+    """
+
+
   Scenario: I want the email body to pass parameters to the Jenkins job,
   So that I can configure the Job instance.
     Given the emails
       | Subject                   | SentXMinutesAgo | IsSeenFlag | From           | Body                    |
       | Jenkins > Build Plugin #4 | 5               | false      | nick@email.com | aaa=bbb\nfoo=<b>bar</b> |
     When the Plugin's polling is triggered
-    Then a Jenkins job is scheduled with quietPeriod 0 and cause '[PollMailboxTrigger] Job was triggered by email sent from nick@email.com (<a href="triggerCauseAction">log</a>)' and parameters
+    Then a Jenkins job is scheduled with quietPeriod 0 and cause '[PollMailboxTrigger] Job was triggered by email sent from nick@email.com (<a href="triggerCauseAction">log</a>)'
+    And the Job parameters were - excluding pmt_receivedDate,pmt_sentDate
       | aaa                             | bbb                        |
       | foo                             | bar                        |
       | pmt_content                     | \naaa=bbb\nfoo=<b>bar</b>  |
@@ -57,16 +86,23 @@ Feature: Runtime - Start Job
       | pmt_username                    | rick                       |
 
 
+    # todo: Finish writing acceptance test
+    @ignore
   Scenario: I want the email to save any attachments to disk, and pass in file pointers in the environment variables,
   So that I have access to the email attachments from the Job.
     Given the emails
-      | Subject                   | SentXMinutesAgo | IsSeenFlag | From           | Body                    | Attachments |
-      | Jenkins > Build Plugin #4 | 5               | false      | nick@email.com | aaa=bbb\nfoo=<b>bar</b> | lighter.jpg |
+      | Subject                   | SentXMinutesAgo | IsSeenFlag | From           | Body    | Attachments            |
+      | Jenkins > Build Plugin #4 | 5               | false      | nick@email.com | nothing | lighter.jpg,aurora.jpg |
     When the Plugin's polling is triggered
-    Then a Jenkins job is scheduled with quietPeriod 0 and cause '[PollMailboxTrigger] Job was triggered by email sent from nick@email.com (<a href="triggerCauseAction">log</a>)' and parameters
-      | aaa                             | bbb                        |
-      | foo                             | bar                        |
-      | pmt_content                     | \naaa=bbb\nfoo=<b>bar</b>  |
+    Then the log is
+    """
+    foobar
+    """
+    Then a Jenkins job is scheduled with quietPeriod 0 and cause '[PollMailboxTrigger] Job was triggered by email sent from nick@email.com (<a href="triggerCauseAction">log</a>)'
+    And the Job parameters were - excluding pmt_receivedDate,pmt_sentDate
+      | pmt_attachment1                 | lighter.jpg                |
+      | pmt_attachment2                 | aurora.jpg                 |
+      | pmt_content                     | \nnothing                  |
       | pmt_contentType                 | text/html                  |
       | pmt_flags                       | RECENT                     |
       | pmt_folder                      | INBOX                      |
@@ -87,3 +123,6 @@ Feature: Runtime - Start Job
       | pmt_subject                     | Jenkins > Build Plugin #4  |
       | pmt_subjectContains             | jenkins >                  |
       | pmt_username                    | rick                       |
+
+  # todo: Two emails triggers two job instances.
+  # todo: Error occurs, shown in the logs.

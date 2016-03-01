@@ -171,7 +171,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 final int minsAgo = Integer.parseInt(properties.get(receivedXMinutesAgo)) * -1;
                 Date date = relativeDate(Calendar.MINUTE, minsAgo);
                 searchTerms.add(receivedSince(date));
-                log.info("- [received date is greater than '" + date + "']");
+                log.info("- [received date is greater than '" + formatter.format(date) + "']");
             }
             log.info("...");
             if (!properties.has(folder)) {
@@ -194,6 +194,10 @@ public class PollMailboxTrigger extends AbstractTrigger {
                     for (Message message : messageList) {
                         final String prefix = "pmt_";
                         CustomProperties buildParams = messagesTool.getMessageProperties(message, prefix, properties);
+                        File attachmentsDir = messagesTool.saveAttachments(message);
+                        if (nonNull(attachmentsDir)){
+                            buildParams.put("pmt_attachmentsDirectory", attachmentsDir.getAbsolutePath());
+                        }
                         properties.remove(Properties.password);
                         buildParams.putAll(properties, prefix);
                         String jobCause = "Job was triggered by email sent from " + stringify(message.getFrom());

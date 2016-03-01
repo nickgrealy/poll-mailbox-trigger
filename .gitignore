@@ -10,3 +10,5 @@ target/
 *.iml
 *.iws
 *.ipr
+
+Integration Test.feature

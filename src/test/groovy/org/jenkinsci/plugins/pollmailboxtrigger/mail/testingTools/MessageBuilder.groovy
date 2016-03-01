@@ -4,6 +4,9 @@ import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify
 
 import javax.mail.Flags
 import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.Multipart
+import javax.mail.Part
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMultipart
@@ -57,13 +60,14 @@ Nick
             int sentXMinutesAgo,
             boolean isSeenFlag,
             String from,
-            String body
+            String body,
+            String attachments
     ) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.MINUTE, -1 * sentXMinutesAgo);
         Date date = cal.getTime();
-        buildMessageCandidate(subject, date, [isSeenFlag ? Flag.SEEN : Flag.RECENT], from, body) as NoopMessage
+        buildMessageCandidate(subject, date, [isSeenFlag ? Flag.SEEN : Flag.RECENT], from, body, attachments) as NoopMessage
     }
 
     /**
@@ -76,11 +80,14 @@ Nick
             Date sentReceivedDate = DEFAULT_DATE,
             List<Flag> flags = [Flag.ANSWERED, Flag.DRAFT],
             String from = 'foo1@bar.com,foo2@bar.com',
-            String body = 'aaa=bbb\nfoo=<b>bar</b>'
+            String body = 'aaa=bbb\nfoo=<b>bar</b>',
+            String attachments = ''
     ) {
+        List<String> fromAddr = from ? from.split(',').collect() : []
+        List<String> files = attachments ? attachments.split(',').collect() : []
         [
                 getSentDate     : { sentReceivedDate },
-                getFrom         : { from.split(',').collect { new InternetAddress(it) } },
+                getFrom         : { fromAddr.collect { new InternetAddress(it) } },
                 getSubject      : { subject },
                 getFlags        : {
                     def tmp = new Flags()
@@ -93,7 +100,7 @@ Nick
                 getAllHeaders   : { Collections.enumeration(['Foo', 'Bar']) },
                 getContentType  : { 'text/html' },
                 getAllRecipients: { ['foo3@bar.com', 'foo4@bar.com'].collect { new InternetAddress(it) } },
-                getContent      : { body.toString() },
+                getContent      : { files.isEmpty() ? body.toString() : buildMultipartContent(files) },
                 isMimeType      : { it.startsWith('text') }
         ]
     }
@@ -113,5 +120,16 @@ Nick
         candidate['isMimeType'] = { it.startsWith('multipart') }
         candidate['getContentType'] = { multiPart.getContentType() }
         candidate as NoopMessage
+    }
+
+    public static Multipart buildMultipartContent(List<String> files){
+        Multipart multipart = new MimeMultipart()
+        files.each {
+            def part = new MimeBodyPart(MessageBuilder.getResourceAsStream(it))
+            part.setFileName(it)
+            part.setDisposition(Part.ATTACHMENT)
+            multipart.addBodyPart(part)
+        }
+        return multipart
     }
 }

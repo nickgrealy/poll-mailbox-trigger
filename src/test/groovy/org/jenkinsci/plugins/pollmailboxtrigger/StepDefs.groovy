@@ -12,6 +12,7 @@ import hudson.model.Project
 import hudson.util.FormValidation
 import hudson.util.Secret
 import hudson.util.StreamTaskListener
+import org.hamcrest.Matchers
 import org.jenkinsci.lib.xtrigger.XTriggerLog
 import org.jenkinsci.plugins.pollmailboxtrigger.bdd.ConfigurationRow
 import org.jenkinsci.plugins.pollmailboxtrigger.bdd.EmailRow
@@ -21,6 +22,7 @@ import org.jvnet.mock_javamail.Mailbox
 import org.mockito.ArgumentCaptor
 
 import static org.hamcrest.MatcherAssert.assertThat
+import static org.hamcrest.Matchers.*
 import static org.hamcrest.core.Is.is
 import static org.hamcrest.core.StringContains.containsString
 import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.isNull
@@ -49,8 +51,6 @@ public class StepDefs {
 
     ByteArrayOutputStream logStream
 
-    boolean checkIfModified
-
     ArgumentCaptor<Integer> quietPeriodCaptor
     ArgumentCaptor<Cause> causeCaptor
     ArgumentCaptor<Action[]> actionsCaptor
@@ -59,7 +59,6 @@ public class StepDefs {
     void setup() {
         useNativeInstance(false)
         descriptor = new PollMailboxTrigger.PollMailboxTriggerDescriptor()
-        checkIfModified = false
         logStream = new ByteArrayOutputStream()
         log = new XTriggerLog(new StreamTaskListener(logStream))
         job = mock(Project)
@@ -72,7 +71,9 @@ public class StepDefs {
     @After
     void teardown() {
         inmemoryMailbox?.clear()
-        logStream.close()
+        if (logStream){
+            logStream.close()
+        }
     }
 
     @Given('the plugin is initialised')
@@ -81,9 +82,9 @@ public class StepDefs {
                 '', '', new Secret(''), ''))
 
         // mocking plugin methods...
-        doReturn([] as List<Action>).when(plugin).getScheduledXTriggerActions(log)
         doReturn(descriptor).when(plugin).getDescriptor()
         doReturn(job).when(plugin).getJob()
+        doReturn([] as List<Action>).when(plugin).getScheduledXTriggerActions(log)
     }
 
     @Given('a mailbox with domain (.+) and username (.+)')
@@ -94,7 +95,7 @@ public class StepDefs {
     @Given('the emails')
     public void and_emails(List<EmailRow> emails) {
         emails.each {
-            inmemoryMailbox.add(buildMessage(it.subject, it.sentXMinutesAgo, it.isSeenFlag, it.from, it.body))
+            inmemoryMailbox.add(buildMessage(it.subject, it.sentXMinutesAgo, it.isSeenFlag, it.from, it.body, it.attachments))
         }
     }
 
@@ -115,6 +116,10 @@ public class StepDefs {
             config.password = newConf.password
             config.appendScript(newConf.script)
         }
+        configUpdated(config)
+    }
+
+    private void configUpdated(ConfigurationRow config){
         plugin.setHost(config.host)
         plugin.setUsername(config.username)
         plugin.setPassword(config.buildPasswordSecret())
@@ -128,7 +133,7 @@ public class StepDefs {
             config = new ConfigurationRow();
         }
         config.appendScript(script)
-        effectiveConfig = PollMailboxTrigger.initialiseDefaults(config?.host, config?.username, config?.buildPasswordSecret(), config?.script)
+        configUpdated(config)
     }
 
     @When('I test the connection')
@@ -139,7 +144,7 @@ public class StepDefs {
     @When('the Plugin\'s polling is triggered')
     public void trigger_polling() throws Throwable {
         // execute the polling...
-        checkIfModified = plugin.checkIfModified(null, log)
+        plugin.checkIfModified(null, log)
     }
 
     @Then('the effective configuration should be')
@@ -157,15 +162,36 @@ public class StepDefs {
         assertThat(causeCaptor.getValue().getShortDescription(), is(expCauseDesc));
     }
 
-    @Then('^a Jenkins job is scheduled with quietPeriod (.+) and cause \'(.+)\' and parameters$')
-    public void job_should_be_invoked_with_params(int expQuietPeriod, String expCauseDesc, DataTable expParameters){
-        job_should_be_invoked(expQuietPeriod, expCauseDesc)
-        // get job parameters...
+    @Then('the Job parameters were - excluding (.*)')
+    public void job_params_should_be(String excludeHeaders, DataTable expParameters){
+        List<String> excludedHeaders = excludeHeaders ? excludeHeaders.split(',').collect() : []
+        def parameters = getLastJobParameters()
+        excludedHeaders.each {
+            assertThat("parameter '$it' didn't exist, consider removing it from the acceptance test.", parameters.containsKey(it), is(true))
+            parameters.remove(it)
+        }
+        expParameters.diff(parameters.collect { [it.key, it.value] })
+    }
+
+    @Then('there are (.+) saved attachments')
+    public void saved_attachments(int expectedNumOfAttachments){
+        List<File> files = new File(getLastJobParameters().get('pmt_attachmentsDirectory')).listFiles().collect()
+        assertThat(files.size(), is(expectedNumOfAttachments))
+        files.each {
+            assertThat(it.size(), greaterThan(1L))
+        }
+    }
+
+    private Map<String, String> getLastJobParameters(){
         Action[] actions = actionsCaptor.getValue()
-        Map<String, String> parameters = actions[0].getParameters().collectEntries { [(it.name): it.value] }
-        parameters.remove('pmt_receivedDate')
-        parameters.remove('pmt_sentDate')
-        expParameters.diff(new TreeMap<>(parameters).collect { [it.key, it.value] })
+        Map<String, String> entries = actions[0].getParameters().collectEntries { [(it.name): it.value] }
+        new TreeMap<String, String>(entries)
+    }
+
+    @Then('the log is')
+    public void the_log_is(String expectedLog){
+        String actualLog = logStream.toString().replaceAll(/\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} (AM|PM)/, '<date>')
+        assertThat(actualLog, is(expectedLog));
     }
 
     @Then('the response should be (OK|ERROR|WARNING) with message \'(.+)\'')
