@@ -6,13 +6,19 @@ import cucumber.api.java.Before
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
+import hudson.model.Action
+import hudson.model.Cause
+import hudson.model.Project
 import hudson.util.FormValidation
 import hudson.util.Secret
+import hudson.util.StreamTaskListener
+import org.jenkinsci.lib.xtrigger.XTriggerLog
 import org.jenkinsci.plugins.pollmailboxtrigger.bdd.ConfigurationRow
 import org.jenkinsci.plugins.pollmailboxtrigger.bdd.EmailRow
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.CustomProperties
 import org.jenkinsci.plugins.scripttrigger.LabelRestrictionClass
 import org.jvnet.mock_javamail.Mailbox
+import org.mockito.ArgumentCaptor
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.core.Is.is
@@ -21,10 +27,11 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.isNull
 import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.useNativeInstance
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools.MessageBuilder.buildMessage
 import static org.junit.Assert.fail
-import static org.mockito.Mockito.doReturn
-import static org.mockito.Mockito.spy
+import static org.mockito.Mockito.*
 
 public class StepDefs {
+
+    Project job
 
     Mailbox inmemoryMailbox
 
@@ -35,17 +42,37 @@ public class StepDefs {
     PollMailboxTrigger.PollMailboxTriggerDescriptor descriptor
 
     ConfigurationRow config
+
     CustomProperties effectiveConfig
+
+    XTriggerLog log
+
+    ByteArrayOutputStream logStream
+
+    boolean checkIfModified
+
+    ArgumentCaptor<Integer> quietPeriodCaptor
+    ArgumentCaptor<Cause> causeCaptor
+    ArgumentCaptor<Action[]> actionsCaptor
 
     @Before
     void setup() {
         useNativeInstance(false)
         descriptor = new PollMailboxTrigger.PollMailboxTriggerDescriptor()
+        checkIfModified = false
+        logStream = new ByteArrayOutputStream()
+        log = new XTriggerLog(new StreamTaskListener(logStream))
+        job = mock(Project)
+        // captors
+        quietPeriodCaptor = ArgumentCaptor.forClass(Integer);
+        causeCaptor = ArgumentCaptor.forClass(Cause);
+        actionsCaptor = ArgumentCaptor.forClass(([] as Action[]).getClass());
     }
 
     @After
     void teardown() {
         inmemoryMailbox?.clear()
+        logStream.close()
     }
 
     @Given('the plugin is initialised')
@@ -53,15 +80,21 @@ public class StepDefs {
         plugin = spy(new PollMailboxTrigger("*/5 * * * *", new LabelRestrictionClass("master"), false,
                 '', '', new Secret(''), ''))
 
-        // mocking...
+        // mocking plugin methods...
+        doReturn([] as List<Action>).when(plugin).getScheduledXTriggerActions(log)
         doReturn(descriptor).when(plugin).getDescriptor()
+        doReturn(job).when(plugin).getJob()
     }
 
-    @Given('a mailbox with domain (.+) and username (.+) and emails')
-    public void setup_mailbox(String domain, String username, List<EmailRow> emails) {
+    @Given('a mailbox with domain (.+) and username (.+)')
+    public void setup_mailbox(String domain, String username) {
         inmemoryMailbox = Mailbox.get("$username@$domain")
+    }
+
+    @Given('the emails')
+    public void and_emails(List<EmailRow> emails) {
         emails.each {
-            inmemoryMailbox.add(buildMessage(it.subject, it.sentXMinutesAgo, it.isSeenFlag))
+            inmemoryMailbox.add(buildMessage(it.subject, it.sentXMinutesAgo, it.isSeenFlag, it.from, it.body))
         }
     }
 
@@ -82,10 +115,14 @@ public class StepDefs {
             config.password = newConf.password
             config.appendScript(newConf.script)
         }
+        plugin.setHost(config.host)
+        plugin.setUsername(config.username)
+        plugin.setPassword(config.buildPasswordSecret())
+        plugin.setScript(config.script)
         effectiveConfig = PollMailboxTrigger.initialiseDefaults(config?.host, config?.username, config?.buildPasswordSecret(), config?.script)
     }
 
-    @When('script to')
+    @When('the script')
     public void set_config(String script) throws Throwable {
         if (isNull(config)){
             config = new ConfigurationRow();
@@ -99,12 +136,36 @@ public class StepDefs {
         validation = plugin.getDescriptor().doTestConnection(config.host, config.username, config?.buildPasswordSecret(), config.script)
     }
 
+    @When('the Plugin\'s polling is triggered')
+    public void trigger_polling() throws Throwable {
+        // execute the polling...
+        checkIfModified = plugin.checkIfModified(null, log)
+    }
+
     @Then('the effective configuration should be')
     public void the_config_should_be(DataTable expectedDataTable){
-
         List<List<String>> actualDataTable = effectiveConfig.getMap().collect { [it.key, it.value ?: ''] }.sort { a,b -> a[0] <=> b[0] }
-
         expectedDataTable.diff(actualDataTable)
+    }
+
+    @Then('^a Jenkins job is scheduled with quietPeriod (.+) and cause \'(.+)\'$')
+    public void job_should_be_invoked(int expQuietPeriod, String expCauseDesc){
+        // verify the job is invoked once (capture parameters)...
+        verify(job, times(1)).scheduleBuild(quietPeriodCaptor.capture(), causeCaptor.capture(), actionsCaptor.capture())
+        // verify job trigger params...
+        assertThat(quietPeriodCaptor.getValue(), is(expQuietPeriod));
+        assertThat(causeCaptor.getValue().getShortDescription(), is(expCauseDesc));
+    }
+
+    @Then('^a Jenkins job is scheduled with quietPeriod (.+) and cause \'(.+)\' and parameters$')
+    public void job_should_be_invoked_with_params(int expQuietPeriod, String expCauseDesc, DataTable expParameters){
+        job_should_be_invoked(expQuietPeriod, expCauseDesc)
+        // get job parameters...
+        Action[] actions = actionsCaptor.getValue()
+        Map<String, String> parameters = actions[0].getParameters().collectEntries { [(it.name): it.value] }
+        parameters.remove('pmt_receivedDate')
+        parameters.remove('pmt_sentDate')
+        expParameters.diff(new TreeMap<>(parameters).collect { [it.key, it.value] })
     }
 
     @Then('the response should be (OK|ERROR|WARNING) with message \'(.+)\'')

@@ -196,7 +196,8 @@ public class PollMailboxTrigger extends AbstractTrigger {
                         CustomProperties buildParams = messagesTool.getMessageProperties(message, prefix, properties);
                         properties.remove(Properties.password);
                         buildParams.putAll(properties, prefix);
-                        pmt.startJob(log, buildParams.getMap());
+                        String jobCause = "Job was triggered by email sent from " + stringify(message.getFrom());
+                        pmt.startJob(log, jobCause, buildParams.getMap());
                         messagesTool.markAsRead(message);
                     }
                 }
@@ -301,14 +302,30 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
 
-    private void startJob(XTriggerLog log, Map<String, String> envVars) throws XTriggerException {
-        log.info("Changes found. Scheduling a build.");
-        AbstractProject project = (AbstractProject) job;
-//        Hudson.getInstance().getJob(jobName);
-        List<Action> actions = new ArrayList<Action>();
-        actions.addAll(Arrays.asList(getScheduledXTriggerActions(null, log)));
-        actions.add(new ParametersAction(convertToBuildParams(envVars)));
-        project.scheduleBuild(0, new NewEmailCause(getName(), getCause(), true), actions.toArray(new Action[actions.size()]));
+    protected void startJob(XTriggerLog log, String jobTriggerCause, Map<String, String> envVars) throws Throwable {
+        try {
+            log.info("Changes found. Scheduling a build.");
+            AbstractProject project = getJob();
+            List<Action> actions = new ArrayList<Action>();
+            actions.addAll(getScheduledXTriggerActions(log));
+            actions.add(new ParametersAction(convertToBuildParams(envVars)));
+
+            // build parameters for schedule job...
+            Cause cause = new NewEmailCause(getName(), jobTriggerCause, true);
+            Action[] actionsArray = actions.toArray(new Action[actions.size()]);
+            project.scheduleBuild(0, cause, actionsArray);
+        } catch (Throwable t){
+            log.error("Error occurred starting job - " + t.getMessage());
+            throw t;
+        }
+    }
+
+    protected AbstractProject getJob(){
+        return (AbstractProject) job;
+    }
+
+    protected List<Action> getScheduledXTriggerActions(XTriggerLog log) throws XTriggerException {
+        return Arrays.asList(getScheduledXTriggerActions(null, log));
     }
 
     /**

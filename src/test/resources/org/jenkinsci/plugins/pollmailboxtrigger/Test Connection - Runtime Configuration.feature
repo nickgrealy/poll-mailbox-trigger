@@ -1,14 +1,15 @@
-Feature: Runtime Configuration
+Feature: Test Connection - Runtime Configuration
 
   Background: The tests are setup.
     Given the plugin is initialised
-    Given a mailbox with domain mail.com and username rick and emails
+    Given a mailbox with domain mail.com and username rick
+    And the emails
       | Subject                   | SentXMinutesAgo | IsSeenFlag |
       | Hudson > Build Plugin #1  | 5               | false      |
       | Jenkins > Build Plugin #2 | 1445            | false      |
       | Jenkins > Build Plugin #3 | 5               | true       |
       | Jenkins > Build Plugin #4 | 5               | false      |
-    And script to
+    And the script
     """
     storeName=imap
     mail.imap.connectiontimeout=1000

@@ -1,5 +1,5 @@
 
-Feature: Test Connection Errors
+Feature: Test Connection - Error Handling
 
   Background: The tests are setup.
     Given the plugin is initialised
@@ -25,7 +25,7 @@ Feature: Test Connection Errors
     When I set the configuration to
       | Host     | Username | Password |
       | mail.com | rick     | rabbits  |
-    And script to
+    And the script
     """
     folder=
     storeName=imap

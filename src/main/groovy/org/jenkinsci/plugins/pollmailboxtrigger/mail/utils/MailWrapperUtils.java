@@ -97,7 +97,7 @@ public abstract class MailWrapperUtils {
                 int idx = msgSubject.toLowerCase().indexOf(subject.toLowerCase());
                 int beginIndex = idx + subject.length();
                 if (idx > -1 && beginIndex < msgSubject.length()) {
-                    envVars.put(prefix + "jobTrigger", msgSubject.substring(beginIndex));
+                    envVars.put(prefix + "jobTrigger", msgSubject.substring(beginIndex).trim());
                 }
             }
             return envVars;

@@ -52,12 +52,18 @@ Nick
         buildMessageCandidate(subject, sentReceivedDate) as NoopMessage
     }
 
-    public static Message buildMessage(String subject = DEFAULT_SUBJECT, int sentXMinutesAgo, boolean isSeenFlag) {
+    public static Message buildMessage(
+            String subject = DEFAULT_SUBJECT,
+            int sentXMinutesAgo,
+            boolean isSeenFlag,
+            String from,
+            String body
+    ) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.MINUTE, -1 * sentXMinutesAgo);
         Date date = cal.getTime();
-        buildMessageCandidate(subject, date, [isSeenFlag ? Flag.SEEN : Flag.RECENT]) as NoopMessage
+        buildMessageCandidate(subject, date, [isSeenFlag ? Flag.SEEN : Flag.RECENT], from, body) as NoopMessage
     }
 
     /**
@@ -65,10 +71,16 @@ Nick
      * @param subject
      * @return
      */
-    private static Map buildMessageCandidate(String subject = DEFAULT_SUBJECT, Date sentReceivedDate = DEFAULT_DATE, List<Flag> flags = [Flag.ANSWERED, Flag.DRAFT]) {
+    private static Map buildMessageCandidate(
+            String subject = DEFAULT_SUBJECT,
+            Date sentReceivedDate = DEFAULT_DATE,
+            List<Flag> flags = [Flag.ANSWERED, Flag.DRAFT],
+            String from = 'foo1@bar.com,foo2@bar.com',
+            String body = 'aaa=bbb\nfoo=<b>bar</b>'
+    ) {
         [
                 getSentDate     : { sentReceivedDate },
-                getFrom         : { ['foo1@bar.com', 'foo2@bar.com'].collect { new InternetAddress(it) } },
+                getFrom         : { from.split(',').collect { new InternetAddress(it) } },
                 getSubject      : { subject },
                 getFlags        : {
                     def tmp = new Flags()
@@ -81,7 +93,7 @@ Nick
                 getAllHeaders   : { Collections.enumeration(['Foo', 'Bar']) },
                 getContentType  : { 'text/html' },
                 getAllRecipients: { ['foo3@bar.com', 'foo4@bar.com'].collect { new InternetAddress(it) } },
-                getContent      : { 'aaa=bbb\nfoo=<b>bar</b>'.toString() },
+                getContent      : { body.toString() },
                 isMimeType      : { it.startsWith('text') }
         ]
     }

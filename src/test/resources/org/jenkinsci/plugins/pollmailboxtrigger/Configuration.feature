@@ -39,7 +39,7 @@ Feature: Configuration
     When I set the configuration to
       | Host | Username | Password |
       | aaa  | bbb      | ccc      |
-    And script to
+    And the script
     """
     mail.debug=true
     mail.debug.auth=true
@@ -80,7 +80,7 @@ Feature: Configuration
     When I set the configuration to
       | Host       | Username   | Password   |
       | aa $cat aa | bb $dog bb | cc $pig cc |
-    And script to
+    And the script
     """
     mail.debug=$truthy
     mail.debug.auth=${falsey}
@@ -108,7 +108,7 @@ Feature: Configuration
     When I set the configuration to
       | Username | Password |
       | bbb      | ccc      |
-    And script to
+    And the script
     """
     folder=
     mail.debug=
@@ -127,7 +127,7 @@ Feature: Configuration
     When I set the configuration to
       | Host     | Username | Password |
       | mail.com | morty    | chickens |
-    And script to
+    And the script
     """
     storeName=imap
     """
