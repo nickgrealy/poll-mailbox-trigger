@@ -1,9 +1,14 @@
 # Poll Mailbox Trigger Plugin
 
-[![Join the chat at https://gitter.im/jenkinsci/poll-mailbox-trigger-plugin](https://badges.gitter.im/jenkinsci/poll-mailbox-trigger-plugin.svg)](https://gitter.im/jenkinsci/poll-mailbox-trigger-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
-[![Version](http://sebastian-badge.info/plugins/poll-mailbox-trigger-plugin.svg "Version")](https://wiki.jenkins-ci.org/display/JENKINS/Poll Mailbox Trigger Plugin) [![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/poll-mailbox-trigger-plugin&style=plastic "Build Status")](https://jenkins.ci.cloudbees.com/job/plugins/job/poll-mailbox-trigger-plugin/)
+[![Version](http://sebastian-badge.info/plugins/poll-mailbox-trigger-plugin.svg "Version")](https://wiki.jenkins-ci.org/display/JENKINS/Poll Mailbox Trigger Plugin)
+
+[![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/poll-mailbox-trigger-plugin&style=plastic "Build Status")](https://jenkins.ci.cloudbees.com/job/plugins/job/poll-mailbox-trigger-plugin/)
+
+[![Dependency Status](https://www.versioneye.com/user/projects/567a7d52a7c90e003500015d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/567a7d52a7c90e003500015d)
+
+[![Join the chat at https://gitter.im/jenkinsci/poll-mailbox-trigger-plugin](https://badges.gitter.im/jenkinsci/poll-mailbox-trigger-plugin.svg)](https://gitter.im/jenkinsci/poll-mailbox-trigger-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Table of contents
 ---
