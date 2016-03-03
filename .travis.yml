@@ -11,10 +11,8 @@ jdk:
 #script: ./gradlew clean test
 
 # enable codecov reporting...
-before_install:
-  - sudo pip install codecov
 after_success:
-  - codecov --token=1371207c-4213-4dd4-aad9-75e1eb6f1f9c
+  - bash <(curl -s https://codecov.io/bash)
 
 
 # Email notifications are disabled to not annoy anybody.
