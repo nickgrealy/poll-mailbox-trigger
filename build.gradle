@@ -53,6 +53,9 @@ jacocoTestReport {
     }
 }
 
+jacocoTestReport.dependsOn test
+check.dependsOn jacocoTestReport
+
 jenkinsPlugin {
     coreVersion = '1.581'
     shortName = project.name
