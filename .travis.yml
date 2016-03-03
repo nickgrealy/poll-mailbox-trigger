@@ -14,7 +14,7 @@ jdk:
 before_install:
   - sudo pip install codecov
 after_success:
-  - codecov
+  - codecov --token=1371207c-4213-4dd4-aad9-75e1eb6f1f9c
 
 
 # Email notifications are disabled to not annoy anybody.
