@@ -190,7 +190,8 @@ public class StepDefs {
 
     @Then('the log is')
     public void the_log_is(String expectedLog){
-        String actualLog = logStream.toString().replaceAll(/\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} (AM|PM)/, '<date>')
+        String actualLog = logStream.toString().replaceAll(/\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} (AM|PM)/, '<date>').replaceAll(/\r\n/, '\n')
+		expectedLog = expectedLog.replaceAll(/\r\n/, '\n')
         assertThat(actualLog, is(expectedLog));
     }
 

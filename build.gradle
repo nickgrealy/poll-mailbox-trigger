@@ -22,12 +22,34 @@ gradlew server - Start a local instance of Jenkins (http://localhost:8080) with 
 
 apply plugin: 'org.jenkins-ci.jpi'
 apply from: "$rootDir/gradle/common.gradle"
+apply plugin: 'jacoco'
 
 repositories {
     mavenCentral()
     jcenter()
     maven {
         url 'http://repo.jenkins-ci.org/releases/'
+    }
+}
+
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+test {
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
     }
 }
 
