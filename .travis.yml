@@ -8,16 +8,13 @@ jdk:
 #  - openjdk8
 #  - openjdk7
 #  - openjdk6
-#script: ./gradlew clean test
 
 # enable codecov reporting...
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 
-# Email notifications are disabled to not annoy anybody.
-# See http://about.travis-ci.org/docs/user/build-configuration/ to learn more
-# about configuring notification recipients and more.
+# disable email notifications...
 notifications:
   email: false
 

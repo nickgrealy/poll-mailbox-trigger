@@ -32,28 +32,13 @@ repositories {
     }
 }
 
-jacoco {
-    toolVersion = "0.7.1.201405082137"
-    reportsDir = file("$buildDir/customJacocoReportDir")
-}
-
-test {
-    jacoco {
-        append = false
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        classDumpFile = file("$buildDir/jacoco/classpathdumps")
-    }
-}
-
 jacocoTestReport {
     reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination "${buildDir}/jacocoHtml"
+        xml.enabled = true
+        html.enabled = true
     }
 }
 
-jacocoTestReport.dependsOn test
 check.dependsOn jacocoTestReport
 
 jenkinsPlugin {
