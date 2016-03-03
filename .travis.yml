@@ -5,7 +5,9 @@ jdk:
 
 #  - oraclejdk8
 #  - oraclejdk6
+#  - openjdk8
 #  - openjdk7
+#  - openjdk6
 #script: ./gradlew clean test
 
 # enable codecov reporting...
