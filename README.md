@@ -8,6 +8,8 @@ A Jenkins plugin, to poll an email inbox, and trigger jobs based on new emails.
 
 [![Dependency Status](https://www.versioneye.com/user/projects/567a7d52a7c90e003500015d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/567a7d52a7c90e003500015d)
 
+[![Code Coverage](https://codecov.io/github/nickgrealy/poll-mailbox-trigger/coverage.svg?branch=master)](https://codecov.io/github/nickgrealy/poll-mailbox-trigger?branch=master)
+
 [![Join the chat at https://gitter.im/jenkinsci/poll-mailbox-trigger-plugin](https://badges.gitter.im/jenkinsci/poll-mailbox-trigger-plugin.svg)](https://gitter.im/jenkinsci/poll-mailbox-trigger-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Table of contents
