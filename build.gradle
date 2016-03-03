@@ -59,15 +59,15 @@ jenkinsPlugin {
 }
 
 dependencies {
-    compile "org.jenkins-ci.lib:xtrigger-lib:$xtrigger_version"
-    compile "com.sun.mail:javax.mail:$javaxmail_version"
+    compile "org.jenkins-ci.lib:xtrigger-lib:0.33"
+    compile "com.sun.mail:javax.mail:1.5.1"
     testCompile('org.hamcrest:hamcrest-core:1.3') { force = true }
-    testCompile('junit:junit:4.11') { force = true }
-    testCompile 'org.jvnet.mock-javamail:mock-javamail:1.7'
+    testCompile('junit:junit:4.12') { force = true }
+    testCompile 'org.jvnet.mock-javamail:mock-javamail:1.9'
     testCompile 'org.mockito:mockito-all:1.10.19'
     // bdd testing
-    testCompile "info.cukes:cucumber-junit:$cucumber_version"
-    testCompile "info.cukes:cucumber-java:$cucumber_version"
+    testCompile "info.cukes:cucumber-junit:1.2.4"
+    testCompile "info.cukes:cucumber-java:1.2.4"
 }
 
 /**
