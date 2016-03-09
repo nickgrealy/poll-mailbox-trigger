@@ -28,7 +28,8 @@ __Additional:__
 1. [Wiki](https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin)
 1. [Source Code](https://github.com/jenkinsci/poll-mailbox-trigger-plugin)
 1. [Issue Tracking](https://issues.jenkins-ci.org/secure/IssueNavigator.jspa?jqlQuery=component+%3D+%27poll-mailbox-trigger-plugin%27)
-1. [License](LICENSE)
+1. [Authors](#authors)
+1. [License](#license)
 
 Overview
 ---
@@ -318,7 +319,7 @@ Want to say thanks but can't find the words? [Coffee donations are VERY welcome]
 ChangeLog
 ---
 
-### 1.020 - [thanks Alexei](https://github.com/alexei-znamensky-movile)!
+### 1.020
 1. If the "script" property has spaces only (someone might have pressed some spaces by mistake), the CustomProperties class still should recognized it as empty (.equals(""))
 1. The default values of the properties were being loaded AFTER loading the user-provided ones. For instance I want to get rid of the subject filter "jenkins >" and I cannot do that, because when I add the property with the empty value, this default takes over. Thus, I submit this PR to change the order in which these data is loaded: first we load the defaults, THEN we load the user-provided values
 
@@ -362,24 +363,12 @@ ChangeLog
 
 ---
 
-## Backlog
-1. Add option to filter emails by other fields (e.g. "from")
-1. Add link to wiki in documentation
-1. test email connections using SSH keys
-1. Implement Push-IMAP?
+Authors
+---
 
-### To Document
-1. Test and Document config examples for connecting to MS Exchange
+Nick Grealy - <nickgrealy@gmail.com>
 
-### To Test
-1. Test emails with attachments
-1. Write UnitTests!!! (preferably using groovy+selenium+webdriver+junit+bdd(easyb/cucumber))
-1. Test build options - node label, concurrent builds
-1. Jenkins support - try and support as far back/forwards as possible
-1. Java Support - test with Java 1.5
+License
+---
 
-### Optional
-1. Internationalise all fields (i18n)
-1. Have default System Config > overridden by individual Build config?
-1. Add service, which sends an email with mailtos for triggering all available jobs
-1. Download email attachments - attach as link to job's build parameters?
+Licensed under the [MIT License (MIT)](LICENSE)
