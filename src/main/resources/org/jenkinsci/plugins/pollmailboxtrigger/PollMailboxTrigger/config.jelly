@@ -40,6 +40,13 @@
                         default="H/5 * * * *" />
         </f:entry>
 
+        <f:entry name="attachments" title="${%Attachments}" field="attachments">
+            <select name="attachments">
+                <f:option value="IGNORE" selected="${instance.attachments == 'IGNORE'}">Ignore</f:option>
+                <f:option value="AUTO"   selected="${instance.attachments == 'AUTO'}">Download to a timestamped directory</f:option>
+            </select>
+        </f:entry>
+
         <f:entry field="enableConcurrentBuild" title="${%Enable Concurrent Build}">
             <f:checkbox name="enableConcurrentBuild" checked="${instance.enableConcurrentBuild}"/>
         </f:entry>
@@ -68,6 +75,6 @@
 
         <f:validateButton
            title="${%Test Connection}" progress="${%Testing...}"
-           method="testConnection" with="host,username,password,script" />
+           method="testConnection" with="host,username,password,script,attachments" />
 
 </j:jelly>

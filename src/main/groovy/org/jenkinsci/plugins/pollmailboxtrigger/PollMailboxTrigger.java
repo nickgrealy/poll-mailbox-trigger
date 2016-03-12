@@ -55,18 +55,33 @@ public class PollMailboxTrigger extends AbstractTrigger {
     private String username;
     private Secret password;
     private String script;
+    private String attachments;
+
+    enum AttachmentOptions {
+        IGNORE, AUTO
+    }
 
     @DataBoundConstructor
-    public PollMailboxTrigger(String cronTabSpec, LabelRestrictionClass labelRestriction, boolean enableConcurrentBuild,
-                              String host, String username, Secret password, String script) throws ANTLRException {
+    public PollMailboxTrigger(
+            String cronTabSpec,
+            LabelRestrictionClass labelRestriction,
+            boolean enableConcurrentBuild,
+            String host,
+            String username,
+            Secret password,
+            String script,
+            String attachments
+    ) throws ANTLRException {
         super(cronTabSpec, labelRestriction != null, (labelRestriction == null) ? null : labelRestriction.getTriggerLabel(), enableConcurrentBuild);
         this.host = Util.fixEmpty(host);
         this.username = Util.fixEmpty(username);
         this.password = password;
         this.script = Util.fixEmpty(script);
+        this.script = Util.fixEmpty(script);
+        this.attachments = Util.fixEmpty(attachments);
     }
 
-    public static CustomProperties initialiseDefaults(String host, String username, Secret password, String script) {
+    public static CustomProperties initialiseDefaults(String host, String username, Secret password, String script, String attachments) {
 
         // extracts global node properties from environment, add them to new empty local list
         DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = getGlobalNodeProperties();
@@ -104,6 +119,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         p.put(Properties.host, host);
         p.put(Properties.username, username);
         p.put(Properties.password, encrypt(passwordVariableReplaced));
+        p.put(Properties.attachments, attachments);
         // setup default values
         p.putIfBlank(storeName, "imaps");
         p.putIfBlank(folder, "INBOX");
@@ -180,6 +196,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 // look for mail...
                 final MailWrapperUtils.FolderWrapper mbFolder = mailbox.folder(properties.get(folder));
                 testing.add("Searching folder...");
+                String downloadAttachments = properties.get(Properties.attachments);
                 MessagesWrapper messagesTool = mbFolder.search(searchTerms);
                 List<Message> messageList = messagesTool.getMessages();
                 StringBuilder subjects = new StringBuilder();
@@ -194,9 +211,13 @@ public class PollMailboxTrigger extends AbstractTrigger {
                     for (Message message : messageList) {
                         final String prefix = "pmt_";
                         CustomProperties buildParams = messagesTool.getMessageProperties(message, prefix, properties);
-                        File attachmentsDir = messagesTool.saveAttachments(message);
-                        if (nonNull(attachmentsDir)){
-                            buildParams.put("pmt_attachmentsDirectory", attachmentsDir.getAbsolutePath());
+                        // download attachments if set to AUTO...
+                        log.info("Download attachments? " + downloadAttachments);
+                        if (AttachmentOptions.AUTO.name().equals(downloadAttachments)){
+                            File attachmentsDir = messagesTool.saveAttachments(message);
+                            if (nonNull(attachmentsDir)){
+                                buildParams.put("pmt_attachmentsDirectory", attachmentsDir.getAbsolutePath());
+                            }
                         }
                         properties.remove(Properties.password);
                         buildParams.putAll(properties, prefix);
@@ -273,6 +294,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
         this.script = script;
     }
 
+    public String getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(String attachments) {
+        this.attachments = attachments;
+    }
+
     @Override
     public Collection<? extends Action> getProjectActions() {
         PollMailboxTriggerAction action = new InternalPollMailboxTriggerAction(getDescriptor().getDisplayName());
@@ -301,7 +330,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
-        CustomProperties properties = initialiseDefaults(host, username, password, script);
+        CustomProperties properties = initialiseDefaults(host, username, password, script, attachments);
         checkForEmails(properties, log, false, this); // use executingNode, ???
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
@@ -347,7 +376,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     }
 
     public enum Properties {
-        storeName, host, username, password, folder, subjectContains, receivedXMinutesAgo
+        storeName, host, username, password, folder, subjectContains, receivedXMinutesAgo, attachments
     }
 
     @Extension
@@ -373,10 +402,11 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 @QueryParameter("host") final String host,
                 @QueryParameter("username") final String username,
                 @QueryParameter("password") final Secret password,
-                @QueryParameter("script") final String script
+                @QueryParameter("script") final String script,
+                @QueryParameter("attachments") final String attachments
         ) {
             try {
-                CustomProperties properties = initialiseDefaults(host, username, password, script);
+                CustomProperties properties = initialiseDefaults(host, username, password, script, attachments);
                 return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null);
             } catch (Throwable t) {
                 return FormValidation.error("Error : " + stringify(t));

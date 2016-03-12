@@ -12,7 +12,6 @@ import hudson.model.Project
 import hudson.util.FormValidation
 import hudson.util.Secret
 import hudson.util.StreamTaskListener
-import org.hamcrest.Matchers
 import org.jenkinsci.lib.xtrigger.XTriggerLog
 import org.jenkinsci.plugins.pollmailboxtrigger.bdd.ConfigurationRow
 import org.jenkinsci.plugins.pollmailboxtrigger.bdd.EmailRow
@@ -124,7 +123,7 @@ public class StepDefs {
         plugin.setUsername(config.username)
         plugin.setPassword(config.buildPasswordSecret())
         plugin.setScript(config.script)
-        effectiveConfig = PollMailboxTrigger.initialiseDefaults(config?.host, config?.username, config?.buildPasswordSecret(), config?.script)
+        effectiveConfig = PollMailboxTrigger.initialiseDefaults(config?.host, config?.username, config?.buildPasswordSecret(), config?.script,)
     }
 
     @When('the script')
