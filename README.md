@@ -106,9 +106,9 @@ To publish/release the Jenkins plugin:
 Screenshots
 ---
 
-_Screenshot - Version 1.018_
+_Screenshot - Version 1.022_
 
-![Version 1.018](src/main/site/images/screenshot-version-1.018.png "Version 1.018")
+![Version 1.022](src/main/site/images/screenshot-version-1.022.png "Version 1.022")
 
 
 Configuration
