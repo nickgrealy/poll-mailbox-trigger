@@ -84,7 +84,7 @@ Feature: Runtime - Start Job
       | pmt_receivedXMinutesAgo         | 1440                                                                |
       | pmt_recipients                  | foo3@bar.com,foo4@bar.com                                           |
       | pmt_replyTo                     | nick@email.com                                                      |
-      | pmt_retryEmailLink              | <a href="mailto:null?subject=null&body=null">Click to Retry Job</a> |
+      | pmt_retryEmailLink              | <a href="mailto:foo3@bar.com,foo4@bar.com?subject=Jenkins > Build Plugin #4&body=%0D%0Aaaa=bbb%0D%0Afoo=<b>bar</b>">Click to Retry Job</a> |
       | pmt_storeName                   | imap                                                                |
       | pmt_subject                     | Jenkins > Build Plugin #4                                           |
       | pmt_subjectContains             | jenkins >                                                           |

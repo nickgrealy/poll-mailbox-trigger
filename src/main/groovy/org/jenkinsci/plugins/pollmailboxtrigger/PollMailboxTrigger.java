@@ -222,7 +222,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
                         properties.remove(Properties.password);
                         buildParams.putAll(properties, prefix);
                         // build a "retry" link...
-                        buildParams.put("pmt_retryEmailLink", buildEmailRetryLink(properties));
+                        buildParams.put("pmt_retryEmailLink", buildEmailRetryLink(buildParams));
 
                         String jobCause = "Job was triggered by email sent from " + stringify(message.getFrom());
                         // start a jenkins job...
@@ -260,10 +260,17 @@ public class PollMailboxTrigger extends AbstractTrigger {
     }
 
     public static String buildEmailRetryLink(CustomProperties properties){
+        String recipients = properties.get("pmt_recipients");
+        String subject = properties.get("pmt_subject");
+        String body = properties.get("pmt_content");
+        String htmlNewline = "%0D%0A";
+        if (nonNull(body)){
+            body = body.replaceAll("\r\n", htmlNewline).replaceAll("\n", htmlNewline);
+        }
         return String.format("<a href=\"mailto:%s?subject=%s&body=%s\">Click to Retry Job</a>",
-                properties.get("pmt_recipients"),
-                properties.get("pmt_subject"),
-                properties.get("pmt_body")
+                recipients,
+                subject,
+                body
         );
     }
 
