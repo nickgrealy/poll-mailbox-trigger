@@ -59,7 +59,7 @@ jenkinsPlugin {
 }
 
 dependencies {
-    compile "org.jenkins-ci.lib:xtrigger-lib:0.33"
+    compile "org.jenkins-ci.lib:xtrigger-lib:0.25"
     compile "com.sun.mail:javax.mail:1.5.1"
     testCompile('org.hamcrest:hamcrest-core:1.3') { force = true }
     testCompile('junit:junit:4.12') { force = true }
