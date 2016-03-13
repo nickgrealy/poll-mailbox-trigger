@@ -78,7 +78,7 @@ public class StepDefs {
     @Given('the plugin is initialised')
     public void setup_plugin(){
         plugin = spy(new PollMailboxTrigger("*/5 * * * *", new LabelRestrictionClass("master"), false,
-                '', '', new Secret(''), ''))
+                '', '', new Secret(''), '', PollMailboxTrigger.AttachmentOptions.IGNORE.name()))
 
         // mocking plugin methods...
         doReturn(descriptor).when(plugin).getDescriptor()
@@ -123,7 +123,7 @@ public class StepDefs {
         plugin.setUsername(config.username)
         plugin.setPassword(config.buildPasswordSecret())
         plugin.setScript(config.script)
-        effectiveConfig = PollMailboxTrigger.initialiseDefaults(config?.host, config?.username, config?.buildPasswordSecret(), config?.script,)
+        effectiveConfig = PollMailboxTrigger.initialiseDefaults(config?.host, config?.username, config?.buildPasswordSecret(), config?.script, PollMailboxTrigger.AttachmentOptions.IGNORE.name())
     }
 
     @When('the script')
@@ -137,7 +137,7 @@ public class StepDefs {
 
     @When('I test the connection')
     public void i_test_the_connection() throws Throwable {
-        validation = plugin.getDescriptor().doTestConnection(config.host, config.username, config?.buildPasswordSecret(), config.script)
+        validation = plugin.getDescriptor().doTestConnection(config.host, config.username, config?.buildPasswordSecret(), config.script, PollMailboxTrigger.AttachmentOptions.IGNORE.name())
     }
 
     @When('the Plugin\'s polling is triggered')

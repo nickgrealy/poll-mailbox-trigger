@@ -1,3 +1,4 @@
+
 Feature: Runtime - Start Job
 
   Background: The tests are setup.
@@ -45,8 +46,10 @@ Feature: Runtime - Start Job
     - Jenkins > Build Plugin #3 (<date>)
 
     - Jenkins > Build Plugin #4 (<date>)
+    Download attachments? IGNORE
     Changes found. Scheduling a build.
     Marked email(s) as read : 1
+    Download attachments? IGNORE
     Changes found. Scheduling a build.
     Marked email(s) as read : 1
 
@@ -63,6 +66,7 @@ Feature: Runtime - Start Job
     And the Job parameters were - excluding pmt_receivedDate,pmt_sentDate
       | aaa                             | bbb                        |
       | foo                             | bar                        |
+      | pmt_attachments                 | IGNORE                     |
       | pmt_content                     | \naaa=bbb\nfoo=<b>bar</b>  |
       | pmt_contentType                 | text/html                  |
       | pmt_flags                       | RECENT                     |

@@ -331,7 +331,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     @Override
     protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
         CustomProperties properties = initialiseDefaults(host, username, password, script, attachments);
-        checkForEmails(properties, log, false, this); // use executingNode, ???
+        checkForEmails(properties, log, false, this);// use executingNode, ???
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
 

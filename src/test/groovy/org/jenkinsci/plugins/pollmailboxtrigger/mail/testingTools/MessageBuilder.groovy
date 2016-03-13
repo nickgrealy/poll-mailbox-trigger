@@ -2,6 +2,7 @@ package org.jenkinsci.plugins.pollmailboxtrigger.mail.testingTools
 
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify
 
+import javax.mail.Address
 import javax.mail.Flags
 import javax.mail.Message
 import javax.mail.MessagingException
@@ -87,7 +88,7 @@ Nick
         List<String> files = attachments ? attachments.split(',').collect() : []
         [
                 getSentDate     : { sentReceivedDate },
-                getFrom         : { fromAddr.collect { new InternetAddress(it) } },
+                getFrom         : { fromAddr.collect { new InternetAddress(it) } as Address[] },
                 getSubject      : { subject },
                 getFlags        : {
                     def tmp = new Flags()
@@ -99,7 +100,7 @@ Nick
                 getReceivedDate : { sentReceivedDate },
                 getAllHeaders   : { Collections.enumeration(['Foo', 'Bar']) },
                 getContentType  : { 'text/html' },
-                getAllRecipients: { ['foo3@bar.com', 'foo4@bar.com'].collect { new InternetAddress(it) } },
+                getAllRecipients: { ['foo3@bar.com', 'foo4@bar.com'].collect { new InternetAddress(it) } as Address[] },
                 getContent      : { files.isEmpty() ? body.toString() : buildMultipartContent(files) },
                 isMimeType      : { it.startsWith('text') }
         ]

@@ -1,3 +1,4 @@
+
 Feature: Configuration
 
   Background: The tests are setup.
@@ -8,6 +9,7 @@ Feature: Configuration
     When I set the configuration to
       | Host | Username | Password | Script |
     Then the effective configuration should be
+      | attachments         | IGNORE    |
       | folder              | INBOX     |
       | mail.debug          | false     |
       | mail.debug.auth     | false     |
@@ -22,6 +24,7 @@ Feature: Configuration
       | Host     | Username | Password |
       | mail.com | morty    | chickens |
     Then the effective configuration should be
+      | attachments         | IGNORE    |
       | folder              | INBOX     |
       | host                | mail.com  |
       | mail.debug          | false     |
@@ -53,19 +56,20 @@ Feature: Configuration
     mail.fff.connectiontimeout=444
     """
     Then the effective configuration should be
-      | folder                     | eee  |
-      | host                       | aaa  |
-      | mail.debug                 | true |
-      | mail.debug.auth            | true |
-      | mail.fff.connectiontimeout | 444  |
-      | mail.fff.host              | xxx  |
-      | mail.fff.port              | 111  |
-      | mail.fff.timeout           | 333  |
-      | password                   | ccc  |
-      | receivedXMinutesAgo        | 222  |
-      | storeName                  | fff  |
-      | subjectContains            | ddd  |
-      | username                   | bbb  |
+      | attachments                | IGNORE |
+      | folder                     | eee    |
+      | host                       | aaa    |
+      | mail.debug                 | true   |
+      | mail.debug.auth            | true   |
+      | mail.fff.connectiontimeout | 444    |
+      | mail.fff.host              | xxx    |
+      | mail.fff.port              | 111    |
+      | mail.fff.timeout           | 333    |
+      | password                   | ccc    |
+      | receivedXMinutesAgo        | 222    |
+      | storeName                  | fff    |
+      | subjectContains            | ddd    |
+      | username                   | bbb    |
 
 
   Scenario: I want to be able to use Jenkins environment variables in my configuration.
@@ -90,6 +94,7 @@ Feature: Configuration
     mail.imaps.connectiontimeout=${numeric}
     """
     Then the effective configuration should be
+      | attachments                  | IGNORE      |
       | folder                       | ee woof ee  |
       | host                         | aa meow aa  |
       | mail.debug                   | true        |
@@ -119,8 +124,9 @@ Feature: Configuration
     subjectContains=
     """
     Then the effective configuration should be
-      | password | ccc |
-      | username | bbb |
+      | attachments | IGNORE |
+      | password    | ccc    |
+      | username    | bbb    |
 
 
   Scenario: I want the imap port and host varaibles to be automatically updated, if I switch to IMAP [no 'S'].
@@ -132,6 +138,7 @@ Feature: Configuration
     storeName=imap
     """
     Then the effective configuration should be
+      | attachments         | IGNORE    |
       | folder              | INBOX     |
       | host                | mail.com  |
       | mail.debug          | false     |
