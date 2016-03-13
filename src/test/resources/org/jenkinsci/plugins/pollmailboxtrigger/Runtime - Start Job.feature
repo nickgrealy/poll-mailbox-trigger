@@ -131,3 +131,5 @@ Feature: Runtime - Start Job
 
   # todo: Two emails triggers two job instances.
   # todo: Error occurs, shown in the logs.
+  # todo: Check that the email is marked as read, so that another build isn't retriggered
+  # todo: test Download attachments, so taht I can use them...
