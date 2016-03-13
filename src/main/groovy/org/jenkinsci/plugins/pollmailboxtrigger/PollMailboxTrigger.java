@@ -221,8 +221,13 @@ public class PollMailboxTrigger extends AbstractTrigger {
                         }
                         properties.remove(Properties.password);
                         buildParams.putAll(properties, prefix);
+                        // build a "retry" link...
+                        buildParams.put("pmt_retryEmailLink", buildEmailRetryLink(properties));
+
                         String jobCause = "Job was triggered by email sent from " + stringify(message.getFrom());
+                        // start a jenkins job...
                         pmt.startJob(log, jobCause, buildParams.getMap());
+                        // finally mark the message as read so that we don't reprocess it...
                         messagesTool.markAsRead(message);
                     }
                 }
@@ -252,6 +257,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
             }
         }
         return FormValidation.ok("Success");
+    }
+
+    public static String buildEmailRetryLink(CustomProperties properties){
+        return String.format("<a href=\"mailto:%s?subject=%s&body=%s\">Click to Retry Job</a>",
+                properties.get("pmt_recipients"),
+                properties.get("pmt_subject"),
+                properties.get("pmt_body")
+        );
     }
 
     private static FormValidation handleError(XTriggerLog log, List<String> testing, Throwable t) {

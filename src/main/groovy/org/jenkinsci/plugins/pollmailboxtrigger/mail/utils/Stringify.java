@@ -1,5 +1,7 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.utils;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import java.io.IOException;
@@ -152,7 +154,15 @@ public abstract class Stringify {
     }
 
     public static String stringify(Address[] addresses) {
-        return InternetAddress.toString(addresses);
+        List<String> parsed = new ArrayList<String>();
+        for (Address addr : addresses){
+            if (addr instanceof InternetAddress){
+                parsed.add(((InternetAddress)addr).getAddress());
+            } else {
+                parsed.add(addr.toString());
+            }
+        }
+        return StringUtils.join(parsed, ",");
     }
 
     /**
