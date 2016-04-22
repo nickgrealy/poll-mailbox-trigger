@@ -361,6 +361,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
             AbstractProject project = getJob();
             List<Action> actions = new ArrayList<Action>();
             actions.addAll(getScheduledXTriggerActions(log));
+            actions.add(new ParametersAction(getParameterizedParams(project, envVars)));
             actions.add(new ParametersAction(convertToBuildParams(envVars)));
 
             // build parameters for schedule job...
@@ -394,6 +395,33 @@ public class PollMailboxTrigger extends AbstractTrigger {
         }
         return buildParams;
     }
+
+    /**
+     * Gather parameterized values from the job and remove from the mail map (envVars) if exist and use the mail
+     * map values if possible, else use defaults.
+     */
+    private List<ParameterValue> getParameterizedParams(AbstractProject project, Map<String, String> envVars) {
+        List<ParameterValue> buildParams = new ArrayList<ParameterValue>();
+        if(project.isParameterized()) {
+            ParametersDefinitionProperty parameterizedProperties = (ParametersDefinitionProperty)project.getProperty(ParametersDefinitionProperty.class);
+            if(parameterizedProperties != null) {
+                for (ParameterDefinition parameterDef : parameterizedProperties.getParameterDefinitions()) {
+                    String parameterName = parameterDef.getName();
+                    ParameterValue parameterValue = parameterDef.getDefaultParameterValue();
+                    if (envVars.containsKey(parameterName)) {
+                        if(parameterDef instanceof SimpleParameterDefinition) {
+                            SimpleParameterDefinition simpleParamDef = (SimpleParameterDefinition)parameterDef;
+                            parameterValue = simpleParamDef.createValue(envVars.get(parameterName));
+                        }
+                        envVars.remove(parameterName);
+                    }
+                    buildParams.add(parameterValue);
+                }
+            }
+        }
+        return buildParams;
+    }
+
 
     public enum Properties {
         storeName, host, username, password, folder, subjectContains, receivedXMinutesAgo, attachments
