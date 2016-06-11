@@ -86,6 +86,8 @@ task enforceVersion << {
         if (foundVersion != enforceJavaVersion){
             throw new IllegalStateException("Wrong Java version; required is $enforceJavaVersion, but found $foundVersion")
         }
+    } else {
+        println "Java version not enforced."
     }
 }
 

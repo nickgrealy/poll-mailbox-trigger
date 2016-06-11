@@ -1,6 +1,7 @@
 .idea/
 .gradle/
 .c9/
+gradle/wrapper/
 target/
 work/
 build/
@@ -10,5 +11,8 @@ target/
 *.iml
 *.iws
 *.ipr
+
+gradlew
+gradlew.bat
 
 Integration Test.feature
