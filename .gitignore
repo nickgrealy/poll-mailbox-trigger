@@ -1,7 +1,7 @@
 .idea/
 .gradle/
 .c9/
-gradle/wrapper/
+# gradle/wrapper/
 target/
 work/
 build/
@@ -12,7 +12,8 @@ target/
 *.iws
 *.ipr
 
-gradlew
-gradlew.bat
+# We use a gradle 'incubating' feature, so we have to make sure we use the exact version of gradle.
+# gradlew
+# gradlew.bat
 
 Integration Test.feature
