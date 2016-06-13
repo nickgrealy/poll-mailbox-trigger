@@ -26,13 +26,22 @@ public class MailReader extends HasLogger {
     private Folder currentFolder;
     private Store store;
 
-    public MailReader(String host, String username, String password)
-            throws MessagingException {
-        this(host, username, password, "imaps", Logger.DEFAULT, new CustomProperties());
+    public MailReader(
+            final String host,
+            final String username,
+            final String password
+    ) throws MessagingException {
+        this(host, username, password, "imaps", Logger.getDefault(), new CustomProperties());
     }
 
-    public MailReader(String host, String username, String password, String storeName, Logger logger, CustomProperties properties)
-            throws MessagingException {
+    public MailReader(
+            final String host,
+            final String username,
+            final String password,
+            final String storeName,
+            final Logger logger,
+            final CustomProperties properties
+    ) throws MessagingException {
         super(logger);
         this.host = host;
         this.storeName = storeName;
@@ -43,19 +52,19 @@ public class MailReader extends HasLogger {
 
     public MailReader connect() throws MessagingException {
         Session session = Session.getInstance(properties.getProperties(), null);
-        session.setDebugOut(logger.getPrintStream());
+        session.setDebugOut(getLogger().getPrintStream());
         store = session.getStore(storeName);
         store.connect(host, username, password);
-        logger.info("[Poll Mailbox Trigger] - Connected!");
+        getLogger().info("[Poll Mailbox Trigger] - Connected!");
         return this;
     }
 
-    public FolderWrapper folder(String folderName) throws MessagingException {
+    public FolderWrapper folder(final String folderName) throws MessagingException {
         if (store == null) {
             throw new RuntimeException("Session is not connected!");
         }
         currentFolder = store.getFolder(folderName);
-        return new FolderWrapper(logger, currentFolder);
+        return new FolderWrapper(getLogger(), currentFolder);
     }
 
     public List<String> getFolders() throws MessagingException {

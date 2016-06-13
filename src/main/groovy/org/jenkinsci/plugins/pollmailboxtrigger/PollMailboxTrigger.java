@@ -5,7 +5,19 @@ import hudson.EnvVars;
 import hudson.Extension;
 import hudson.Util;
 import hudson.console.AnnotatedLargeText;
-import hudson.model.*;
+import hudson.model.AbstractProject;
+import hudson.model.Action;
+import hudson.model.Cause;
+import hudson.model.Descriptor;
+import hudson.model.Item;
+import hudson.model.JobProperty;
+import hudson.model.Node;
+import hudson.model.ParameterDefinition;
+import hudson.model.ParameterValue;
+import hudson.model.ParametersAction;
+import hudson.model.ParametersDefinitionProperty;
+import hudson.model.SimpleParameterDefinition;
+import hudson.model.StringParameterValue;
 import hudson.slaves.EnvironmentVariablesNodeProperty;
 import hudson.slaves.NodeProperty;
 import hudson.slaves.NodePropertyDescriptor;
@@ -13,6 +25,7 @@ import hudson.util.DescribableList;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
 import hudson.util.StreamTaskListener;
+import jenkins.model.Jenkins;
 import org.apache.commons.jelly.XMLOutput;
 import org.jenkinsci.lib.xtrigger.XTriggerCause;
 import org.jenkinsci.lib.xtrigger.XTriggerDescriptor;
@@ -22,7 +35,7 @@ import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailReader;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.CustomProperties;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Logger;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils;
-import org.jenkinsci.plugins.scripttrigger.AbstractTrigger;
+import org.jenkinsci.plugins.scripttrigger.AbstractTriggerExt;
 import org.jenkinsci.plugins.scripttrigger.LabelRestrictionClass;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
@@ -35,21 +48,40 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.*;
-import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.*;
+import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.folder;
+import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.receivedXMinutesAgo;
+import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.storeName;
+import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.subjectContains;
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.decrypt;
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.encrypt;
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.getGlobalNodeProperties;
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.getNodeProperties;
+import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.nonNull;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils.MessagesWrapper;
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.*;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.flag;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.not;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.receivedSince;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.relativeDate;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.subject;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.stringify;
 
 /**
  * @author Nick Grealy
  */
 @SuppressWarnings("unused")
-public class PollMailboxTrigger extends AbstractTrigger {
-    
-    public static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss a");
+public class PollMailboxTrigger extends AbstractTriggerExt {
+
+    public static final String DATE_FORMAT_TEXT = "yyyy/MM/dd HH:mm:ss a";
+    public static final int ONE_DAY_IN_MINUTES = 1440;
 
     private String host;
     private String username;
@@ -63,14 +95,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @DataBoundConstructor
     public PollMailboxTrigger(
-            String cronTabSpec,
-            LabelRestrictionClass labelRestriction,
-            boolean enableConcurrentBuild,
-            String host,
-            String username,
-            Secret password,
-            String script,
-            String attachments
+            final String cronTabSpec,
+            final LabelRestrictionClass labelRestriction,
+            final boolean enableConcurrentBuild,
+            final String host,
+            final String username,
+            final Secret password,
+            final String script,
+            final String attachments
     ) throws ANTLRException {
         super(cronTabSpec, labelRestriction != null, (labelRestriction == null) ? null : labelRestriction.getTriggerLabel(), enableConcurrentBuild);
         this.host = Util.fixEmpty(host);
@@ -81,38 +113,47 @@ public class PollMailboxTrigger extends AbstractTrigger {
         this.attachments = Util.fixEmpty(attachments);
     }
 
-    public static CustomProperties initialiseDefaults(String host, String username, Secret password, String script, String attachments) {
+    public static CustomProperties initialiseDefaults(
+            final String pHost,
+            final String pUsername,
+            final Secret password,
+            final String pScript,
+            final String attachments
+    ) {
+        String host = pHost;
+        String username = pUsername;
+        String script = pScript;
 
         // extracts global node properties from environment, add them to new empty local list
         DescribableList<NodeProperty<?>, NodePropertyDescriptor> properties = getGlobalNodeProperties();
         EnvVars envVars = new EnvVars();
-		if (null != properties) {
-			final EnvironmentVariablesNodeProperty envClass = properties
-					.get(EnvironmentVariablesNodeProperty.class);
-			if (null != envClass) {
-				envVars.putAll(envClass.getEnvVars());
-			}
-		}
-		
+        if (null != properties) {
+            final EnvironmentVariablesNodeProperty envClass = properties
+                    .get(EnvironmentVariablesNodeProperty.class);
+            if (null != envClass) {
+                envVars.putAll(envClass.getEnvVars());
+            }
+        }
+
         // extracts specific node properties from environment, merge them with local copy of global list
         DescribableList<NodeProperty<?>, NodePropertyDescriptor> propsNode = getNodeProperties();
-		if (null != propsNode) {
-			final EnvironmentVariablesNodeProperty envClass = propsNode
-					.get(EnvironmentVariablesNodeProperty.class);
-			if (null != envClass) {
-				envVars.putAll(envClass.getEnvVars());
-			}
-		}
-		
-		// perform variable substitution
-		host = Util.replaceMacro(host, envVars);
-		username = Util.replaceMacro(username, envVars);
+        if (null != propsNode) {
+            final EnvironmentVariablesNodeProperty envClass = propsNode
+                    .get(EnvironmentVariablesNodeProperty.class);
+            if (null != envClass) {
+                envVars.putAll(envClass.getEnvVars());
+            }
+        }
+
+        // perform variable substitution
+        host = Util.replaceMacro(host, envVars);
+        username = Util.replaceMacro(username, envVars);
         String passwordVariableReplaced = nonNull(password)
                 ? Util.replaceMacro(password.getPlainText(), envVars)
                 : "";
-		script = Util.replaceMacro(script, envVars);
+        script = Util.replaceMacro(script, envVars);
 
-		// build properties
+        // build properties
         CustomProperties userConfig = CustomProperties.read(script);
         CustomProperties p = new CustomProperties();
         p.putAll(userConfig);
@@ -124,7 +165,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         p.putIfBlank(storeName, "imaps");
         p.putIfBlank(folder, "INBOX");
         p.putIfBlank(subjectContains, "jenkins >");
-        p.putIfBlank(receivedXMinutesAgo, Integer.toString(60 * 24)); // 60mins * 24hrs = 1 day
+        p.putIfBlank(receivedXMinutesAgo, Integer.toString(ONE_DAY_IN_MINUTES));
         String cnfHost = p.get(Properties.host);
         String cnfStoreName = p.get(storeName);
         p.putIfBlank("mail." + cnfStoreName + ".host", cnfHost);
@@ -137,8 +178,9 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return p;
     }
 
-    public static FormValidation checkForEmails(CustomProperties properties, XTriggerLog log, boolean testConnection, PollMailboxTrigger pmt) {
+    public static FormValidation checkForEmails(final CustomProperties properties, final XTriggerLog log, final boolean testConnection, final PollMailboxTrigger pmt) {
         MailReader mailbox = null;
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_TEXT);
         List<String> testing = new ArrayList<String>();
         try {
             Enum[] requiredProps = {Properties.host, Properties.storeName, Properties.username, Properties.password};
@@ -187,7 +229,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 final int minsAgo = Integer.parseInt(properties.get(receivedXMinutesAgo)) * -1;
                 Date date = relativeDate(Calendar.MINUTE, minsAgo);
                 searchTerms.add(receivedSince(date));
-                log.info("- [received date is greater than '" + formatter.format(date) + "']");
+                log.info("- [received date is greater than '" + dateFormat.format(date) + "']");
             }
             log.info("...");
             if (!properties.has(folder)) {
@@ -201,7 +243,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
                 List<Message> messageList = messagesTool.getMessages();
                 StringBuilder subjects = new StringBuilder();
                 for (Message message : messageList) {
-                    subjects.append("\n\n- ").append(message.getSubject()).append(" (").append(formatter.format(message.getReceivedDate())).append(")");
+                    subjects.append("\n\n- ").append(message.getSubject()).append(" (").append(dateFormat.format(message.getReceivedDate())).append(")");
                 }
                 final String foundEmails = "Found matching email(s) : " + messageList.size() + subjects.toString();
                 log.info(foundEmails);
@@ -213,9 +255,9 @@ public class PollMailboxTrigger extends AbstractTrigger {
                         CustomProperties buildParams = messagesTool.getMessageProperties(message, prefix, properties);
                         // download attachments if set to AUTO...
                         log.info("Download attachments? " + downloadAttachments);
-                        if (AttachmentOptions.AUTO.name().equals(downloadAttachments)){
+                        if (AttachmentOptions.AUTO.name().equals(downloadAttachments)) {
                             File attachmentsDir = messagesTool.saveAttachments(message);
-                            if (nonNull(attachmentsDir)){
+                            if (nonNull(attachmentsDir)) {
                                 buildParams.put("pmt_attachmentsDirectory", attachmentsDir.getAbsolutePath());
                             }
                         }
@@ -259,12 +301,12 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return FormValidation.ok("Success");
     }
 
-    public static String buildEmailRetryLink(CustomProperties properties){
+    public static String buildEmailRetryLink(final CustomProperties properties) {
         String recipients = properties.get("pmt_recipients");
         String subject = properties.get("pmt_subject");
         String body = properties.get("pmt_content");
         String htmlNewline = "%0D%0A";
-        if (nonNull(body)){
+        if (nonNull(body)) {
             body = body.replaceAll("\r\n", htmlNewline).replaceAll("\n", htmlNewline);
         }
         return String.format("<a href=\"mailto:%s?subject=%s&body=%s\">Click to Retry Job</a>",
@@ -274,7 +316,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         );
     }
 
-    private static FormValidation handleError(XTriggerLog log, List<String> testing, Throwable t) {
+    private static FormValidation handleError(final XTriggerLog log, final List<String> testing, final Throwable t) {
         // return error
         final String error = stringify(t);
         log.error(error);
@@ -286,7 +328,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return host;
     }
 
-    public void setHost(String host) {
+    public void setHost(final String host) {
         this.host = host;
     }
 
@@ -294,7 +336,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -302,7 +344,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return password;
     }
 
-    public void setPassword(Secret password) {
+    public void setPassword(final Secret password) {
         this.password = password;
     }
 
@@ -310,7 +352,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return script;
     }
 
-    public void setScript(String script) {
+    public void setScript(final String script) {
         this.script = script;
     }
 
@@ -318,7 +360,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         return attachments;
     }
 
-    public void setAttachments(String attachments) {
+    public void setAttachments(final String attachments) {
         this.attachments = attachments;
     }
 
@@ -335,7 +377,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
     @Override
     public PollMailboxTriggerDescriptor getDescriptor() {
-        return (PollMailboxTriggerDescriptor) Hudson.getInstance().getDescriptorOrDie(getClass());
+        Jenkins instance = Jenkins.getInstance();
+        if (instance != null) {
+            Descriptor descriptor = instance.getDescriptorOrDie(getClass());
+            if (descriptor != null && descriptor instanceof PollMailboxTriggerDescriptor) {
+                return (PollMailboxTriggerDescriptor) descriptor;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -349,13 +398,14 @@ public class PollMailboxTrigger extends AbstractTrigger {
     }
 
     @Override
-    protected boolean checkIfModified(Node executingNode, XTriggerLog log) {
+    protected boolean checkIfModified(final Node executingNode, final XTriggerLog log) {
         CustomProperties properties = initialiseDefaults(host, username, password, script, attachments);
-        checkForEmails(properties, log, false, this);// use executingNode, ???
+        checkForEmails(properties, log, false, this);
+        // use executingNode, ???
         return false; // Don't use XTrigger for invoking a (single) job, we may want to invoke multiple jobs!
     }
 
-    protected void startJob(XTriggerLog log, String jobTriggerCause, Map<String, String> envVars) throws Throwable {
+    protected void startJob(final XTriggerLog log, final String jobTriggerCause, final Map<String, String> envVars) throws Throwable {
         try {
             log.info("Changes found. Scheduling a build.");
             AbstractProject project = getJob();
@@ -368,29 +418,28 @@ public class PollMailboxTrigger extends AbstractTrigger {
             Cause cause = new NewEmailCause(getName(), jobTriggerCause, true);
             Action[] actionsArray = actions.toArray(new Action[actions.size()]);
             project.scheduleBuild(0, cause, actionsArray);
-        } catch (Throwable t){
+        } catch (Throwable t) {
             log.error("Error occurred starting job - " + t.getMessage());
             throw t;
         }
     }
 
-    protected AbstractProject getJob(){
+    protected AbstractProject getJob() {
         return (AbstractProject) job;
     }
 
-    protected List<Action> getScheduledXTriggerActions(XTriggerLog log) throws XTriggerException {
+    protected List<Action> getScheduledXTriggerActions(final XTriggerLog log) throws XTriggerException {
         return Arrays.asList(getScheduledXTriggerActions(null, log));
     }
 
     /**
      * Converts a Map of String values, to Build Parameters.
      */
-    private List<ParameterValue> convertToBuildParams(Map<String, String> envVars) {
+    private List<ParameterValue> convertToBuildParams(final Map<String, String> envVars) {
         List<ParameterValue> buildParams = new ArrayList<ParameterValue>();
-        for (String key : envVars.keySet()) {
-            String value = envVars.get(key);
-            if (value != null) {
-                buildParams.add(new StringParameterValue(key, value));
+        for (Map.Entry<String, String> entry : envVars.entrySet()) {
+            if (entry.getValue() != null) {
+                buildParams.add(new StringParameterValue(entry.getKey(), entry.getValue()));
             }
         }
         return buildParams;
@@ -400,17 +449,20 @@ public class PollMailboxTrigger extends AbstractTrigger {
      * Gather parameterized values from the job and remove from the mail map (envVars) if exist and use the mail
      * map values if possible, else use defaults.
      */
-    private List<ParameterValue> getParameterizedParams(AbstractProject project, Map<String, String> envVars) {
+    @SuppressWarnings("unchecked")
+    private List<ParameterValue> getParameterizedParams(final AbstractProject project, final Map<String, String> envVars) {
         List<ParameterValue> buildParams = new ArrayList<ParameterValue>();
-        if(project.isParameterized()) {
-            ParametersDefinitionProperty parameterizedProperties = (ParametersDefinitionProperty)project.getProperty(ParametersDefinitionProperty.class);
-            if(parameterizedProperties != null) {
+        if (project.isParameterized()) {
+            Class<? extends JobProperty> clazz = ParametersDefinitionProperty.class;
+            JobProperty properties = project.getProperty(clazz);
+            if (properties != null && properties instanceof ParametersDefinitionProperty) {
+                ParametersDefinitionProperty parameterizedProperties = (ParametersDefinitionProperty) properties;
                 for (ParameterDefinition parameterDef : parameterizedProperties.getParameterDefinitions()) {
                     String parameterName = parameterDef.getName();
                     ParameterValue parameterValue = parameterDef.getDefaultParameterValue();
                     if (envVars.containsKey(parameterName)) {
-                        if(parameterDef instanceof SimpleParameterDefinition) {
-                            SimpleParameterDefinition simpleParamDef = (SimpleParameterDefinition)parameterDef;
+                        if (parameterDef instanceof SimpleParameterDefinition) {
+                            SimpleParameterDefinition simpleParamDef = (SimpleParameterDefinition) parameterDef;
                             parameterValue = simpleParamDef.createValue(envVars.get(parameterName));
                         }
                         envVars.remove(parameterName);
@@ -432,7 +484,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
     public static class PollMailboxTriggerDescriptor extends XTriggerDescriptor {
 
         @Override
-        public boolean isApplicable(Item item) {
+        public boolean isApplicable(final Item item) {
             return true;
         }
 
@@ -455,7 +507,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         ) {
             try {
                 CustomProperties properties = initialiseDefaults(host, username, password, script, attachments);
-                return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.DEFAULT.getOutputStream())), true, null);
+                return checkForEmails(properties, new XTriggerLog(new StreamTaskListener(Logger.getDefault().getOutputStream())), true, null);
             } catch (Throwable t) {
                 return FormValidation.error("Error : " + stringify(t));
             }
@@ -465,9 +517,9 @@ public class PollMailboxTrigger extends AbstractTrigger {
     /**
      * Because the XTriggerCause constructors are protected. (Why?)
      */
-    class NewEmailCause extends XTriggerCause {
+    static class NewEmailCause extends XTriggerCause {
 
-        protected NewEmailCause(String triggerName, String causeFrom, boolean logEnabled) {
+        protected NewEmailCause(final String triggerName, final String causeFrom, final boolean logEnabled) {
             super(triggerName, causeFrom, logEnabled);
         }
     }
@@ -476,7 +528,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
 
         private transient String actionTitle;
 
-        public InternalPollMailboxTriggerAction(String actionTitle) {
+        public InternalPollMailboxTriggerAction(final String actionTitle) {
             this.actionTitle = actionTitle;
         }
 
@@ -508,7 +560,7 @@ public class PollMailboxTrigger extends AbstractTrigger {
         }
 
         @SuppressWarnings("unused")
-        public void writeLogTo(XMLOutput out) throws IOException {
+        public void writeLogTo(final XMLOutput out) throws IOException {
             new AnnotatedLargeText<InternalPollMailboxTriggerAction>(getLogFile(), Charset.defaultCharset(), true, this).writeHtmlTo(0, out.asWriter());
         }
     }

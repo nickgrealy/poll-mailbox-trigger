@@ -2,7 +2,14 @@ package org.jenkinsci.plugins.pollmailboxtrigger.mail.utils;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.jenkinsci.plugins.pollmailboxtrigger.SafeJenkins.isNull;
@@ -22,22 +29,22 @@ public class CustomProperties {
     public CustomProperties() {
     }
 
-    public CustomProperties(Properties properties1) {
+    public CustomProperties(final Properties properties1) {
         putAll(properties1);
     }
 
-    public CustomProperties(Map<String, String> properties1) {
+    public CustomProperties(final Map<String, String> properties1) {
         putAll(properties1);
     }
 
-    public CustomProperties(String properties) {
+    public CustomProperties(final String properties) {
         putAll(properties);
     }
 
-    public static CustomProperties read(String properties) {
+    public static CustomProperties read(final String properties) {
         Properties p = new Properties();
         try {
-            if (nonNull(properties) && !isBlank((properties.trim()))) {
+            if (nonNull(properties) && !isBlank(properties.trim())) {
                 p.load(new StringReader(properties));
             }
         } catch (IOException e) {
@@ -46,23 +53,23 @@ public class CustomProperties {
         return new CustomProperties(p);
     }
 
-    public void putAll(String properties) {
+    public void putAll(final String properties) {
         putAll(read(properties));
     }
 
-    public void putAll(CustomProperties p2) {
+    public void putAll(final CustomProperties p2) {
         this.delegate.putAll(p2.getMap());
     }
 
-    public void putAll(CustomProperties p2, String prefix) {
+    public void putAll(final CustomProperties p2, final String prefix) {
         putAll(p2.getMap(), prefix);
     }
 
-    public void putAll(Properties p2) {
+    public void putAll(final Properties p2) {
         putAll(p2, null);
     }
 
-    public void putAll(Properties p2, String prefix) {
+    public void putAll(final Properties p2, final String prefix) {
         Map<String, String> tmp = new HashMap<String, String>();
         for (String key : p2.stringPropertyNames()) {
             tmp.put(key, p2.getProperty(key));
@@ -70,7 +77,8 @@ public class CustomProperties {
         putAll(tmp, prefix);
     }
 
-    public void putAll(Map<String, String> p2, String prefix) {
+    public void putAll(final Map<String, String> p2, final String pPrefix) {
+        String prefix = pPrefix;
         if (isNull(prefix)) {
             prefix = "";
         }
@@ -95,32 +103,32 @@ public class CustomProperties {
         return delegate;
     }
 
-    public boolean has(String o) {
+    public boolean has(final String o) {
         return delegate.containsKey(o);
     }
 
-    public boolean has(Enum o) {
+    public boolean has(final Enum o) {
         return has(o.name());
     }
 
-    public String get(Enum o) {
+    public String get(final Enum o) {
         return get(o.name());
     }
 
-    public CustomProperties put(Enum s, String s2) {
+    public CustomProperties put(final Enum s, final String s2) {
         put(s.name(), s2);
         return this;
     }
 
-    public String remove(Enum o) {
+    public String remove(final Enum o) {
         return remove(o.name());
     }
 
-    public CustomProperties putIfBlank(Enum s, String s2) {
+    public CustomProperties putIfBlank(final Enum s, final String s2) {
         return putIfBlank(s.name(), s2);
     }
 
-    public CustomProperties putIfBlank(String s, String s2) {
+    public CustomProperties putIfBlank(final String s, final String s2) {
         String existingValue = get(s);
         if (!has(s) || isNull(existingValue) || isBlank(existingValue)) {
             return put(s, s2);
@@ -130,13 +138,13 @@ public class CustomProperties {
 
     public void removeBlanks() {
         List<String> removekeys = new ArrayList<String>();
-        for (String key : delegate.keySet()){
+        for (String key : delegate.keySet()) {
             String value = delegate.get(key);
-            if (isBlank(value)){
+            if (isBlank(value)) {
                 removekeys.add(key);
             }
         }
-        for (String removekey : removekeys){
+        for (String removekey : removekeys) {
             delegate.remove(removekey);
         }
     }
@@ -155,28 +163,28 @@ public class CustomProperties {
         return delegate.isEmpty();
     }
 
-    public boolean containsKey(String o) {
+    public boolean containsKey(final String o) {
         return delegate.containsKey(o);
     }
 
-    public boolean containsValue(String o) {
+    public boolean containsValue(final String o) {
         return delegate.containsValue(o);
     }
 
-    public String get(String o) {
+    public String get(final String o) {
         return delegate.get(o);
     }
 
-    public CustomProperties put(String s, String s2) {
+    public CustomProperties put(final String s, final String s2) {
         delegate.put(s, s2);
         return this;
     }
 
-    public String remove(String o) {
+    public String remove(final String o) {
         return delegate.remove(o);
     }
 
-    public void putAll(Map<? extends String, ? extends String> map) {
+    public void putAll(final Map<? extends String, ? extends String> map) {
         delegate.putAll(map);
     }
 
@@ -197,9 +205,13 @@ public class CustomProperties {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CustomProperties)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CustomProperties)) {
+            return false;
+        }
         CustomProperties that = (CustomProperties) o;
         return delegate.equals(that.delegate);
     }

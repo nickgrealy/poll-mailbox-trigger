@@ -8,16 +8,16 @@
 <!--
     Checkstyle-Configuration: 
     Description: 
-Slightly modified version of Sun Checks that better matches the default code formatter setting of Eclipse.
+Slightly modified version of Sun Checks that better matches the default code FORMATTER setting of Eclipse.
 -->
 <module name="Checker">
     <property name="severity" value="warning"/>
     <module name="TreeWalker">
         <property name="tabWidth" value="4"/>
-		<module name="JavadocMethod">
-			<property name="scope" value="public"/>
-			<property name="severity" value="error"/>
-		</module>
+		<!--<module name="JavadocMethod">-->
+			<!--<property name="scope" value="public"/>-->
+			<!--<property name="severity" value="error"/>-->
+		<!--</module>-->
         <module name="JavadocType">
             <property name="severity" value="ignore"/>
             <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
@@ -50,7 +50,10 @@ Slightly modified version of Sun Checks that better matches the default code for
             <property name="tabWidth" value="4"/>
         </module>
         <module name="MethodLength"/>
-        <module name="ParameterNumber"/>
+        <module name="ParameterNumber">
+            <property name="max" value="8"/>
+            <property name="tokens" value="METHOD_DEF"/>
+        </module>
         <module name="EmptyForIteratorPad"/>
         <module name="GenericWhitespace"/>
         <module name="MethodParamPad"/>
