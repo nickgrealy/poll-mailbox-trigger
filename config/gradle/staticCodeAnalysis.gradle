@@ -1,34 +1,11 @@
-task wrapper(type: Wrapper) { gradleVersion = '2.12' }
 
-apply plugin: 'java'
+//apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'jdepend'
 
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-
-// group = "au.com.nickgrealy"
-
-tasks.withType(JavaCompile) {
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
-    //  Uncomment if you want to explicitly use an external JDK (e.g. IBM SDK)
-    /*
-    options.fork = true
-    options.forkOptions.executable = "$jdk6_javac"
-    */
-}
 
 def setDefault(key, value) {
     if (!project.hasProperty(key)) {
@@ -42,10 +19,6 @@ if (ignoreFailures) {
     println """
 WARNING: ${project.name} - Ignoring Static Code Analysis Failures
 """
-}
-
-if (JavaVersion.current() != JavaVersion.VERSION_1_6) {
-    throw new RuntimeException("Please use JDK6. ${JavaVersion.current()} not acceptable.")
 }
 
 // turn off html reports... windows can't handle certain cucumber test name characters.
@@ -87,11 +60,7 @@ pmd {
     ignoreFailures = project.properties["ignoreFailures"]
 }
 
-task showMeCache << {
-    configurations.compile.each { println it }
-}
-
-configurations.all {
+configurations.runtime {
     resolutionStrategy {
         failOnVersionConflict()
     }
@@ -99,10 +68,3 @@ configurations.all {
 configurations.jdepend.resolutionStrategy {
     force 'jdepend:jdepend:2.9.1'
 }
-
-task jenkins() << {
-    def tmp = file("$buildDir/jenkins.properties")
-    tmp.parentFile.mkdirs()
-    tmp << "project.name=${project.name}\nproject.version=${project.version}"
-}
-

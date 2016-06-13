@@ -1,43 +1,56 @@
 
 apply plugin: 'idea'
-apply plugin: 'groovy'
+//apply plugin: 'groovy'
 apply plugin: 'java'
 
 idea.project?.vcs = 'Git'
+
+
+// --- Setup script specific properties ---
 
 ext {
     /* optional - set variable enforceJavaVersion */
     enforceJavaVersionFlag = project.getProperties().containsKey('enforceJavaVersion')
     javaVersion = project.getProperties().get('enforceJavaVersion') ?: JavaVersion.VERSION_1_6
-    compileTasks = [compileJava, compileTestJava, compileGroovy, compileTestGroovy]
+    compileTasks = [compileJava, compileTestJava] //, compileGroovy, compileTestGroovy]
 }
 
-sourceCompatibility = javaVersion
-targetCompatibility = javaVersion
 
-repositories {
-    mavenCentral()
+// --- Setup Global Settings ---
+
+allprojects {
+
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    ext {
+        groovyVersion = '2.4.4'
+        customJvmArgs = ['-Xmx128m']
+    }
+
+    dependencies {
+        testCompile "junit:junit:4.12"
+    }
+
+    configurations {
+        providedCompile
+    }
+
+    sourceSets.main.compileClasspath += configurations.providedCompile
+    sourceSets.test.compileClasspath += configurations.providedCompile
+    sourceSets.test.runtimeClasspath += configurations.providedCompile
 }
 
-dependencies {
-    testCompile "junit:junit:4.12"
-}
 
-ext {
-    groovyVersion = '2.4.4'
-    customJvmArgs = ['-Xmx128m']
-}
-
-configurations {
-    providedCompile
-}
-
-sourceSets.main.compileClasspath += configurations.providedCompile
-sourceSets.test.compileClasspath += configurations.providedCompile
-sourceSets.test.runtimeClasspath += configurations.providedCompile
+// --- Customise JVM - Low Memory Profile ---
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.7'
+    gradleVersion = '2.13'
 
     def jvmOpts = customJvmArgs.join(' ')
     inputs.property("jvmOpts", jvmOpts)
@@ -50,22 +63,28 @@ task wrapper(type: Wrapper) {
 
 allprojects {
 	clean{
-		delete "work"
+		delete "out"
 		delete ".gradle"
 	}
-	
-	tasks.withType(JavaCompile) {
+
+    tasks.matching { it instanceof JavaCompile || it instanceof GroovyCompile }.all {
+        options.compilerArgs += ["-Xlint:unchecked", "-Xlint:deprecation"]
         options.fork = true
         options.forkOptions.jvmArgs += customJvmArgs
-	}
-	
-    tasks.withType(GroovyCompile) {
-        configure(groovyOptions.forkOptions) {
-            memoryMaximumSize = '256m'
-            jvmArgs = customJvmArgs
-        }
     }
-    
+
+//    tasks.withType(JavaCompile) {
+//        options.fork = true
+//        options.forkOptions.jvmArgs += customJvmArgs
+//	}
+//
+//    tasks.withType(GroovyCompile) {
+//        configure(groovyOptions.forkOptions) {
+//            memoryMaximumSize = '256m'
+//            jvmArgs = customJvmArgs
+//        }
+//    }
+
     tasks.withType(Test) {
         jvmArgs(customJvmArgs)
         testLogging {
@@ -74,28 +93,31 @@ allprojects {
     }
 }
 
-//subprojects {
-//    apply from: "$rootDir/gradle/idea.gradle"
-//}
 
-// enforce version...
+// --- Custom Tasks ---
 
 task enforceJavaVersionTask << {
     if (enforceJavaVersionFlag){
         def foundVersion = JavaVersion.current()
         if (foundVersion.toString() != enforceJavaVersion.toString()){
-            throw new IllegalStateException("Wrong Java version; required is $enforceJavaVersion, but found $foundVersion")
+            println("WARN: Wrong Java version: required is $enforceJavaVersion, but found $foundVersion")
         }
     } else {
         println "Java version not enforced."
     }
 }
 
-compileTasks*.dependsOn(enforceJavaVersionTask);
-
 task showMeCache << {
   configurations.compile.each { println it }
 }
+
+
+// --- Dependencies ---
+
+compileTasks*.dependsOn(enforceJavaVersionTask);
+
+
+// --- Standalone Functions ---
 
 ext.verifySize = { File file, int expectedSizeKB ->
     def actualSizeBytes = file.length()
