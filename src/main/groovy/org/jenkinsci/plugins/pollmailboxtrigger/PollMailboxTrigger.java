@@ -82,6 +82,10 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
 
     public static final String DATE_FORMAT_TEXT = "yyyy/MM/dd HH:mm:ss a";
     public static final int ONE_DAY_IN_MINUTES = 1440;
+    public static final int PORT_IMAP = 143;
+    public static final int PORT_IMAPS = 993;
+    public static final int PORT_POP3 = 110;
+    public static final int PORT_POP3S = 995;
 
     private String host;
     private String username;
@@ -167,9 +171,14 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
         p.putIfBlank(subjectContains, "jenkins >");
         p.putIfBlank(receivedXMinutesAgo, Integer.toString(ONE_DAY_IN_MINUTES));
         String cnfHost = p.get(Properties.host);
-        String cnfStoreName = p.get(storeName);
+        String cnfStoreName = p.get(storeName).toLowerCase();
+        int port = "imap".equals(cnfStoreName) ? PORT_IMAP
+                : "imaps".equals(cnfStoreName) ? PORT_IMAPS
+                : "pop3".equals(cnfStoreName) ? PORT_POP3
+                : "pop3s".equals(cnfStoreName) ? PORT_POP3S
+                : PORT_IMAPS;
         p.putIfBlank("mail." + cnfStoreName + ".host", cnfHost);
-        p.putIfBlank("mail." + cnfStoreName + ".port", cnfStoreName.toLowerCase().endsWith("s") ? "993" : "143");
+        p.putIfBlank("mail." + cnfStoreName + ".port", String.valueOf(port));
         p.putIfBlank("mail.debug", "false");
         p.putIfBlank("mail.debug.auth", "false");
         // re-override the user properties, to ensure they're set.
@@ -243,7 +252,8 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
                 List<Message> messageList = messagesTool.getMessages();
                 StringBuilder subjects = new StringBuilder();
                 for (Message message : messageList) {
-                    subjects.append("\n\n- ").append(message.getSubject()).append(" (").append(dateFormat.format(message.getReceivedDate())).append(")");
+                    Date receivedDate = message.getReceivedDate();
+                    subjects.append("\n\n- ").append(message.getSubject()).append(" (").append(receivedDate != null ? dateFormat.format(receivedDate) : "null").append(")");
                 }
                 final String foundEmails = "Found matching email(s) : " + messageList.size() + subjects.toString();
                 log.info(foundEmails);

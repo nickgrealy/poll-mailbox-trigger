@@ -145,12 +145,22 @@ to further configure the connection.
 
 Below are some sample configurations for common web based email services:
 
-#### GMAIL
+#### GMAIL (IMAPS)
 For google passwords, go to "Google account > security > app passwords".
 
     host=imap.gmail.com
     username=<your_email>@gmail.com
     password=<your_application_password>
+
+#### GMAIL (POP3S)
+For google passwords, go to "Google account > security > app passwords".
+
+    host=pop.gmail.com
+    username=<your_email>@gmail.com
+    password=<your_application_password>
+    
+    storeName=pop3s
+    receivedXMinutesAgo=
 
 #### HOTMAIL
 For hotmail passwords, go to "Account Settings > Security Info > Create a new app password".

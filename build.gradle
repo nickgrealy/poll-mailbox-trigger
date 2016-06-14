@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.15.0'
+        classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.18.1'
     }
 }
 
@@ -28,11 +28,11 @@ apply from: "$rootDir/config/gradle/staticCodeAnalysis.gradle"
 
 repositories {
     mavenLocal()
-    mavenCentral()
-    jcenter()
     maven {
         url 'http://repo.jenkins-ci.org/releases/'
     }
+    mavenCentral()
+    jcenter()
 }
 
 jenkinsPlugin {
