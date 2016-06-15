@@ -86,6 +86,10 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
     public static final int PORT_IMAPS = 993;
     public static final int PORT_POP3 = 110;
     public static final int PORT_POP3S = 995;
+    public static final String STORE_IMAP = "imap";
+    public static final String STORE_IMAPS = "imaps";
+    public static final String STORE_POP3 = "pop3";
+    public static final String STORE_POP3S = "pop3s";
 
     private String host;
     private String username;
@@ -166,17 +170,20 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
         p.put(Properties.password, encrypt(passwordVariableReplaced));
         p.put(Properties.attachments, attachments);
         // setup default values
-        p.putIfBlank(storeName, "imaps");
+        p.putIfBlank(storeName, STORE_IMAPS);
         p.putIfBlank(folder, "INBOX");
         p.putIfBlank(subjectContains, "jenkins >");
-        p.putIfBlank(receivedXMinutesAgo, Integer.toString(ONE_DAY_IN_MINUTES));
         String cnfHost = p.get(Properties.host);
         String cnfStoreName = p.get(storeName).toLowerCase();
-        int port = "imap".equals(cnfStoreName) ? PORT_IMAP
-                : "imaps".equals(cnfStoreName) ? PORT_IMAPS
-                : "pop3".equals(cnfStoreName) ? PORT_POP3
-                : "pop3s".equals(cnfStoreName) ? PORT_POP3S
+        int port = STORE_IMAP.equals(cnfStoreName) ? PORT_IMAP
+                : STORE_IMAPS.equals(cnfStoreName) ? PORT_IMAPS
+                : STORE_POP3.equals(cnfStoreName) ? PORT_POP3
+                : STORE_POP3S.equals(cnfStoreName) ? PORT_POP3S
                 : PORT_IMAPS;
+        // pop3 doesn't like working with received dates...
+        if (!isStorePop3(cnfStoreName)) {
+            p.putIfBlank(receivedXMinutesAgo, Integer.toString(ONE_DAY_IN_MINUTES));
+        }
         p.putIfBlank("mail." + cnfStoreName + ".host", cnfHost);
         p.putIfBlank("mail." + cnfStoreName + ".port", String.valueOf(port));
         p.putIfBlank("mail.debug", "false");
@@ -211,11 +218,12 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             log.info("Connecting to the mailbox...");
             String encryptedPassword = properties.get(Properties.password);
             String decryptedPassword = decrypt(encryptedPassword);
+            String storeNameValue = properties.get(storeName);
             mailbox = new MailReader(
                     properties.get(Properties.host),
                     properties.get(Properties.username),
                     decryptedPassword,
-                    properties.get(storeName),
+                    storeNameValue,
                     new Logger.XTriggerLoggerWrapper(log),
                     properties
             ).connect();
@@ -234,7 +242,7 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
                 log.info("- [subject contains '" + properties.get(subjectContains) + "']");
             }
             // received since X minutes ago
-            if (properties.has(receivedXMinutesAgo)) {
+            if (!isStorePop3(storeNameValue) && properties.has(receivedXMinutesAgo)) {
                 final int minsAgo = Integer.parseInt(properties.get(receivedXMinutesAgo)) * -1;
                 Date date = relativeDate(Calendar.MINUTE, minsAgo);
                 searchTerms.add(receivedSince(date));
@@ -309,6 +317,10 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             }
         }
         return FormValidation.ok("Success");
+    }
+
+    private static boolean isStorePop3(final String storeName) {
+        return STORE_POP3.equals(storeName) || STORE_POP3S.equals(storeName);
     }
 
     public static String buildEmailRetryLink(final CustomProperties properties) {

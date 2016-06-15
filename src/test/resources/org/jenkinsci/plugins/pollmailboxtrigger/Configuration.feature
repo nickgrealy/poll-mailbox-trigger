@@ -191,7 +191,6 @@ Feature: Configuration
       | mail.pop3.host      | pop.gmail.com   |
       | mail.pop3.port      | 110             |
       | password            | snekcihc        |
-      | receivedXMinutesAgo | 1440            |
       | storeName           | pop3            |
       | subjectContains     | jenkins >       |
       | username            | morty@gmail.com |
@@ -214,7 +213,6 @@ Feature: Configuration
       | mail.pop3s.host     | pop.gmail.com   |
       | mail.pop3s.port     | 995             |
       | password            | snekcihc        |
-      | receivedXMinutesAgo | 1440            |
       | storeName           | pop3s           |
       | subjectContains     | jenkins >       |
       | username            | morty@gmail.com |

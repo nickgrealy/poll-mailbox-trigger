@@ -11,8 +11,8 @@ Table of contents
 1. [Building](#building)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
-    1. [GMAIL](#gmail-imaps)
-    1. [GMAIL](#gmail-pop3s)
+    1. [GMAIL (IMAPS)](#gmail-imaps)
+    1. [GMAIL (POP3S)](#gmail-pop3s)
     1. [HOTMAIL](#hotmail)
     1. [ZIMBRA](#zimbra)
     1. [Office 365](#office-365)
@@ -161,7 +161,6 @@ For google passwords, go to "Google account > security > app passwords".
     password=<your_application_password>
     
     storeName=pop3s
-    receivedXMinutesAgo=
 
 #### HOTMAIL
 For hotmail passwords, go to "Account Settings > Security Info > Create a new app password".
