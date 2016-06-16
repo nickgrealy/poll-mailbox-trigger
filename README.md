@@ -8,6 +8,9 @@ Table of contents
 ---
 
 1. [Overview](#overview)
+    1. [Usage](#usage)
+    1. [Support](#support)
+    1. [Rationale](#rationale)
 1. [Building](#building)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
@@ -23,26 +26,59 @@ Table of contents
 
 __Additional:__
 
-1. [Changelog](#changelog)
-1. [Backlog](#backlog)
+1. [Releases / Changelog](https://github.com/jenkinsci/poll-mailbox-trigger-plugin/milestones)
+1. [Issues](https://github.com/jenkinsci/poll-mailbox-trigger-plugin/issues)
 1. [Wiki](https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin)
-1. [Source Code](https://github.com/jenkinsci/poll-mailbox-trigger-plugin)
-1. [Issue Tracking](https://issues.jenkins-ci.org/secure/IssueNavigator.jspa?jqlQuery=component+%3D+%27poll-mailbox-trigger-plugin%27)
+1. [Source Code (GIT)](https://github.com/jenkinsci/poll-mailbox-trigger-plugin.git)
 1. [Authors](#authors)
 1. [License](#license)
 
 Overview
 ---
 
-The _poll-mailbox-trigger_ allows a build to poll an email inbox using the imap protocol.
-When an unread email is found matching the configured criteria, it:
+The _poll-mailbox-trigger_ is a Jenkins "build trigger" plugin, which allows a Job to poll an email inbox.
+When an unread email is found, that matches the configured criteria, it:
 
 1. marks the email as read, so that it is not reprocessed
 1. triggers a new job
 
-### Why?
 
-Mainly, because I want to be able to (re)trigger a (failing?) build, from the comfort of my home/beach/pub.
+### Usage
+
+Once the plugin is installed, you can find it's configuration under **YourJob > Configure > Build Triggers > Poll Mailbox Trigger**.
+[You should see something like this screenshot](#screenshots).
+
+From here you can configure:
+
+1. The email server and account to search for UNREAD emails - [here are some sample configurations for popular email services](#sample-configurations)
+1. Additional filters, including:
+   1. **folder** - the email folder to check (default "INBOX")
+   1. **subjectContains** - the email must inlcud this subject (default "jenkins >")
+   1. **receivedXMinutesAgo** - the email must have been received within the last X minutes (default "1440" which is 24 hours)
+   1. [More configuration information is available here](#configuration)
+1. The polling schedule - defaults to every 5 minutes
+
+Once configured, there is an option to **Test Connection**. This will tell you:
+1. If there are any errors - [please refer to the Troubleshooting section](#troubleshooting)
+1. If the plugin can connect to the mail server successfully
+1. How many emails it can find, that match the given criteria
+
+Hit save, and you should be done.
+1. There will now be a "View Polling Log" option under your Job, so that you can see when the polling was last checked.
+1. The plugin will now start a new job instance, for each unread email it finds. Once an email has triggered a job, the
+email will then be marked as READ, so that it doesn't invoke additional job instances in subsequent polling rounds.
+
+### Support
+
+| Compatibility | Since Version |
+| --- | --- |
+| Java Runtime Environment | 1.6+ |
+| Jenkins Server | 1.424+ |
+| Mail Server Protocols | IMAP, IMAPS, POP3, POP3S |
+
+### Rationale
+
+Mainly, because I want to be able to (re)trigger a (failing) build, from the comfort of my home/beach/pub.
 I may not always have direct/sychronous access to the build server (due to firewalls, network access, etc).
 I'm already being notified by email when a job fails, why can't I just send an email response saying "retry"?
 
@@ -316,50 +352,6 @@ Want to say thanks but can't find the words? [Coffee donations are VERY welcome]
 
 ![http://wrldhq.com/2014/02/12/new-meaning-to-the-term-coffee-drip-coined/](src/main/site/images/star-wars-coffee.jpg "http://wrldhq.com/2014/02/12/new-meaning-to-the-term-coffee-drip-coined/")
 
-ChangeLog
----
-
-### 1.020
-1. If the "script" property has spaces only (someone might have pressed some spaces by mistake), the CustomProperties class still should recognized it as empty (.equals(""))
-1. The default values of the properties were being loaded AFTER loading the user-provided ones. For instance I want to get rid of the subject filter "jenkins >" and I cannot do that, because when I add the property with the empty value, this default takes over. Thus, I submit this PR to change the order in which these data is loaded: first we load the defaults, THEN we load the user-provided values
-
-### 1.018
-1. Fixed defect in Session.getDefaultInstance -> getInstance
-1. Changed build process to use gradle
-
-### 0.15
-1. Fixed defect in parsing properties
-
-### 0.14
-1. Added ability to inject 'custom variables' as job parameters
-1. Added handling for multipart emails
-1. Improved handling of node properties (thanks [Charlie Stott](https://github.com/ecolyx)!)
-
-### 0.12
-1. Changed deprecated code - Hudson.getInstance() to Jenkins.getInstance()
-1. Added exception handling, to provide a more informative error when Jenkins.getInstance() returns null.
-
-### 0.11
-1. interpret email body directly as build parameters (see mailto links)
-1. Test using variable replacement!
-1. Add config as build parameters
-
-### 0.9
-1. Change package dependencies, so that there is no dependency on ScriptTrigger (for future cloudbees support)
-1. Implemented encrypted passwords (test connections using SSH keys)
-
-### 0.8
-1. Added default properties (to minimise configuration)
-1. Documented and tested (successfully) configurations for the common web based email services.
-
-### 0.5
-1. Added a "Test Connection" button
-
-### 0.4
-1. get this plugin published under jenkinsci!
-
-### 0.2
-1. Add email properties (e.g. to, from, cc, bcc, subject, body) as job parameters (pmt_*)
 
 ---
 
