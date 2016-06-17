@@ -14,7 +14,8 @@ Table of contents
 1. [Building](#building)
 1. [Screenshots](#screenshots)
 1. [Configuration](#configuration)
-    1. [GMAIL](#gmail)
+    1. [GMAIL (IMAPS)](#gmail-imaps)
+    1. [GMAIL (POP3S)](#gmail-pop3s)
     1. [HOTMAIL](#hotmail)
     1. [ZIMBRA](#zimbra)
     1. [Office 365](#office-365)
@@ -181,12 +182,21 @@ to further configure the connection.
 
 Below are some sample configurations for common web based email services:
 
-#### GMAIL
+#### GMAIL (IMAPS)
 For google passwords, go to "Google account > security > app passwords".
 
     host=imap.gmail.com
     username=<your_email>@gmail.com
     password=<your_application_password>
+
+#### GMAIL (POP3S)
+For google passwords, go to "Google account > security > app passwords".
+
+    host=pop.gmail.com
+    username=<your_email>@gmail.com
+    password=<your_application_password>
+    
+    storeName=pop3s
 
 #### HOTMAIL
 For hotmail passwords, go to "Account Settings > Security Info > Create a new app password".

@@ -33,3 +33,5 @@ Feature: Test Connection - Error Handling
     """
     And I test the connection
     Then the response should be ERROR with message 'Please set the &#039;folder=XXX&#039; parameter to one of the following values: <br>Folders: '
+
+    # todo test getReceivedDate() returns null (when using pop3)

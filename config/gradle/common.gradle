@@ -1,6 +1,6 @@
 
 apply plugin: 'idea'
-//apply plugin: 'groovy'
+apply plugin: 'groovy'
 apply plugin: 'java'
 
 idea.project?.vcs = 'Git'
@@ -12,7 +12,7 @@ ext {
     /* optional - set variable enforceJavaVersion */
     enforceJavaVersionFlag = project.getProperties().containsKey('enforceJavaVersion')
     javaVersion = project.getProperties().get('enforceJavaVersion') ?: JavaVersion.VERSION_1_6
-    compileTasks = [compileJava, compileTestJava] //, compileGroovy, compileTestGroovy]
+    compileTasks = [compileJava, compileTestJava, compileGroovy, compileTestGroovy]
 }
 
 
@@ -30,7 +30,7 @@ allprojects {
 
     ext {
         groovyVersion = '2.4.4'
-        customJvmArgs = ['-Xmx128m']
+        customJvmArgs = ['-Xmx1g', '-XX:MaxPermSize=1g']
     }
 
     dependencies {
@@ -100,7 +100,7 @@ task enforceJavaVersionTask << {
     if (enforceJavaVersionFlag){
         def foundVersion = JavaVersion.current()
         if (foundVersion.toString() != enforceJavaVersion.toString()){
-            println("WARN: Wrong Java version: required is $enforceJavaVersion, but found $foundVersion")
+            println("\nWARNING: Wrong Java version: required is $enforceJavaVersion, but found $foundVersion \n")
         }
     } else {
         println "Java version not enforced."
@@ -121,6 +121,6 @@ compileTasks*.dependsOn(enforceJavaVersionTask);
 
 ext.verifySize = { File file, int expectedSizeKB ->
     def actualSizeBytes = file.length()
-    println "Output file size is: ${(int) actualSizeBytes / 1024} KB"
+    println "Output file size is: ${(int) (actualSizeBytes / 1024)} KB"
     assert actualSizeBytes < (expectedSizeKB * 1024)
 }

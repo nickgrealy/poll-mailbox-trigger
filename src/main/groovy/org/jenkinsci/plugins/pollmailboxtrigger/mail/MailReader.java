@@ -10,6 +10,7 @@ import javax.mail.Store;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.STORE_IMAPS;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Logger.HasLogger;
 import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUtils.FolderWrapper;
 
@@ -21,7 +22,7 @@ import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.MailWrapperUti
 @SuppressWarnings("unused")
 public class MailReader extends HasLogger {
 
-    private String host, storeName = "imaps", username, password;
+    private String host, storeName = STORE_IMAPS, username, password;
     private CustomProperties properties = new CustomProperties();
     private Folder currentFolder;
     private Store store;
@@ -31,7 +32,7 @@ public class MailReader extends HasLogger {
             final String username,
             final String password
     ) throws MessagingException {
-        this(host, username, password, "imaps", Logger.getDefault(), new CustomProperties());
+        this(host, username, password, STORE_IMAPS, Logger.getDefault(), new CustomProperties());
     }
 
     public MailReader(
