@@ -29,7 +29,7 @@ __Additional:__
 
 1. [Releases / Changelog](https://github.com/jenkinsci/poll-mailbox-trigger-plugin/milestones)
 1. [Issues](https://github.com/jenkinsci/poll-mailbox-trigger-plugin/issues)
-1. [Wiki](https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin)
+1. [Wiki](https://wiki.jenkins-ci.org/display/JENKINS/Poll+Mailbox+Trigger+Plugin)
 1. [Source Code (GIT)](https://github.com/jenkinsci/poll-mailbox-trigger-plugin.git)
 1. [Authors](#authors)
 1. [License](#license)
