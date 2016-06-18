@@ -1,13 +1,7 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.jenkins-ci.org/releases/'
-        }
-    }
-    dependencies {
-        classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.18.1'
-    }
+
+plugins {
+//    id "co.riiid.gradle" version "0.4.2"
+    id 'org.jenkins-ci.jpi' version '0.18.1'
 }
 
 defaultTasks 'clean', 'jpi'
@@ -22,17 +16,16 @@ gradlew server - Start a local instance of Jenkins (http://localhost:8080) with 
 
 ext.enforceJavaVersion = 1.6
 
-apply plugin: 'org.jenkins-ci.jpi'
 apply from: "$rootDir/config/gradle/common.gradle"
 apply from: "$rootDir/config/gradle/staticCodeAnalysis.gradle"
 
+
 repositories {
     mavenLocal()
+    maven { url 'http://bits.netbeans.org/maven2/' }
+    maven { url 'http://repo.jenkins-ci.org/releases/' }
     mavenCentral()
     jcenter()
-    maven {
-        url 'http://repo.jenkins-ci.org/releases/'
-    }
 }
 
 jenkinsPlugin {
