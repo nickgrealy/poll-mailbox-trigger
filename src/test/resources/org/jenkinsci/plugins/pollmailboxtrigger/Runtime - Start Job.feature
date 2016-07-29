@@ -36,11 +36,26 @@ Feature: Runtime - Start Job
     """
     Connecting to the mailbox...
     [Poll Mailbox Trigger] - Connected!
+    Found properties:
+    - [attachments:IGNORE]
+    - [folder:INBOX]
+    - [host:mail.com]
+    - [mail.debug:false]
+    - [mail.debug.auth:false]
+    - [mail.imap.connectiontimeout:1000]
+    - [mail.imap.host:mail.com]
+    - [mail.imap.port:143]
+    - [password:***]
+    - [receivedXMinutesAgo:1440]
+    - [storeName:imap]
+    - [subjectContains:jenkins >]
+    - [username:rick]
     Connected to mailbox. Searching for messages where:
     - [flag is unread]
     - [subject contains 'jenkins >']
     - [received date is greater than '<date>']
     ...
+    Searching folder...
     Found matching email(s) : 2
 
     - Jenkins > Build Plugin #3 (<date>)
@@ -48,9 +63,11 @@ Feature: Runtime - Start Job
     - Jenkins > Build Plugin #4 (<date>)
     Download attachments? IGNORE
     Changes found. Scheduling a build.
+    Job has no parameters.
     Marked email(s) as read : 1
     Download attachments? IGNORE
     Changes found. Scheduling a build.
+    Job has no parameters.
     Marked email(s) as read : 1
 
     """

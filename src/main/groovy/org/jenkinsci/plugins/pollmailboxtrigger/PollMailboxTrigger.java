@@ -194,10 +194,10 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
         return p;
     }
 
-    public static FormValidation checkForEmails(final CustomProperties properties, final XTriggerLog log, final boolean testConnection, final PollMailboxTrigger pmt) {
+    public static FormValidation checkForEmails(final CustomProperties properties, final XTriggerLog logger, final boolean testConnection, final PollMailboxTrigger pmt) {
         MailReader mailbox = null;
         final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_TEXT);
-        List<String> testing = new ArrayList<String>();
+        TeeLogger log = new TeeLogger(logger, new ArrayList<String>());
         try {
             Enum[] requiredProps = {Properties.host, Properties.storeName, Properties.username, Properties.password};
             List<String> errors = new ArrayList<String>();
@@ -224,13 +224,20 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
                     properties.get(Properties.username),
                     decryptedPassword,
                     storeNameValue,
-                    new Logger.XTriggerLoggerWrapper(log),
+                    new Logger.XTriggerLoggerWrapper(log.getLog()),
                     properties
             ).connect();
-            final String connected = "Connected to mailbox. ";
-            log.info(connected + "Searching for messages where:");
-            testing.add(connected);
 
+            // output found properties...
+            log.info("Found properties:");
+            List<String> keys = new ArrayList<String>(properties.keySet());
+            Collections.sort(keys);
+            for (String key : keys) {
+                String obfuscatedValue = Properties.password.name().equalsIgnoreCase(key) ? "***" : properties.get(key);
+                log.info("- [" + key + ":" + obfuscatedValue + "]");
+            }
+
+            log.info("Connected to mailbox. Searching for messages where:");
             // search for messages
             List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
             // unread
@@ -240,6 +247,8 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             if (properties.has(subjectContains)) {
                 searchTerms.add(subject(properties.get(subjectContains)));
                 log.info("- [subject contains '" + properties.get(subjectContains) + "']");
+            } else {
+                log.info("- [subject contains - filter not set]");
             }
             // received since X minutes ago
             if (!isStorePop3(storeNameValue) && properties.has(receivedXMinutesAgo)) {
@@ -247,6 +256,8 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
                 Date date = relativeDate(Calendar.MINUTE, minsAgo);
                 searchTerms.add(receivedSince(date));
                 log.info("- [received date is greater than '" + dateFormat.format(date) + "']");
+            } else {
+                log.info("- [received date - filter not set]");
             }
             log.info("...");
             if (!properties.has(folder)) {
@@ -254,7 +265,7 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             } else {
                 // look for mail...
                 final MailWrapperUtils.FolderWrapper mbFolder = mailbox.folder(properties.get(folder));
-                testing.add("Searching folder...");
+                log.info("Searching folder...");
                 String downloadAttachments = properties.get(Properties.attachments);
                 MessagesWrapper messagesTool = mbFolder.search(searchTerms);
                 List<Message> messageList = messagesTool.getMessages();
@@ -265,7 +276,6 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
                 }
                 final String foundEmails = "Found matching email(s) : " + messageList.size() + subjects.toString();
                 log.info(foundEmails);
-                testing.add(foundEmails);
                 if (!testConnection) {
                     // trigger jobs...
                     for (Message message : messageList) {
@@ -286,30 +296,32 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
 
                         String jobCause = "Job was triggered by email sent from " + stringify(message.getFrom());
                         // start a jenkins job...
-                        pmt.startJob(log, jobCause, buildParams.getMap());
+                        pmt.startJob(log.getLog(), jobCause, buildParams.getMap());
                         // finally mark the message as read so that we don't reprocess it...
                         messagesTool.markAsRead(message);
                     }
+                } else {
+                    log.info("'Test connection' mode enabled - server connection skipped");
                 }
             }
             // return success
             if (testConnection) {
-                testing.add("\nResult: Success!");
-                return FormValidation.ok(stringify(testing, "\n"));
+                log.info("\nResult: Success!");
+                return FormValidation.ok(stringify(log.getTesting(), "\n"));
             }
         } catch (FolderNotFoundException e) {
             // list any folders we can find...
             try {
-                testing.add("Please set the 'folder=XXX' parameter to one of the following values: ");
+                log.info("Please set the 'folder=XXX' parameter to one of the following values: ");
                 final String folders = stringify(mailbox.getFolders());
-                testing.add("Folders: " + folders);
+                log.info("Folders: " + folders);
                 log.info(folders);
-                return FormValidation.error(stringify(testing, "\n"));
+                return FormValidation.error(stringify(log.getTesting(), "\n"));
             } catch (Throwable t) {
-                return handleError(log, testing, t);
+                return handleError(log.getLog(), log.getTesting(), t);
             }
         } catch (Throwable t) {
-            return handleError(log, testing, t);
+            return handleError(log.getLog(), log.getTesting(), t);
         } finally {
             // cleanup connections
             if (mailbox != null) {
@@ -433,10 +445,14 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             AbstractProject project = getJob();
             List<Action> actions = new ArrayList<Action>();
             actions.addAll(getScheduledXTriggerActions(log));
-            actions.add(new ParametersAction(getParameterizedParams(project, envVars)));
-            actions.add(new ParametersAction(convertToBuildParams(envVars)));
 
-            // build parameters for schedule job...
+            // setup build params...
+            List<ParameterValue> buildParams = new ArrayList<ParameterValue>();
+            buildParams.addAll(getParameterizedParams(log, project, envVars));
+            buildParams.addAll(convertToBuildParams(envVars));
+            actions.add(new ParametersAction(buildParams));
+
+            // schedule job...
             Cause cause = new NewEmailCause(getName(), jobTriggerCause, true);
             Action[] actionsArray = actions.toArray(new Action[actions.size()]);
             project.scheduleBuild(0, cause, actionsArray);
@@ -472,11 +488,10 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
      * map values if possible, else use defaults.
      */
     @SuppressWarnings("unchecked")
-    private List<ParameterValue> getParameterizedParams(final AbstractProject project, final Map<String, String> envVars) {
+    private List<ParameterValue> getParameterizedParams(final XTriggerLog log, final AbstractProject project, final Map<String, String> envVars) {
         List<ParameterValue> buildParams = new ArrayList<ParameterValue>();
         if (project.isParameterized()) {
-            Class<? extends JobProperty> clazz = ParametersDefinitionProperty.class;
-            JobProperty properties = project.getProperty(clazz);
+            JobProperty properties = project.getProperty(ParametersDefinitionProperty.class);
             if (properties != null && properties instanceof ParametersDefinitionProperty) {
                 ParametersDefinitionProperty parameterizedProperties = (ParametersDefinitionProperty) properties;
                 for (ParameterDefinition parameterDef : parameterizedProperties.getParameterDefinitions()) {
@@ -485,13 +500,23 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
                     if (envVars.containsKey(parameterName)) {
                         if (parameterDef instanceof SimpleParameterDefinition) {
                             SimpleParameterDefinition simpleParamDef = (SimpleParameterDefinition) parameterDef;
-                            parameterValue = simpleParamDef.createValue(envVars.get(parameterName));
+                            String newValue = envVars.get(parameterName);
+                            log.info(String.format("Replacing default parameter '%s' with value '%s'", parameterName, newValue));
+                            parameterValue = simpleParamDef.createValue(newValue);
+                        } else {
+                            log.info(String.format("Job property '%s' is not a Simple parameter. Keeping default value.", parameterName));
                         }
                         envVars.remove(parameterName);
+                    } else {
+                        log.info(String.format("Job property '%s' doesn't exist in env vars, using default value.", parameterName));
                     }
                     buildParams.add(parameterValue);
                 }
+            } else {
+                log.info("Job has no properties.");
             }
+        } else {
+            log.info("Job has no parameters.");
         }
         return buildParams;
     }
