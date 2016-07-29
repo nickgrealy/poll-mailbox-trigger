@@ -341,7 +341,8 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
         String body = properties.get("pmt_content");
         String htmlNewline = "%0D%0A";
         if (nonNull(body)) {
-            body = body.replaceAll("\r\n", htmlNewline).replaceAll("\n", htmlNewline);
+            // escape quotes, and replace new lines...
+            body = body.replaceAll("\r\n", htmlNewline).replaceAll("\n", htmlNewline).replaceAll("\"", "&quot;");
         }
         return String.format("<a href=\"mailto:%s?subject=%s&body=%s\">Click to Retry Job</a>",
                 recipients,
