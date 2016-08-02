@@ -1,10 +1,10 @@
 Feature: Configuration
 
-  Background: The tests are setup.
+  Background: The tests are setup
     Given the plugin is initialised
 
 
-  Scenario: I want the default config values to be IMAPS.
+  Scenario: I want the default config values to be IMAPS
     When I set the configuration to
       | Host | Username | Password | Script |
     Then the effective configuration should be
@@ -18,7 +18,7 @@ Feature: Configuration
       | subjectContains     | jenkins > |
 
 
-  Scenario: I want to be able to set the basic config values.
+  Scenario: I want to be able to set the basic config values
     When I set the configuration to
       | Host     | Username | Password |
       | mail.com | morty    | chickens |
@@ -37,7 +37,7 @@ Feature: Configuration
       | username            | morty     |
 
 
-  Scenario: I want to be able to override the default config values.
+  Scenario: I want to be able to override the default config values
     When I set the configuration to
       | Host | Username | Password |
       | aaa  | bbb      | ccc      |
@@ -71,7 +71,7 @@ Feature: Configuration
       | username                   | bbb    |
 
 
-  Scenario: I want to be able to use Jenkins environment variables in my configuration.
+  Scenario: I want to be able to use Jenkins environment variables in my configuration
     Given the following Jenkins variables
       | cat     | meow  |
       | dog     | woof  |
@@ -108,7 +108,7 @@ Feature: Configuration
       | username                     | bb woof bb  |
 
 
-  Scenario: I want to be able to clear the default config values.
+  Scenario: I want to be able to clear the default config values
     When I set the configuration to
       | Username | Password |
       | bbb      | ccc      |
@@ -128,7 +128,7 @@ Feature: Configuration
       | username    | bbb    |
 
 
-  Scenario: I want default values for IMAP.
+  Scenario: I want default values for IMAP
     When I set the configuration to
       | Host     | Username | Password |
       | mail.com | morty    | chickens |
@@ -151,7 +151,7 @@ Feature: Configuration
       | username            | morty     |
 
 
-  Scenario: I want default values for IMAPS.
+  Scenario: I want default values for IMAPS
     When I set the configuration to
       | Host     | Username | Password |
       | mail.com | morty    | chickens |
@@ -174,7 +174,7 @@ Feature: Configuration
       | username            | morty     |
 
 
-  Scenario: I want default values for POP3.
+  Scenario: I want default values for POP3
     When I set the configuration to
       | Host          | Username        | Password |
       | pop.gmail.com | morty@gmail.com | chickens |
@@ -196,7 +196,7 @@ Feature: Configuration
       | username            | morty@gmail.com |
 
 
-  Scenario: I want default values for POP3S.
+  Scenario: I want default values for POP3S
     When I set the configuration to
       | Host          | Username        | Password |
       | pop.gmail.com | morty@gmail.com | chickens |

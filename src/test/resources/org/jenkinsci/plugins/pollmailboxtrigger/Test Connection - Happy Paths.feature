@@ -56,7 +56,7 @@ Feature: Test Connection - Happy Paths
     When I test the connection
     Then the response should be OK with message 'Connected to mailbox.'
     Then the response should be OK with message 'Found matching email(s) : 1<br>'
-    Then the response should be OK with message '- Jenkins > Build Plugin #1'
+    Then the response should be OK with message '- Jenkins &gt; Build Plugin #1'
 
     # Multiple Emails
 
@@ -69,7 +69,7 @@ Feature: Test Connection - Happy Paths
     When I test the connection
     Then the response should be OK with message 'Connected to mailbox.'
     Then the response should be OK with message 'Found matching email(s) : 3<br>'
-    Then the response should be OK with message '- Jenkins > Build Plugin #1'
+    Then the response should be OK with message '- Jenkins &gt; Build Plugin #1'
 
 
 #  Scenario: I want the plugin to tell me if authentication failed, so that I can troubleshoot the root cause of any issues.

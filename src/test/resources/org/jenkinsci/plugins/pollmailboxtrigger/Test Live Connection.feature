@@ -1,6 +1,6 @@
 @ignore
 Feature: Test Live Connection
-  This is just for testing a connection to an email server.
+  This is just for testing a connection to an email server
 
   Scenario: Test connecting to GMAIL via IMAPS
     Given the plugin is initialised
