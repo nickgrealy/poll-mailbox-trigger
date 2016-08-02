@@ -55,7 +55,7 @@ Feature: Test Connection - Runtime Configuration
       | Host     | Username | Password |
       | mail.com | rick     | chickens |
     When I test the connection
-    Then the response should be OK with message 'Found matching email(s) : 1<br><br>- Jenkins > Build Plugin #4'
+    Then the response should be OK with message 'Found matching email(s) : 1<br><br>- Jenkins &gt; Build Plugin #4'
 
   # overriding filters
 
@@ -64,7 +64,7 @@ Feature: Test Connection - Runtime Configuration
       | Host     | Username | Password | Script                 |
       | mail.com | rick     | chickens | subjectContains=Hudson |
     When I test the connection
-    Then the response should be OK with message 'Found matching email(s) : 1<br><br>- Hudson > Build Plugin #1'
+    Then the response should be OK with message 'Found matching email(s) : 1<br><br>- Hudson &gt; Build Plugin #1'
 
 
   Scenario: I can override the receivedXMinutesAgo filter
@@ -72,7 +72,7 @@ Feature: Test Connection - Runtime Configuration
       | Host     | Username | Password | Script                   |
       | mail.com | rick     | chickens | receivedXMinutesAgo=1450 |
     When I test the connection
-    Then the response should be OK with message 'Found matching email(s) : 2<br><br>- Jenkins > Build Plugin #2'
+    Then the response should be OK with message 'Found matching email(s) : 2<br><br>- Jenkins &gt; Build Plugin #2'
 
 
   Scenario: I can override the folder filter - [mock-javamail ignores folders]
@@ -80,7 +80,7 @@ Feature: Test Connection - Runtime Configuration
       | Host     | Username | Password | Script        |
       | mail.com | rick     | chickens | folder=Hudson |
     When I test the connection
-    Then the response should be OK with message 'Found matching email(s) : 1<br><br>- Jenkins > Build Plugin #4'
+    Then the response should be OK with message 'Found matching email(s) : 1<br><br>- Jenkins &gt; Build Plugin #4'
 
 
   # blanking values - what happens?
@@ -91,7 +91,7 @@ Feature: Test Connection - Runtime Configuration
       | Host     | Username | Password | Script           |
       | mail.com | rick     | chickens | subjectContains= |
     When I test the connection
-    Then the response should be OK with message 'Found matching email(s) : 2<br><br>- Hudson > Build Plugin #1'
+    Then the response should be OK with message 'Found matching email(s) : 2<br><br>- Hudson &gt; Build Plugin #1'
 
 
   Scenario: I can clear the receivedXMinutesAgo filter
@@ -99,7 +99,7 @@ Feature: Test Connection - Runtime Configuration
       | Host     | Username | Password | Script               |
       | mail.com | rick     | chickens | receivedXMinutesAgo= |
     When I test the connection
-    Then the response should be OK with message 'Found matching email(s) : 2<br><br>- Jenkins > Build Plugin #2'
+    Then the response should be OK with message 'Found matching email(s) : 2<br><br>- Jenkins &gt; Build Plugin #2'
 
 
   Scenario: I can clear the folder filter - [mock-javamail ignores folders]

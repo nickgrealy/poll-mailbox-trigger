@@ -14,7 +14,7 @@ gradlew publish - Deploy your plugin to the Jenkins Maven repository to be inclu
 gradlew server - Start a local instance of Jenkins (http://localhost:8080) with the plugin pre-installed for testing and debugging.
  */
 
-ext.enforceJavaVersion = 1.6
+ext.enforceJavaVersion = 1.7
 
 apply from: "$rootDir/config/gradle/common.gradle"
 apply from: "$rootDir/config/gradle/staticCodeAnalysis.gradle"
@@ -29,12 +29,13 @@ repositories {
 }
 
 jenkinsPlugin {
-    coreVersion = '1.581'
+    // only support latest LTS!
+    coreVersion = '2.7.1'
     shortName = project.name
     displayName = jenkinsDisplayName
     url = "https://wiki.jenkins-ci.org/display/JENKINS/$jenkinsDisplayName"
     gitHubUrl = "https://github.com/jenkinsci/$project.name"
-    compatibleSinceVersion = '1.424'
+    compatibleSinceVersion = '2.7.1'
     fileExtension = 'hpi'
     developers {
         developer {
@@ -50,8 +51,7 @@ dependencies {
     compile "com.sun.mail:javax.mail:1.5.1"
 
     // Useful for interrogating the injected environment variables...
-//    compile "org.jenkins-ci.plugins:envinject:1.92.1"
-//    compile("org.jenkins-ci.lib:envinject-lib:1.23"){ force = true }
+    // jenkinsTest 'org.jenkins-ci.plugins:envinject:1.92.1@jar'
 
     testCompile('org.hamcrest:hamcrest-core:1.3') { force = true }
     testCompile('junit:junit:4.12') { force = true }
@@ -70,7 +70,7 @@ configurations.findAll {!it.name.endsWith('junit-dep')}.each { conf ->
 
 jpi.outputs.upToDateWhen { false }
 jpi.doLast {
-    verifySize(file(jpi.archivePath), 639)
+    verifySizeKb(file(jpi.archivePath), 928)
 }
 
 task unzip(type: Copy) {
@@ -87,20 +87,40 @@ configurations.runtime {
         force 'commons-codec:commons-codec:1.8'
         force 'org.jenkins-ci:trilead-ssh2:build217-jenkins-5'
         force 'commons-io:commons-io:2.4'
-        force 'org.codehaus.groovy:groovy-all:1.8.9'
-        force 'org.kohsuke.stapler:stapler:1.228'
-        force 'org.jenkins-ci:annotation-indexer:1.7'
+        force 'org.codehaus.groovy:groovy-all:2.4.7'
+        force 'org.kohsuke.stapler:stapler:1.243'
+        force 'org.jenkins-ci:annotation-indexer:1.11'
         force 'commons-beanutils:commons-beanutils:1.8.3'
         force 'commons-lang:commons-lang:2.6'
         force 'commons-logging:commons-logging:1.1.3'
         force 'commons-collections:commons-collections:3.2.1'
         force 'jaxen:jaxen:1.1-beta-11'
-        force 'net.java.dev.jna:jna:3.4.0'
-        force 'org.jvnet.localizer:localizer:1.10'
         force 'org.springframework:spring-core:2.5.6.SEC03'
+        force 'net.java.dev.jna:jna:4.2.1'
+        force 'org.jvnet.localizer:localizer:1.23'
         force 'com.google.guava:guava:14.0'
         force 'com.jcraft:jzlib:1.1.3'
         force 'org.springframework:spring-beans:2.5.6.SEC03'
         force 'org.springframework:spring-context:2.5.6.SEC03'
+        force 'commons-fileupload:commons-fileupload:1.3.1-jenkins-1'
+        // 2.7.1 LTS
+//        force 'org.jenkins-ci.main:jenkins-core:2.7.1'
+//        force 'org.jenkins-ci.main:remoting:2.59'
+//        force 'org.apache.ant:ant:1.8.4'
+//        force 'javax.mail:mail:1.4.4'
+//        force 'org.slf4j:slf4j-api:1.7.7'
+//        force 'commons-httpclient:commons-httpclient:3.1'
+//        force 'org.apache.maven:maven-embedder:3.0.4'
+//        force 'org.sonatype.sisu:sisu-inject-plexus:2.3.0'
+//        force 'org.apache.maven:maven-core:3.0.4'
+//        force 'org.apache.maven:maven-aether-provider:3.0.4'
+//        force 'org.codehaus.plexus:plexus-classworlds:2.4'
+//        force 'org.apache.maven.wagon:wagon-provider-api:2.2'
+//        force 'org.codehaus.plexus:plexus-utils:3.0'
+//        force 'org.apache.maven:maven-artifact:3.0.4'
+//        force 'org.apache.maven:maven-compat:3.0.4'
+//        force 'org.sonatype.aether:aether-connector-wagon:1.13.1'
+//        force 'xalan:xalan:2.7.1'
+//        force 'org.sonatype.plexus:plexus-cipher:1.7'
     }
 }

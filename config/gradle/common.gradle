@@ -119,8 +119,8 @@ compileTasks*.dependsOn(enforceJavaVersionTask);
 
 // --- Standalone Functions ---
 
-ext.verifySize = { File file, int expectedSizeKB ->
-    def actualSizeBytes = file.length()
-    println "Output file size is: ${(int) (actualSizeBytes / 1024)} KB"
-    assert actualSizeBytes < (expectedSizeKB * 1024)
+ext.verifySizeKb = { File file, int expectedSizeKb ->
+    int actualSizeKb = file.length() / 1024
+    println "Output file size is: ${actualSizeKb} KB"
+    assert actualSizeKb <= expectedSizeKb
 }
