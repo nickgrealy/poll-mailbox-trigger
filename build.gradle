@@ -29,13 +29,13 @@ repositories {
 }
 
 jenkinsPlugin {
-    // only support latest LTS!
+    // always support latest LTS!
     coreVersion = '2.7.1'
     shortName = project.name
     displayName = jenkinsDisplayName
     url = "https://wiki.jenkins-ci.org/display/JENKINS/$jenkinsDisplayName"
     gitHubUrl = "https://github.com/jenkinsci/$project.name"
-    compatibleSinceVersion = '2.7.1'
+    compatibleSinceVersion = '1.424'
     fileExtension = 'hpi'
     developers {
         developer {
