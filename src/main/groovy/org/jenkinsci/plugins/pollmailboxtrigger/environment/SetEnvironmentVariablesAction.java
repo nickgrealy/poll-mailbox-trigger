@@ -18,11 +18,11 @@ public class SetEnvironmentVariablesAction extends ParametersAction implements A
     private final Map<String, String> parameters;
     private final Map<String, ParameterValue> values;
 
-    public SetEnvironmentVariablesAction(Map<String, String> parameters) {
+    public SetEnvironmentVariablesAction(final Map<String, String> parameters) {
         this.parameters = parameters;
         this.values = new HashMap<>();
-        for (String key : parameters.keySet()) {
-            this.values.put(key, new StringParameterValue(key, parameters.get(key)));
+        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+            this.values.put(entry.getKey(), new StringParameterValue(entry.getKey(), entry.getValue()));
         }
     }
 
@@ -32,7 +32,7 @@ public class SetEnvironmentVariablesAction extends ParametersAction implements A
     }
 
     @Override
-    public ParameterValue getParameter(String name) {
+    public ParameterValue getParameter(final String name) {
         return values.get(name);
     }
 

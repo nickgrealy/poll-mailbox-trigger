@@ -16,7 +16,7 @@ import java.io.IOException;
 public final class SetEnvironmentVariablesContributor extends EnvironmentContributor {
 
     @Override
-    public void buildEnvironmentFor(@Nonnull Run r, @Nonnull EnvVars envVars, @Nonnull TaskListener listener)
+    public void buildEnvironmentFor(@Nonnull final Run r, @Nonnull final EnvVars envVars, @Nonnull final TaskListener listener)
             throws IOException, InterruptedException {
         SetEnvironmentVariablesAction action = r.getAction(SetEnvironmentVariablesAction.class);
         if (action != null) {

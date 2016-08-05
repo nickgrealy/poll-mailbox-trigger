@@ -71,7 +71,7 @@ configurations.findAll {!it.name.endsWith('junit-dep')}.each { conf ->
 
 jpi.outputs.upToDateWhen { false }
 jpi.doLast {
-    verifySizeKb(file(jpi.archivePath), 928)
+    verifySizeKb(file(jpi.archivePath), 932)
 }
 
 task unzip(type: Copy) {

@@ -218,14 +218,14 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             }
 
             // used to test injecting environment variables into the job...
-            if (properties.get(Properties.host).equals(TEST_JOB_START_MODE)){
+            if (properties.get(Properties.host).equals(TEST_JOB_START_MODE)) {
                 if (!testConnection) {
                     // start a jenkins job...
-                    pmt.startJob(log.getLog(), "Job was triggered by " + TEST_JOB_START_MODE, new HashMap<String, String>() {{
-                        put("aaa", "zzz");
-                        put("bbb", "yyy");
-                        put("ccc", "xxx");
-                    }});
+                    Map<String, String> tmp = new HashMap<>();
+                    tmp.put("aaa", "zzz");
+                    tmp.put("bbb", "yyy");
+                    tmp.put("ccc", "xxx");
+                    pmt.startJob(log.getLog(), "Job was triggered by " + TEST_JOB_START_MODE, tmp);
                 }
                 return FormValidation.ok(TEST_JOB_START_MODE);
             }
@@ -440,7 +440,11 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
 
     @Override
     protected File getLogFile() {
-        return new File(job.getRootDir(), "pollMailboxTrigger-polling.log");
+        if (job != null) {
+            return new File(job.getRootDir(), "pollMailboxTrigger-polling.log");
+        } else {
+            return new File("pollMailboxTrigger-polling.log");
+        }
     }
 
     @Override
@@ -468,10 +472,10 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             buildParams.addAll(getParameterizedParams(log, project, envVars));
 //            buildParams.addAll(convertToBuildParams(envVars));
 
-            if (!buildParams.isEmpty()){
+            if (!buildParams.isEmpty()) {
                 actions.add(new ParametersAction(buildParams));
             }
-            if (!envVars.isEmpty()){
+            if (!envVars.isEmpty()) {
                 actions.add(new SetEnvironmentVariablesAction(envVars));
             }
 
