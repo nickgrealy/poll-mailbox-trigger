@@ -31,6 +31,7 @@ import org.jenkinsci.lib.xtrigger.XTriggerCause;
 import org.jenkinsci.lib.xtrigger.XTriggerDescriptor;
 import org.jenkinsci.lib.xtrigger.XTriggerException;
 import org.jenkinsci.lib.xtrigger.XTriggerLog;
+import org.jenkinsci.plugins.pollmailboxtrigger.environment.SetEnvironmentVariablesAction;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.MailReader;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.CustomProperties;
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Logger;
@@ -54,6 +55,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +92,7 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
     public static final String STORE_IMAPS = "imaps";
     public static final String STORE_POP3 = "pop3";
     public static final String STORE_POP3S = "pop3s";
+    public static final String TEST_JOB_START_MODE = "##TEST_JOB_START_MODE##";
 
     private String host;
     private String username;
@@ -212,6 +215,19 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             }
             if (!allRequired) {
                 return FormValidation.error("Error : " + stringify(errors));
+            }
+
+            // used to test injecting environment variables into the job...
+            if (properties.get(Properties.host).equals(TEST_JOB_START_MODE)){
+                if (!testConnection) {
+                    // start a jenkins job...
+                    pmt.startJob(log.getLog(), "Job was triggered by " + TEST_JOB_START_MODE, new HashMap<String, String>() {{
+                        put("aaa", "zzz");
+                        put("bbb", "yyy");
+                        put("ccc", "xxx");
+                    }});
+                }
+                return FormValidation.ok(TEST_JOB_START_MODE);
             }
 
             // connect to mailbox
@@ -450,8 +466,14 @@ public class PollMailboxTrigger extends AbstractTriggerExt {
             // setup build params...
             List<ParameterValue> buildParams = new ArrayList<ParameterValue>();
             buildParams.addAll(getParameterizedParams(log, project, envVars));
-            buildParams.addAll(convertToBuildParams(envVars));
-            actions.add(new ParametersAction(buildParams));
+//            buildParams.addAll(convertToBuildParams(envVars));
+
+            if (!buildParams.isEmpty()){
+                actions.add(new ParametersAction(buildParams));
+            }
+            if (!envVars.isEmpty()){
+                actions.add(new SetEnvironmentVariablesAction(envVars));
+            }
 
             // schedule job...
             Cause cause = new NewEmailCause(getName(), jobTriggerCause, true);
