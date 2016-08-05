@@ -73,8 +73,8 @@ email will then be marked as READ, so that it doesn't invoke additional job inst
 
 | Compatibility | Since Version |
 | --- | --- |
-| Java Runtime Environment | 1.6+ |
-| Jenkins Server | 1.424+ |
+| Java Runtime Environment | 1.7+ |
+| Jenkins Server | 2.7.1 LTS |
 | Mail Server Protocols | IMAP, IMAPS, POP3, POP3S |
 
 ### Rationale
