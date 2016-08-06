@@ -1,7 +1,6 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.environment;
 
 import hudson.model.Action;
-import hudson.model.Queue;
 import hudson.model.Queue.QueueAction;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class SetEnvironmentVariablesAction implements QueueAction {
     // interface -> hudson.model.Queue.QueueAction
 
     @Override
-    public boolean shouldSchedule(List<Action> actions) {
+    public boolean shouldSchedule(final List<Action> actions) {
         // always execute task...
         return true;
     }
