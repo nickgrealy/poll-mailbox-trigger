@@ -322,10 +322,25 @@ Will inject the following job parameters into the new job instance:
 Troubleshooting
 ---
 
-###1. Error: javax.mail.AuthenticationFailedException: AUTHENTICATE failed.
+###1a. Error : javax.mail.MessagingException: Connection timed out: connect;
+###1b. Error : javax.mail.MessagingException: Connection refused;
+
+__Solution:__ Check the Jenkins server can access the email server and port, by running the command (from the Jenkins server):
+
+    telnet <your_host> <your_port_143_or_993>
+
+If you get a message similar to the following, then there is no way to create a direct connection to the mail server - probably
+the network is down, or the connection has been (a: passively / b: actively) blocked by a firewall. If so, please check your network settings with
+your network administrator. You may need to specify SOCKS proxy details, in the <i>Advanced Email Properties</i>.
+
+    Connecting To imap.gmail.com...Could not open connection to the host, on port 993: Connect failed
+
+###2. Error : javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Invalid credentials (Failure)
+
 __Solution:__ Check the credentials you're using are correct.
 
-###2. Error: javax.mail.MessagingException: com.ibm.jsse2.util.j: PKIX path building failed: java.security.cert.CertPathBuilderException: PKIXCertPathBuilderImpl could not build a valid CertPath.; ...
+###3. Error: javax.mail.MessagingException: com.ibm.jsse2.util.j: PKIX path building failed: java.security.cert.CertPathBuilderException: PKIXCertPathBuilderImpl could not build a valid CertPath.; ...
+
 __Solution:__ To ignore certificate verification errors, you can use the following config property:
 
     mail.imaps.ssl.trust=*
@@ -334,18 +349,8 @@ __Warning:__ it's not advisable to ignore certificate verification errors (unles
 
     javax.net.ssl.trustStrore=/path/to/cacerts.jks
 
-###3. Error : javax.mail.MessagingException: Connection timed out: connect;
-__Solution:__ Check the Jenkins server can access the email server and port, by running the command (from the Jenkins server):
-
-    telnet <your_host> <your_port_143_or_993>
-
-If you get a message similar to the following, then there is no way to create a direct connection to the mail server - probably
-the network is down, or the connection has been blocked by a firewall. If so, please check your network settings with
-your network administrator. You may need to specify SOCKS proxy details, in the <i>Advanced Email Properties</i>.
-
-    Connecting To imap.gmail.com...Could not open connection to the host, on port 993: Connect failed
-
 ###4. Error : java.lang.NullPointerException at org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.initialiseDefaults(PollMailboxTrigger.java:98)
+
 __Solution:__ I'm not quite sure what the cause is! If you're able to reproduce the issue, please contact me with instructions.
 In the meantime, the error is caught and the following message is displayed.
 
@@ -354,6 +359,15 @@ In the meantime, the error is caught and the following message is displayed.
     http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. If you believe
     this is an error, please raise an 'issue' under
     https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.
+
+###5. Error : java.net.UnknownHostException: imaps.gmail.com
+
+__Solution:__ The hostname provided doesn't exist in the DNS servers. Please check that it is correct.
+
+###6. Error : Please set the 'folder=XXX' parameter to one of the following values:
+
+__Solution:__ The provided folder name doesn't exist on the folder, please use one of the values listed.
+
 
 Want to say thanks?
 ---
