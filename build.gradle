@@ -21,7 +21,7 @@ apply from: "$rootDir/config/gradle/staticCodeAnalysis.gradle"
 
 
 repositories {
-    mavenLocal()
+    // mavenLocal() https://jenkins.ci.cloudbees.com/job/plugins/job/poll-mailbox-trigger-plugin/64/console fails checkout home...
     maven { url 'http://bits.netbeans.org/maven2/' }
     maven { url 'http://repo.jenkins-ci.org/releases/' }
     mavenCentral()
