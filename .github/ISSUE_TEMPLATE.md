@@ -24,6 +24,8 @@ Tell us what happens instead
 
 **Plugin Version**:
 
+**Mail Server**:
+
 ### Additional Steps/Questions
 
 - [ ] Can you please provide all the configuration details you're using (hide sensitive fields) and any other information which may help? (does it match the [examples here](https://github.com/jenkinsci/poll-mailbox-trigger-plugin#office-365)?)
