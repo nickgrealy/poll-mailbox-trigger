@@ -10,7 +10,7 @@ public class LabelRestrictionClass {
     private String triggerLabel;
 
     @DataBoundConstructor
-    public LabelRestrictionClass(String triggerLabel) {
+    public LabelRestrictionClass(final String triggerLabel) {
         this.triggerLabel = triggerLabel;
     }
 

@@ -22,28 +22,30 @@ import java.util.Map;
  * difficult/impossible. So, I've fashioned the following class to address these issues.
  * </p>
  */
-public class SafeJenkins {
+public final class SafeJenkins {
+
+    private SafeJenkins() {
+    }
 
     /**
      * Provides a way to override the static Jenkins instance for unit testing.
      */
-    protected static DescribableList<NodeProperty<?>, NodePropertyDescriptor> globalNodeProperties;
-    protected static DescribableList<NodeProperty<?>, NodePropertyDescriptor> localNodeProperties;
+    private static DescribableList<NodeProperty<?>, NodePropertyDescriptor> globalNodeProperties = null;
+    private static DescribableList<NodeProperty<?>, NodePropertyDescriptor> localNodeProperties = null;
+    private static boolean useNativeInstance = true;
 
-    protected static boolean useNativeInstance = true;
-
-    public static void useNativeInstance(boolean useNativeInstance) {
+    public static void useNativeInstance(final boolean useNativeInstance) {
         SafeJenkins.useNativeInstance = useNativeInstance;
     }
 
-    public static Jenkins getJenkinsInstance(){
-        if (useNativeInstance){
+    public static Jenkins getJenkinsInstance() {
+        if (useNativeInstance) {
             Jenkins instance = Jenkins.getInstance();
             if (isNull(instance)) {
-                throw new RuntimeException("Could not get Jenkins instance using Jenkins.getInstance() (returns null). " +
-                        "This can happen if Jenkins has not been started, or was already shut down. " +
-                        "Please see http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. " +
-                        "If you believe this is an error, please raise an 'issue' under https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.");
+                throw new RuntimeException("Could not get Jenkins instance using Jenkins.getInstance() (returns null). "
+                        + "This can happen if Jenkins has not been started, or was already shut down. "
+                        + "Please see http://javadoc.jenkins-ci.org/jenkins/model/Jenkins.html#getInstance() for more details. "
+                        + "If you believe this is an error, please raise an 'issue' under https://wiki.jenkins-ci.org/display/JENKINS/poll-mailbox-trigger-plugin.");
             }
             return instance;
         } else {
@@ -51,45 +53,45 @@ public class SafeJenkins {
         }
     }
 
-    public static DescribableList<NodeProperty<?>, NodePropertyDescriptor> getGlobalNodeProperties(){
+    public static DescribableList<NodeProperty<?>, NodePropertyDescriptor> getGlobalNodeProperties() {
         return useNativeInstance ? getJenkinsInstance().getGlobalNodeProperties() : globalNodeProperties;
     }
 
-    public static DescribableList<NodeProperty<?>, NodePropertyDescriptor> getNodeProperties(){
+    public static DescribableList<NodeProperty<?>, NodePropertyDescriptor> getNodeProperties() {
         return useNativeInstance ? getJenkinsInstance().getNodeProperties() : localNodeProperties;
     }
 
     /**
      * Creates a {@link EnvironmentVariablesNodeProperty} of environment properties, from the given {@link Map}.
      */
-    public static void setLocalNodeProperties(Map<String, String> properties){
-        if (isNull(localNodeProperties)){
+    public static void setLocalNodeProperties(final Map<String, String> properties) {
+        if (isNull(localNodeProperties)) {
             localNodeProperties = new DescribableList<NodeProperty<?>, NodePropertyDescriptor>(new NoopSaveable());
         }
         List<EnvironmentVariablesNodeProperty.Entry> envVarEntries = new ArrayList<EnvironmentVariablesNodeProperty.Entry>();
-        for (Map.Entry<String, String> entry : properties.entrySet()){
+        for (Map.Entry<String, String> entry : properties.entrySet()) {
             envVarEntries.add(new EnvironmentVariablesNodeProperty.Entry(entry.getKey(), entry.getValue()));
         }
         localNodeProperties.add(new EnvironmentVariablesNodeProperty(envVarEntries));
     }
 
-    public static String encrypt(String message){
+    public static String encrypt(final String message) {
         return useNativeInstance
                 ? Secret.fromString(message).getEncryptedValue()
                 : new StringBuffer(message).reverse().toString();
     }
 
-    public static String decrypt(String encryptedMessage){
+    public static String decrypt(final String encryptedMessage) {
         return useNativeInstance
                 ? Secret.decrypt(encryptedMessage).getPlainText()
                 : new StringBuffer(encryptedMessage).reverse().toString();
     }
 
-    public static boolean isNull(Object object){
+    public static boolean isNull(final Object object) {
         return object == null;
     }
 
-    public static boolean nonNull(Object object){
+    public static boolean nonNull(final Object object) {
         return object != null;
     }
 

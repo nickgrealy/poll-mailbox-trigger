@@ -6,7 +6,7 @@ public class PollMailboxTriggerRunAction extends InvisibleAction {
 
     private String description;
 
-    public PollMailboxTriggerRunAction(String description) {
+    public PollMailboxTriggerRunAction(final String description) {
         this.description = description;
     }
 

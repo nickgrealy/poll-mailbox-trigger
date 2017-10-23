@@ -1,17 +1,19 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.utils;
 
+import org.apache.commons.codec.Charsets;
 import org.jenkinsci.lib.xtrigger.XTriggerLog;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * <p>
- *     Logger interface, so that we're not tied to XTriggerLog!
+ * Logger interface, so that we're not tied to XTriggerLog!
  * </p>
  * <p>
- *     Question: is there a better/generic way of doing this?
+ * Question: is there a better/generic way of doing this?
  * </p>
  *
  * @author Nick Grealy
@@ -19,19 +21,19 @@ import java.io.PrintStream;
 @SuppressWarnings("unused")
 public abstract class Logger {
 
-    public static final Logger DEFAULT = new Logger() {
+    private static final Logger DEFAULT = new Logger() {
 
         @Override
-        public void info(String message) {
+        public void info(final String message) {
             write(System.out, message);
         }
 
         @Override
-        public void error(String message) {
+        public void error(final String message) {
             write(System.err, message);
         }
 
-        private void write(PrintStream out, String message) {
+        private void write(final PrintStream out, final String message) {
             if (!"".equals(message.trim())) {
                 out.print(message);
                 if (!message.contains("\n")) {
@@ -41,49 +43,61 @@ public abstract class Logger {
         }
     };
 
-    public abstract void info(String message);
+    public static Logger getDefault() {
+        return DEFAULT;
+    }
 
-    public abstract void error(String message);
+    public abstract void info(final String message);
+
+    public abstract void error(final String message);
 
     public OutputStream getOutputStream() {
         return new LoggerStream(this);
     }
 
     public PrintStream getPrintStream() {
-        return new PrintStream(new LoggerStream(this));
+        try {
+            return new PrintStream(new LoggerStream(this), false, Charsets.UTF_8.displayName());
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Cannot handle UnsupportedEncodingException", e);
+        }
     }
 
     /* utilty classes */
 
-    public static abstract class HasLogger {
+    public abstract static class HasLogger {
 
-        public Logger logger;
+        private Logger logger;
 
-        public HasLogger(Logger logger) {
+        public HasLogger(final Logger logger) {
             this.logger = logger;
+        }
+
+        public Logger getLogger() {
+            return logger;
         }
     }
 
-    public static class LoggerStream extends OutputStream {
+    private static final class LoggerStream extends OutputStream {
 
         private final Logger logger;
 
-        public LoggerStream(Logger logger) {
+        private LoggerStream(final Logger logger) {
             this.logger = logger;
         }
 
         @Override
-        public void write(byte[] b) throws IOException {
-            logger.info(new String(b));
+        public void write(final byte[] b) throws IOException {
+            logger.info(new String(b, Charsets.UTF_8));
         }
 
         @Override
-        public void write(byte[] b, int off, int len) throws IOException {
-            logger.info(new String(b, off, len));
+        public void write(final byte[] b, final int off, final int len) throws IOException {
+            logger.info(new String(b, off, len, Charsets.UTF_8));
         }
 
         @Override
-        public void write(int b) throws IOException {
+        public void write(final int b) throws IOException {
             write(new byte[]{(byte) b});
         }
     }
@@ -94,15 +108,15 @@ public abstract class Logger {
 
         private XTriggerLog delegate;
 
-        public XTriggerLoggerWrapper(XTriggerLog delegate) {
+        public XTriggerLoggerWrapper(final XTriggerLog delegate) {
             this.delegate = delegate;
         }
 
-        public void error(String message) {
+        public void error(final String message) {
             delegate.error(message);
         }
 
-        public void info(String message) {
+        public void info(final String message) {
             delegate.info(message);
         }
     }

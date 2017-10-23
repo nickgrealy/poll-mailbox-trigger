@@ -1,11 +1,10 @@
-
 Feature: Configuration
 
-  Background: The tests are setup.
+  Background: The tests are setup
     Given the plugin is initialised
 
 
-  Scenario: I want to have sensible default config values.
+  Scenario: I want the default config values to be IMAPS
     When I set the configuration to
       | Host | Username | Password | Script |
     Then the effective configuration should be
@@ -19,7 +18,7 @@ Feature: Configuration
       | subjectContains     | jenkins > |
 
 
-  Scenario: I want to be able to set the basic config values.
+  Scenario: I want to be able to set the basic config values
     When I set the configuration to
       | Host     | Username | Password |
       | mail.com | morty    | chickens |
@@ -38,7 +37,7 @@ Feature: Configuration
       | username            | morty     |
 
 
-  Scenario: I want to be able to override the default config values.
+  Scenario: I want to be able to override the default config values
     When I set the configuration to
       | Host | Username | Password |
       | aaa  | bbb      | ccc      |
@@ -72,7 +71,7 @@ Feature: Configuration
       | username                   | bbb    |
 
 
-  Scenario: I want to be able to use Jenkins environment variables in my configuration.
+  Scenario: I want to be able to use Jenkins environment variables in my configuration
     Given the following Jenkins variables
       | cat     | meow  |
       | dog     | woof  |
@@ -109,7 +108,7 @@ Feature: Configuration
       | username                     | bb woof bb  |
 
 
-  Scenario: I want to be able to clear the default config values.
+  Scenario: I want to be able to clear the default config values
     When I set the configuration to
       | Username | Password |
       | bbb      | ccc      |
@@ -129,7 +128,7 @@ Feature: Configuration
       | username    | bbb    |
 
 
-  Scenario: I want the imap port and host varaibles to be automatically updated, if I switch to IMAP [no 'S'].
+  Scenario: I want default values for IMAP
     When I set the configuration to
       | Host     | Username | Password |
       | mail.com | morty    | chickens |
@@ -150,3 +149,70 @@ Feature: Configuration
       | storeName           | imap      |
       | subjectContains     | jenkins > |
       | username            | morty     |
+
+
+  Scenario: I want default values for IMAPS
+    When I set the configuration to
+      | Host     | Username | Password |
+      | mail.com | morty    | chickens |
+    And the script
+    """
+    storeName=imaps
+    """
+    Then the effective configuration should be
+      | attachments         | IGNORE    |
+      | folder              | INBOX     |
+      | host                | mail.com  |
+      | mail.debug          | false     |
+      | mail.debug.auth     | false     |
+      | mail.imaps.host     | mail.com  |
+      | mail.imaps.port     | 993       |
+      | password            | snekcihc  |
+      | receivedXMinutesAgo | 1440      |
+      | storeName           | imaps     |
+      | subjectContains     | jenkins > |
+      | username            | morty     |
+
+
+  Scenario: I want default values for POP3
+    When I set the configuration to
+      | Host          | Username        | Password |
+      | pop.gmail.com | morty@gmail.com | chickens |
+    And the script
+    """
+    storeName=pop3
+    """
+    Then the effective configuration should be
+      | attachments         | IGNORE          |
+      | folder              | INBOX           |
+      | host                | pop.gmail.com   |
+      | mail.debug          | false           |
+      | mail.debug.auth     | false           |
+      | mail.pop3.host      | pop.gmail.com   |
+      | mail.pop3.port      | 110             |
+      | password            | snekcihc        |
+      | storeName           | pop3            |
+      | subjectContains     | jenkins >       |
+      | username            | morty@gmail.com |
+
+
+  Scenario: I want default values for POP3S
+    When I set the configuration to
+      | Host          | Username        | Password |
+      | pop.gmail.com | morty@gmail.com | chickens |
+    And the script
+    """
+    storeName=pop3s
+    """
+    Then the effective configuration should be
+      | attachments         | IGNORE          |
+      | folder              | INBOX           |
+      | host                | pop.gmail.com   |
+      | mail.debug          | false           |
+      | mail.debug.auth     | false           |
+      | mail.pop3s.host     | pop.gmail.com   |
+      | mail.pop3s.port     | 995             |
+      | password            | snekcihc        |
+      | storeName           | pop3s           |
+      | subjectContains     | jenkins >       |
+      | username            | morty@gmail.com |

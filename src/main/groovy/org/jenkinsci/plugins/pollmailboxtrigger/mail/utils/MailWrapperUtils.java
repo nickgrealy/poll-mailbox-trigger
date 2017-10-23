@@ -1,19 +1,34 @@
 package org.jenkinsci.plugins.pollmailboxtrigger.mail.utils;
 
 import com.google.common.io.Files;
-import org.apache.commons.lang.StringUtils;
 
-import javax.mail.*;
+import javax.mail.BodyPart;
+import javax.mail.Flags;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.search.SearchTerm;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.jenkinsci.plugins.pollmailboxtrigger.PollMailboxTrigger.Properties.subjectContains;
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.*;
-import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.*;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.and;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.flag;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.not;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.SearchTermHelpers.receivedSince;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.BLANK;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.MULTIPART_WILDCARD;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.NEWLINE;
+import static org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify.stringify;
 
 /**
  * @author Nick Grealy
@@ -29,7 +44,7 @@ public abstract class MailWrapperUtils {
         private List<Message> messages;
         private Folder folder;
 
-        public MessagesWrapper(Logger logger, List<Message> messages, Folder folder) {
+        public MessagesWrapper(final Logger logger, final List<Message> messages, final Folder folder) {
             super(logger);
             this.messages = messages;
             this.folder = folder;
@@ -44,22 +59,22 @@ public abstract class MailWrapperUtils {
         }
 
         public MessagesWrapper print() throws MessagingException {
-            logger.info("Found message(s) : " + messages.size());
+            getLogger().info("Found message(s) : " + messages.size());
             for (Message message : messages) {
-                logger.info(">>>>>>");
-                logger.info("Date    : " + message.getSentDate());
-                logger.info("From    : " + (message.getFrom().length > 0 ? message.getFrom()[0] : null));
-                logger.info("Subject : " + message.getSubject());
-                logger.info("<<<<<<");
+                getLogger().info(">>>>>>");
+                getLogger().info("Date    : " + message.getSentDate());
+                getLogger().info("From    : " + (message.getFrom().length > 0 ? message.getFrom()[0] : null));
+                getLogger().info("Subject : " + message.getSubject());
+                getLogger().info("<<<<<<");
             }
             return this;
         }
 
-        public MessagesWrapper markAsRead(Message... messagez) throws IOException, MessagingException {
+        public MessagesWrapper markAsRead(final Message... messagez) throws IOException, MessagingException {
             return markAsRead(Arrays.asList(messagez));
         }
 
-        public MessagesWrapper markAsRead(List<Message> messagez) throws IOException, MessagingException {
+        public MessagesWrapper markAsRead(final List<Message> messagez) throws IOException, MessagingException {
             if (folder.isOpen() && folder.getMode() != Folder.READ_WRITE) {
                 folder.close(true);
             }
@@ -69,7 +84,7 @@ public abstract class MailWrapperUtils {
             for (Message message : messagez) {
                 message.setFlag(Flags.Flag.SEEN, true);
             }
-            logger.info("Marked email(s) as read : " + messagez.size());
+            getLogger().info("Marked email(s) as read : " + messagez.size());
             return this;
         }
 
@@ -77,7 +92,7 @@ public abstract class MailWrapperUtils {
             return markAsRead(messages);
         }
 
-        public CustomProperties getMessageProperties(Message message, String prefix, CustomProperties p) throws MessagingException, IOException {
+        public CustomProperties getMessageProperties(final Message message, final String prefix, final CustomProperties p) throws MessagingException, IOException {
             CustomProperties envVars = new CustomProperties();
             String msgSubject = stringify(message.getSubject());
             envVars.put(prefix + "subject", msgSubject);
@@ -109,7 +124,7 @@ public abstract class MailWrapperUtils {
             return envVars;
         }
 
-        public static String getText(Part p) {
+        public static String getText(final Part p) {
             /* I could probably do this all in one line, with groovy. :( */
             try {
                 // get all text from the email body...
@@ -131,12 +146,14 @@ public abstract class MailWrapperUtils {
         /*
          * Only keep text containing the given string.
          */
-        public static List<String> filterProperties(String[] props, String containing) {
+        public static List<String> filterProperties(final String[] props, final String containing) {
             final ArrayList<String> list = new ArrayList<String>(Arrays.asList(props));
             Iterator<String> it = list.iterator();
             while (it.hasNext()) {
                 String foo = it.next();
-                if (!foo.contains(containing)) it.remove();
+                if (!foo.contains(containing)) {
+                    it.remove();
+                }
             }
             return list;
         }
@@ -144,7 +161,7 @@ public abstract class MailWrapperUtils {
         /**
          * Saves all attachments to a temp directory, and returns the directory path. Null if no attachments.
          */
-        public File saveAttachments(Message message) throws IOException, MessagingException {
+        public File saveAttachments(final Message message) throws IOException, MessagingException {
             File tmpDir = Files.createTempDir();
             boolean foundAttachments = false;
             Object content = message.getContent();
@@ -152,7 +169,7 @@ public abstract class MailWrapperUtils {
                 Multipart mp = (Multipart) content;
                 for (int i = 0; i < mp.getCount(); i++) {
                     BodyPart bodyPart = mp.getBodyPart(i);
-                    if (bodyPart instanceof MimeBodyPart && isNotBlank(bodyPart.getFileName())){
+                    if (bodyPart instanceof MimeBodyPart && isNotBlank(bodyPart.getFileName())) {
                         MimeBodyPart mimeBodyPart = (MimeBodyPart) bodyPart;
                         mimeBodyPart.saveFile(new File(tmpDir, mimeBodyPart.getFileName()));
                         foundAttachments = true;
@@ -176,7 +193,7 @@ public abstract class MailWrapperUtils {
 
         private Folder folder;
 
-        public FolderWrapper(Logger logger, Folder folder) {
+        public FolderWrapper(final Logger logger, final Folder folder) {
             super(logger);
             this.folder = folder;
         }
@@ -185,7 +202,7 @@ public abstract class MailWrapperUtils {
             return folder;
         }
 
-        public MessagesWrapper getUnreadMessagesSince(Date fromDate) throws MessagingException {
+        public MessagesWrapper getUnreadMessagesSince(final Date fromDate) throws MessagingException {
             return search(UNREAD_FLAG, receivedSince(fromDate));
         }
 
@@ -193,16 +210,16 @@ public abstract class MailWrapperUtils {
             return search(UNREAD_FLAG);
         }
 
-        public MessagesWrapper search(SearchTerm... term) throws MessagingException {
+        public MessagesWrapper search(final SearchTerm... term) throws MessagingException {
             return search(Arrays.asList(term));
         }
 
-        public MessagesWrapper search(List<SearchTerm> term) throws MessagingException {
+        public MessagesWrapper search(final List<SearchTerm> term) throws MessagingException {
             if (!folder.isOpen()) {
                 folder.open(Folder.READ_ONLY);
             }
             Message[] messages = folder.search(and(term));
-            return new MessagesWrapper(logger, Arrays.asList(messages), folder);
+            return new MessagesWrapper(getLogger(), Arrays.asList(messages), folder);
         }
 
         public void close() throws MessagingException {

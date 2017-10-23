@@ -5,12 +5,12 @@ import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.Stringify
 import javax.mail.Address
 import javax.mail.Flags
 import javax.mail.Message
-import javax.mail.MessagingException
 import javax.mail.Multipart
 import javax.mail.Part
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMultipart
+import java.text.SimpleDateFormat
 
 import static javax.mail.Flags.Flag
 
@@ -20,7 +20,7 @@ import static javax.mail.Flags.Flag
 class MessageBuilder {
 
     static final DEFAULT_DATE = new Date(1413196250440)
-    static final DEFAULT_DATE_FORMATTED = Stringify.df.format(DEFAULT_DATE)
+    static final DEFAULT_DATE_FORMATTED = new SimpleDateFormat(Stringify.DATE_FORMAT_TEXT).format(DEFAULT_DATE)
 
     static final TEXT = '''
 fruit=banana

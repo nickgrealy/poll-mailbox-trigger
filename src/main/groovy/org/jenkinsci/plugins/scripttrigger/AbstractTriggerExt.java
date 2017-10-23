@@ -16,13 +16,18 @@ import java.util.List;
 /**
  * @author Gregory Boissinot
  */
-public abstract class AbstractTrigger extends org.jenkinsci.lib.xtrigger.AbstractTrigger {
+public abstract class AbstractTriggerExt extends org.jenkinsci.lib.xtrigger.AbstractTrigger {
 
-    protected boolean labelRestriction;
+    private boolean labelRestriction;
 
-    protected boolean enableConcurrentBuild;
+    private boolean enableConcurrentBuild;
 
-    public AbstractTrigger(String cronTabSpec, boolean labelRestriction, String triggerLabel, boolean enableConcurrentBuild) throws ANTLRException {
+    public AbstractTriggerExt(
+            final String cronTabSpec,
+            final boolean labelRestriction,
+            final String triggerLabel,
+            final boolean enableConcurrentBuild
+    ) throws ANTLRException {
         super(cronTabSpec, triggerLabel, enableConcurrentBuild);
         this.labelRestriction = labelRestriction;
         this.enableConcurrentBuild = enableConcurrentBuild;
@@ -39,7 +44,7 @@ public abstract class AbstractTrigger extends org.jenkinsci.lib.xtrigger.Abstrac
     }
 
     @Override
-    protected void start(Node pollingNode, BuildableItem project, boolean newInstance, XTriggerLog log) {
+    protected void start(final Node pollingNode, final BuildableItem project, final boolean newInstance, final XTriggerLog log) {
     }
 
     @Override
@@ -63,12 +68,12 @@ public abstract class AbstractTrigger extends org.jenkinsci.lib.xtrigger.Abstrac
 
     protected abstract String getDefaultMessageCause();
 
-    private String extractRootCause(String content) {
+    private String extractRootCause(final String content) {
         return StringUtils.substringBetween(content, "<cause>", "</cause>");
     }
 
     @Override
-    protected Action[] getScheduledActions(Node pollingNode, XTriggerLog log) {
+    protected Action[] getScheduledActions(final Node pollingNode, final XTriggerLog log) {
         String scriptContent;
         try {
             scriptContent = Util.loadFile(getLogFile());
@@ -84,7 +89,7 @@ public abstract class AbstractTrigger extends org.jenkinsci.lib.xtrigger.Abstrac
         return actionList.toArray(new Action[actionList.size()]);
     }
 
-    private String extractDescription(String content) {
+    private String extractDescription(final String content) {
         return StringUtils.substringBetween(content, "<description>", "</description>");
     }
 

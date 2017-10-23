@@ -1,7 +1,7 @@
 
 Feature: Runtime - Start Job
 
-  Background: The tests are setup.
+  Background: The tests are setup
     Given the plugin is initialised
     Given a mailbox with domain mail.com and username rick
     And the script
@@ -17,7 +17,7 @@ Feature: Runtime - Start Job
 
 
   Scenario: I want the Job's description to tell me who started the job,
-  So that I can have accountability.
+  So that I can have accountability
     Given the emails
       | Subject                   | SentXMinutesAgo | IsSeenFlag | From           | Body                    |
       | Jenkins > Build Plugin #4 | 5               | false      | fred@email.com | aaa=bbb\nfoo=<b>bar</b> |
@@ -26,7 +26,7 @@ Feature: Runtime - Start Job
 
 
   Scenario: I the job's logging to give me useful information,
-  So that I know exactly what happened.
+  So that I know exactly what happened
     Given the emails
       | Subject                   | SentXMinutesAgo | IsSeenFlag |
       | Jenkins > Build Plugin #3 | 5               | false      |
@@ -36,11 +36,26 @@ Feature: Runtime - Start Job
     """
     Connecting to the mailbox...
     [Poll Mailbox Trigger] - Connected!
+    Found properties:
+    - [attachments:IGNORE]
+    - [folder:INBOX]
+    - [host:mail.com]
+    - [mail.debug:false]
+    - [mail.debug.auth:false]
+    - [mail.imap.connectiontimeout:1000]
+    - [mail.imap.host:mail.com]
+    - [mail.imap.port:143]
+    - [password:***]
+    - [receivedXMinutesAgo:1440]
+    - [storeName:imap]
+    - [subjectContains:jenkins >]
+    - [username:rick]
     Connected to mailbox. Searching for messages where:
     - [flag is unread]
     - [subject contains 'jenkins >']
     - [received date is greater than '<date>']
     ...
+    Searching folder...
     Found matching email(s) : 2
 
     - Jenkins > Build Plugin #3 (<date>)
@@ -48,16 +63,18 @@ Feature: Runtime - Start Job
     - Jenkins > Build Plugin #4 (<date>)
     Download attachments? IGNORE
     Changes found. Scheduling a build.
+    Job has no parameters.
     Marked email(s) as read : 1
     Download attachments? IGNORE
     Changes found. Scheduling a build.
+    Job has no parameters.
     Marked email(s) as read : 1
 
     """
 
 
   Scenario: I want the email body to pass parameters to the Jenkins job,
-  So that I can configure the Job instance.
+  So that I can configure the Job instance
     Given the emails
       | Subject                   | SentXMinutesAgo | IsSeenFlag | From           | Body                    |
       | Jenkins > Build Plugin #4 | 5               | false      | nick@email.com | aaa=bbb\nfoo=<b>bar</b> |
@@ -84,7 +101,7 @@ Feature: Runtime - Start Job
       | pmt_receivedXMinutesAgo         | 1440                                                                |
       | pmt_recipients                  | foo3@bar.com,foo4@bar.com                                           |
       | pmt_replyTo                     | nick@email.com                                                      |
-      | pmt_retryEmailLink              | <a href="mailto:null?subject=null&body=null">Click to Retry Job</a> |
+      | pmt_retryEmailLink              | <a href="mailto:foo3@bar.com,foo4@bar.com?subject=Jenkins > Build Plugin #4&body=%0D%0Aaaa=bbb%0D%0Afoo=<b>bar</b>">Click to Retry Job</a> |
       | pmt_storeName                   | imap                                                                |
       | pmt_subject                     | Jenkins > Build Plugin #4                                           |
       | pmt_subjectContains             | jenkins >                                                           |
@@ -94,7 +111,7 @@ Feature: Runtime - Start Job
     # todo: Finish writing acceptance test
   @ignore
   Scenario: I want the email to save any attachments to disk, and pass in file pointers in the environment variables,
-  So that I have access to the email attachments from the Job.
+  So that I have access to the email attachments from the Job
     Given the emails
       | Subject                   | SentXMinutesAgo | IsSeenFlag | From           | Body    | Attachments            |
       | Jenkins > Build Plugin #4 | 5               | false      | nick@email.com | nothing | lighter.jpg,aurora.jpg |
@@ -129,7 +146,7 @@ Feature: Runtime - Start Job
       | pmt_subjectContains             | jenkins >                 |
       | pmt_username                    | rick                      |
 
-  # todo: Two emails triggers two job instances.
-  # todo: Error occurs, shown in the logs.
+  # todo: Two emails triggers two job instances
+  # todo: Error occurs, shown in the logs
   # todo: Check that the email is marked as read, so that another build isn't retriggered
-  # todo: test Download attachments, so taht I can use them...
+  # todo: test Download attachments, so taht I can use them..

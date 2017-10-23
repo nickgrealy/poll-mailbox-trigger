@@ -8,6 +8,7 @@ import cucumber.api.java.en.Then
 import cucumber.api.java.en.When
 import hudson.model.Action
 import hudson.model.Cause
+import hudson.model.ParametersAction
 import hudson.model.Project
 import hudson.util.FormValidation
 import hudson.util.Secret
@@ -15,6 +16,7 @@ import hudson.util.StreamTaskListener
 import org.jenkinsci.lib.xtrigger.XTriggerLog
 import org.jenkinsci.plugins.pollmailboxtrigger.bdd.ConfigurationRow
 import org.jenkinsci.plugins.pollmailboxtrigger.bdd.EmailRow
+import org.jenkinsci.plugins.pollmailboxtrigger.environment.SetEnvironmentVariablesAction
 import org.jenkinsci.plugins.pollmailboxtrigger.mail.utils.CustomProperties
 import org.jenkinsci.plugins.scripttrigger.LabelRestrictionClass
 import org.jvnet.mock_javamail.Mailbox
@@ -183,8 +185,15 @@ public class StepDefs {
 
     private Map<String, String> getLastJobParameters(){
         Action[] actions = actionsCaptor.getValue()
-        Map<String, String> entries = actions[0].getParameters().collectEntries { [(it.name): it.value] }
-        new TreeMap<String, String>(entries)
+        Map<String, String> entries = new TreeMap<>()
+        actions.each { action ->
+            if (action instanceof ParametersAction){
+                entries.putAll(action.getParameters().collectEntries { [(it.name): it.value] })
+            } else if (action instanceof SetEnvironmentVariablesAction){
+                entries.putAll(action.getParametersAsMap())
+            }
+        }
+        return entries
     }
 
     @Then('the log is')
